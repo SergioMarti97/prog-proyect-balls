@@ -24,13 +24,21 @@ public class Renderer {
 
     private int zDepth = 0;
 
+    private int[] lm;
+
+    private int[] lb;
+
     private boolean processing = false;
+
+    private int ambientColor = 0xffffffff;//0xff6b6b6b;
 
     public Renderer(GameContainer gc) {
         pW = gc.getWidth();
         pH = gc.getHeight();
         p = ((DataBufferInt)gc.getWindow().getImage().getRaster().getDataBuffer()).getData();
         zb = new int[p.length];
+        lm = new int[p.length];
+        lb = new int[p.length];
     }
 
     public void clear(int color) {
@@ -38,6 +46,8 @@ public class Renderer {
         for ( int i = 0; i < p.length; i++ ) {
             p[i] = color;
             zb[i] = 0;
+            lm[i] = ambientColor;
+            lb[i] = 0;
         }
     }
 
@@ -67,6 +77,14 @@ public class Renderer {
             setZDepth(ir.getzDepth());
             drawImage(ir.getImage(), ir.getOffX(), ir.getOffY());
         }
+
+        for ( int i = 0; i < p.length; i++ ) {
+            float r = ((lm[i] >> 16) & 0xff) / 255.0f;
+            float g = ((lm[i] >> 8) & 0xff) / 255.0f;
+            float b = (lm[i] & 0xff) / 255.0f;
+            p[i] = ( (int)(((p[i] >> 16) & 0xff) * r) << 16 | (int)(((p[i] >> 8) & 0xff) * g) << 8 | (int)((p[i] & 0xff) * b));
+        }
+
         imageRequests.clear();
         processing = false;
     }
@@ -88,8 +106,21 @@ public class Renderer {
             int newRed = ((pixelColor >> 16) & 0xff) - (int)((((pixelColor >> 16) & 0xff) - ((value >> 16) & 0xff)) * (alpha / 255.0f));
             int newGreen = ((pixelColor >> 8) & 0xff) - (int)((((pixelColor >> 8) & 0xff) - ((value >> 8) & 0xff)) * (alpha / 255.0f));
             int newBlue = (pixelColor & 0xff) - (int)(((pixelColor & 0xff) - (value & 0xff)) * (alpha / 255.0f));
-            p[index] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
+            p[index] = (newRed << 16 | newGreen << 8 | newBlue); //(255 << 24 | newRed << 16 | newGreen << 8 | newBlue)
         }
+    }
+
+    public void setLightMap(int x, int y, int value) {
+        if ( x < 0 || x >= pW || y < 0 || y >= pH ) {
+            return;
+        }
+        int baseColor = lm[x + y * pW];
+
+        int maxRed = Math.max(((baseColor >> 16) & 0xff), ((value >> 16) & 0xff));
+        int maxGreen = Math.max(((baseColor >> 8) & 0xff), ((value >> 8) & 0xff));
+        int maxBlue = Math.max((baseColor & 0xff), (value & 0xff));
+
+        lm[x + y * pW] = (maxRed << 16 | maxGreen << 8 | maxBlue);
     }
 
     public void drawLine(int x1, int y1, int x2, int y2, int color) {
@@ -636,7 +667,15 @@ public class Renderer {
         return zDepth;
     }
 
+    public int getAmbientColor() {
+        return ambientColor;
+    }
+
     public void setZDepth(int zDepth) {
         this.zDepth = zDepth;
+    }
+
+    public void setAmbientColor(int ambientColor) {
+        this.ambientColor = ambientColor;
     }
 }

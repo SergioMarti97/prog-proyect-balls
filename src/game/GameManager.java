@@ -120,6 +120,13 @@ public class GameManager extends AbstractGame {
 
     @Override
     public void render(GameContainer gc, Renderer r) {
+
+        for ( int x = 0; x < image.getW(); x++ ) {
+            for ( int y = 0; y < image.getH(); y++ ) {
+                r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
+            }
+        }
+
         //r.drawFillRect(gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, 32, 32, 0xffffccff);
         r.drawLine(0, 0, gc.getInput().getMouseX(), gc.getInput().getMouseY(), 0xffE5B501);
         //r.drawFillCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 50, 0xffffffff);
