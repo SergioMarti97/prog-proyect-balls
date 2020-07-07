@@ -8,16 +8,27 @@ public class Vec3d {
 
     private float z;
 
+    private float w;
+
     public Vec3d() {
         x = 0.0f;
         y = 0.0f;
         z = 0.0f;
+        w = 0.0f;
     }
 
     public Vec3d(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.w = 0.0f;
+    }
+
+    public Vec3d(float x, float y, float z, float w) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = w;
     }
 
     public float getX() {
@@ -32,6 +43,10 @@ public class Vec3d {
         return z;
     }
 
+    public float getW() {
+        return w;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
@@ -42,6 +57,10 @@ public class Vec3d {
 
     public void setZ(float z) {
         this.z = z;
+    }
+
+    public void setW(float w) {
+        this.w = w;
     }
 
     public void addToX(double amount) {
@@ -56,6 +75,10 @@ public class Vec3d {
         this.z += amount;
     }
 
+    public void addToW(double amount) {
+        this.w += amount;
+    }
+
     public void multiplyXBy(double amount) {
         this.x *= amount;
     }
@@ -66,6 +89,25 @@ public class Vec3d {
 
     public void multiplyZBy(double amount) {
         this.z *= amount;
+    }
+
+    public void multiplyWBy(double amount) {
+        this.w *= amount;
+    }
+
+    public float getLength() {
+        return (float)(Math.sqrt( x * x + y * y + z * z ));
+    }
+
+    public void normalize() {
+        float l = getLength();
+        x /= l;
+        y /= l;
+        z /= l;
+    }
+
+    public float dotProduct(Vec3d v) {
+        return this.getX() * v.getX() + this.getY() * v.getY() + this.getZ() * v.getZ();
     }
 
 }

@@ -13,6 +13,8 @@ import engine.gfx.Image;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class GameManager extends AbstractGame {
 
@@ -37,6 +39,7 @@ public class GameManager extends AbstractGame {
     private Mat4x4 projectionMatrix, matRotZ, matRotX;
     private float theta = 0.0f;
     private Mesh mesh;
+    private Vec3d camera;
 
     public GameManager() {
         image = new Image("/test3.png");
@@ -69,6 +72,7 @@ public class GameManager extends AbstractGame {
         Vec3d point1 =  MultiplyMatrixVector(triangle.getP()[1], m);
         Vec3d point2 =  MultiplyMatrixVector(triangle.getP()[2], m);
         triangleTransformed.setP(new Vec3d[]{point0, point1, point2});
+        triangleTransformed.setColor(triangle.getColor());
         return triangleTransformed;
     }
 
@@ -108,6 +112,8 @@ public class GameManager extends AbstractGame {
 
         matRotZ = new Mat4x4();
         matRotX = new Mat4x4();
+
+        camera = new Vec3d(0, 0, 0);
     }
 
     @Override
@@ -146,6 +152,8 @@ public class GameManager extends AbstractGame {
         matRotX.getM()[2][2] = (float)(Math.cos(theta * 0.5f));
         matRotX.getM()[3][3] = 1.0f;
 
+        ArrayList<Triangle> trianglesToRaster = new ArrayList<>();
+
         for (Triangle triangle : mesh.getTris()) {
 
             Triangle triangleRotatedX = transformTriangle(triangle, matRotX);
@@ -155,6 +163,36 @@ public class GameManager extends AbstractGame {
             triangleTranslated.getP()[1].addToZ(3.0);
             triangleTranslated.getP()[2].addToZ(3.0);
 
+            Vec3d normal = new Vec3d();
+            Vec3d line1 = new Vec3d();
+            Vec3d line2 = new Vec3d();
+            line1.setX(triangleTranslated.getP()[1].getX() - triangleTranslated.getP()[0].getX());
+            line1.setX(triangleTranslated.getP()[1].getY() - triangleTranslated.getP()[0].getY());
+            line1.setX(triangleTranslated.getP()[1].getZ() - triangleTranslated.getP()[0].getZ());
+
+            line2.setX(triangleTranslated.getP()[2].getX() - triangleTranslated.getP()[0].getX());
+            line2.setX(triangleTranslated.getP()[2].getY() - triangleTranslated.getP()[0].getY());
+            line2.setX(triangleTranslated.getP()[2].getZ() - triangleTranslated.getP()[0].getZ());
+
+            normal.setX(line1.getY() * line2.getZ() - line1.getZ() * line2.getY());
+            normal.setY(line1.getZ() * line2.getX() - line1.getX() * line2.getZ());
+            normal.setZ(line1.getX() * line2.getY() - line1.getY() * line2.getX());
+            normal.normalize();
+
+            if (    normal.getX() * (triangleTranslated.getP()[0].getX() - camera.getX()) +
+                    normal.getX() * (triangleTranslated.getP()[0].getX() - camera.getX()) +
+                    normal.getX() * (triangleTranslated.getP()[0].getX() - camera.getX()) < 0.0f) {
+                // Illumination
+                Vec3d lightDirection = new Vec3d(0.0f, 0.0f, -1.0f);
+                lightDirection.normalize();
+
+                // How similar is normal to light direction
+                float dp = normal.dotProduct(lightDirection);
+                triangleTranslated.setColor((((int)(dp) << 16) & 0xff) | (((int)(dp) << 8) & 0xff) | ((int)(dp) & 0xff));
+
+            }
+
+            // Matrix of Projection
             Triangle triangleProjected = transformTriangle(triangleTranslated, projectionMatrix);
 
             // Scale into view
@@ -172,11 +210,25 @@ public class GameManager extends AbstractGame {
             triangleProjected.getP()[2].multiplyXBy(0.5 * (float) SCREEN_WIDTH);
             triangleProjected.getP()[2].multiplyYBy(0.5 * (float) SCREEN_WIDTH);
 
+            trianglesToRaster.add(triangleProjected);
+        }
+
+        trianglesToRaster.sort(new Comparator<Triangle>() {
+            @Override
+            public int compare(Triangle t1, Triangle t2) {
+
+                float z1 = (t1.getP()[0].getZ() + t1.getP()[1].getZ() + t1.getP()[2].getZ()) / 3.0f;
+                float z2 = (t2.getP()[0].getZ() + t2.getP()[1].getZ() + t2.getP()[2].getZ()) / 3.0f;
+                return Float.compare(z1, z2);
+            }
+        });
+
+        for ( Triangle triangleProjected : trianglesToRaster ) {
             r.drawTriangle(
                     (int)(triangleProjected.getP()[0].getX()), (int)(triangleProjected.getP()[0].getY()),
                     (int)(triangleProjected.getP()[1].getX()), (int)(triangleProjected.getP()[1].getY()),
                     (int)(triangleProjected.getP()[2].getX()), (int)(triangleProjected.getP()[2].getY()),
-                    0xff00ffff
+                    0xffffffff//triangleProjected.getColor()
             );
         }
 
