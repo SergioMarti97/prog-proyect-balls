@@ -6,6 +6,7 @@ import engine.engine3d.Mat4x4;
 import engine.engine3d.Mesh;
 import engine.engine3d.Triangle;
 import engine.engine3d.Vec3d;
+import engine.gfx.ImageTile;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
 import engine.gfx.Image;
@@ -17,11 +18,13 @@ public class GameManager extends AbstractGame {
 
     private Image image;
 
+    private Image image2;
+
     private SoundClip clip;
 
-    private final static int SCREEN_WIDTH = 320; // 320
+    private final static int SCREEN_WIDTH = 320; // 320, 1080
 
-    private final static int SCREEN_HEIGHT = 240; // 240
+    private final static int SCREEN_HEIGHT = 240; // 240, 720
 
     private final static float SCREEN_SCALE = 4.0f;
 
@@ -36,7 +39,9 @@ public class GameManager extends AbstractGame {
     private Mesh mesh;
 
     public GameManager() {
-        image = new Image("/test.png");
+        image = new Image("/test3.png");
+        image2 = new ImageTile("/test2.png", 16, 16);
+        image2.setAlpha(true);
         clip = new SoundClip("/audio/sound.wav");
     }
 
@@ -117,8 +122,7 @@ public class GameManager extends AbstractGame {
     public void render(GameContainer gc, Renderer r) {
         //r.drawFillRect(gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, 32, 32, 0xffffccff);
         r.drawLine(0, 0, gc.getInput().getMouseX(), gc.getInput().getMouseY(), 0xffE5B501);
-        r.drawFillCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 50, 0xffffffff);
-        r.drawImage(image, gc.getInput().getMouseX(), gc.getInput().getMouseY());
+        //r.drawFillCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 50, 0xffffffff);
 
         // Rotation Z
         matRotZ.getM()[0][0] = (float)(Math.cos(theta));
@@ -174,6 +178,10 @@ public class GameManager extends AbstractGame {
         r.drawRect(100, 110, 130, 90, 0xff5555ff);
         r.drawFillRect(130, 4, 12, 12, 0xff5510ff);
         r.drawText("Mouse X: " + gc.getInput().getMouseX() + " Y: " + gc.getInput().getMouseY(), 0, 10, 0xff00ffff);
+
+        r.drawImage(image, 10, 10);
+        //r.drawImageTile((ImageTile) image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8, 1, 1);
+
     }
 
     public static void main(String[] args) {

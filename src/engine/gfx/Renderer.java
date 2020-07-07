@@ -1,11 +1,18 @@
 package engine.gfx;
 
 import engine.GameContainer;
+import engine.gfx.font.Font;
 
 import java.awt.image.DataBufferInt;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class Renderer {
+
+    private Font font = Font.STANDARD;
+
+    private ArrayList<ImageRequest> imageRequests = new ArrayList<>();
 
     private int pW;
 
@@ -13,27 +20,78 @@ public class Renderer {
 
     private int[] p;
 
-    private Font font = Font.STANDARD;
+    private int[] zb; // Z Buffer
+
+    private int zDepth = 0;
+
+    private boolean processing = false;
 
     public Renderer(GameContainer gc) {
         pW = gc.getWidth();
         pH = gc.getHeight();
         p = ((DataBufferInt)gc.getWindow().getImage().getRaster().getDataBuffer()).getData();
+        zb = new int[p.length];
     }
 
     public void clear(int color) {
-        Arrays.fill(p, color);
+        //Arrays.fill(p, color);
+        for ( int i = 0; i < p.length; i++ ) {
+            p[i] = color;
+            zb[i] = 0;
+        }
     }
 
     public void clear() {
         clear(0xff000000);
     }
 
+    public void process() {
+        processing = true;
+
+        Collections.sort(imageRequests, new Comparator<ImageRequest>() {
+                    @Override
+                    public int compare(ImageRequest i0, ImageRequest i1) {
+                        if ( i0.getzDepth() < i1.getzDepth() ) {
+                            return -1;
+                        } else if ( i0.getzDepth() > i1.getzDepth() ) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                }
+        );
+
+        System.out.println("Start");
+        for ( int i = 0; i < imageRequests.size(); i++ ) {
+            ImageRequest ir = imageRequests.get(i);
+            setZDepth(ir.getzDepth());
+            drawImage(ir.getImage(), ir.getOffX(), ir.getOffY());
+        }
+        System.out.println("End");
+        imageRequests.clear();
+        processing = false;
+    }
+
     public void setPixel(int x, int y, int value) {
-        if ( (x < 0 || x >= pW || y < 0 || y >= pH) || ((value >> 24) & 0xff) == 0 ) { // value == 0xffff00ff
+        int alpha = ((value >> 24) & 0xff);
+        if ( (x < 0 || x >= pW || y < 0 || y >= pH) || alpha == 0 ) { // value == 0xffff00ff
             return;
         }
-        p[x + y * pW] = value;
+        int index = x + y * pW;
+        if ( zb[index] > zDepth ) {
+            return;
+        }
+        zb[index] = zDepth;
+        if ( alpha == 255 ) {
+            p[index] = value;
+        } else {
+            int pixelColor = p[index];
+            int newRed = ((pixelColor >> 16) & 0xff) - (int)((((pixelColor >> 16) & 0xff) - ((value >> 16) & 0xff)) * (alpha / 255.0f));
+            int newGreen = ((pixelColor >> 8) & 0xff) - (int)((((pixelColor >> 8) & 0xff) - ((value >> 8) & 0xff)) * (alpha / 255.0f));
+            int newBlue = (pixelColor & 0xff) - (int)(((pixelColor & 0xff) - (value & 0xff)) * (alpha / 255.0f));
+            p[index] = (255 << 24 | newRed << 16 | newGreen << 8 | newBlue);
+        }
     }
 
     public void drawLine(int x1, int y1, int x2, int y2, int color) {
@@ -202,8 +260,8 @@ public class Renderer {
             newHeight -= (newHeight + offY - pH);
         }
 
-        for ( int y = newY; y <= newHeight; y++ ) {
-            for ( int x = newX; x <= newWidth; x++ ) {
+        for ( int y = newY; y < newHeight; y++ ) {
+            for ( int x = newX; x < newWidth; x++ ) {
                 setPixel(x + offX, y + offY, color);
             }
         }
@@ -468,6 +526,12 @@ public class Renderer {
     }
 
     public void drawImage(Image image, int offX, int offY) {
+
+        if ( image.isAlpha() && !processing) {
+            imageRequests.add(new ImageRequest(image, zDepth, offX, offY));
+            return;
+        }
+
         // Don't render code
         if ( offX < -pW ) {
             return;
@@ -509,6 +573,11 @@ public class Renderer {
     }
 
     public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
+        if ( image.isAlpha() && !processing) {
+            imageRequests.add(new ImageRequest(image.getTileImage(tileX, tileY), zDepth, offX, offY));
+            return;
+        }
+
         // Don't render code
         if ( offX < -image.getTileW() ) {
             return;
@@ -551,10 +620,10 @@ public class Renderer {
     }
 
     public void drawText(String text, int offX, int offY, int color) {
-        text = text.toUpperCase();
         int offset = 0;
+        text = text.toUpperCase();
         for ( int i = 0; i < text.length(); i++ ) {
-            int unicode = text.codePointAt(i) - 32;
+            int unicode = text.codePointAt(i) -32;
             for ( int y = 0; y < font.getFontImage().getH(); y++ ) {
                 for ( int x = 0; x < font.getWidths()[unicode]; x++ ) {
                     if ( font.getFontImage().getP()[(x + font.getOffsets()[unicode]) + y * font.getFontImage().getW()] == 0xffffffff ) {
@@ -566,4 +635,11 @@ public class Renderer {
         }
     }
 
+    public int getZDepth() {
+        return zDepth;
+    }
+
+    public void setZDepth(int zDepth) {
+        this.zDepth = zDepth;
+    }
 }

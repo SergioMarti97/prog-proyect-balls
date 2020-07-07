@@ -1,4 +1,6 @@
-package engine.gfx;
+package engine.gfx.font;
+
+import engine.gfx.Image;
 
 public class Font {
 

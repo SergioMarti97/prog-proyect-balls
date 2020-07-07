@@ -12,6 +12,8 @@ public class Image {
 
     private int[] p;
 
+    private boolean alpha = false;
+
     public Image(String path) {
         BufferedImage image = null;
         try {
@@ -26,6 +28,12 @@ public class Image {
         image.flush();
     }
 
+    public Image(int[] p, int w, int h) {
+        this.p = p;
+        this.w = w;
+        this.h = h;
+    }
+
     public int getW() {
         return w;
     }
@@ -38,6 +46,10 @@ public class Image {
         return p;
     }
 
+    public boolean isAlpha() {
+        return alpha;
+    }
+
     public void setW(int w) {
         this.w = w;
     }
@@ -48,6 +60,10 @@ public class Image {
 
     public void setP(int[] p) {
         this.p = p;
+    }
+
+    public void setAlpha(boolean alpha) {
+        this.alpha = alpha;
     }
 
 }
