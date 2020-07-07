@@ -32,6 +32,12 @@ public class Vec2d {
         return z;
     }
 
+    public void set(Vec2d vec2d) {
+        this.x = vec2d.getX();
+        this.y = vec2d.getY();
+        this.z = vec2d.getZ();
+    }
+
     public void setX(float x) {
         this.x = x;
     }

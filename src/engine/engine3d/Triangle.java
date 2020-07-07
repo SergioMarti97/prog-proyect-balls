@@ -9,15 +9,28 @@ public class Triangle {
     private int color;
 
     public Triangle() {
-
+        p[0] = new Vec3d();
+        p[1] = new Vec3d();
+        p[2] = new Vec3d();
+        t[0] = new Vec2d();
+        t[1] = new Vec2d();
+        t[2] = new Vec2d();
+        color = 0xff000000;
     }
 
     public Triangle(Vec3d[] p) {
         this.p = p;
+        t[0] = new Vec2d();
+        t[1] = new Vec2d();
+        t[2] = new Vec2d();
+        color = 0xff000000;
     }
 
     public Triangle(Vec3d[] p, int color) {
         this.p = p;
+        t[0] = new Vec2d();
+        t[1] = new Vec2d();
+        t[2] = new Vec2d();
         this.color = color;
     }
 

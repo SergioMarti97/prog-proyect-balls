@@ -10,7 +10,7 @@ import java.util.Comparator;
 
 public class Renderer {
 
-    protected Font font = Font.STANDARD;
+    protected Font font = Font.COMICSANS;
 
     protected ArrayList<ImageRequest> imageRequests = new ArrayList<>();
 
@@ -379,186 +379,7 @@ public class Renderer {
         drawLine(x3, y3, x1, y1, color);
     }
 
-    public void drawLineForFillTriangle(int sx, int ex, int ny, int color) {
-        for (int i = sx; i <= ex; i++) {
-            setPixel(i, ny, color);
-        }
-    }
-
     public void drawFillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int color) {
-        int t1x, t2x, y, minx, maxx, t1xp, t2xp;
-        boolean changed1 = false;
-        boolean changed2 = false;
-        int signx1, signx2, dx1, dy1, dx2, dy2;
-        int e1, e2;
-
-        // Ordenar los vertices por altura
-        if ( y1 > y2 ) {
-            int temp = y1;
-            y1 = y2;
-            y2 = temp;
-
-            temp = x1;
-            x1 = x2;
-            x2 = temp;
-        }
-        if ( y1 > y3 ) {
-            int temp = y1;
-            y1 = y3;
-            y3 = temp;
-
-            temp = x1;
-            x1 = x3;
-            x3 = temp;
-        }
-        if ( y2 > y3 ) {
-            int temp = y2;
-            y2 = y3;
-            y3 = temp;
-
-            temp = x2;
-            x2 = x3;
-            x3 = temp;
-        }
-
-        t1x = t2x = x1; y = y1;   // Puntos de inicio
-        dx1 = (int)(x2 - x1); if (dx1<0) { dx1 = -dx1; signx1 = -1; }
-        else signx1 = 1;
-        dy1 = (int)(y2 - y1);
-
-        dx2 = (int)(x3 - x1); if (dx2<0) { dx2 = -dx2; signx2 = -1; }
-        else signx2 = 1;
-        dy2 = (int)(y3 - y1);
-
-        if ( dy1 > dx1 ) {
-            int temp = dx1;
-            dx1 = dy1;
-            dy1 = temp;
-            changed1 = true;
-        }
-        if ( dy2 > dx2 ) {
-            int temp = dx2;
-            dx2 = dy2;
-            dy2 = temp;
-            changed2 = true;
-        }
-
-        /*e2 = (int)(dx2 >> 1);
-        // Flat top, just process the second half
-        if (y1 == y2) {
-            goto ;
-        }
-        e1 = (int)(dx1 >> 1);
-
-        for (int i = 0; i < dx1;) {
-            t1xp = 0; t2xp = 0;
-            if (t1x<t2x) { minx = t1x; maxx = t2x; }
-            else { minx = t2x; maxx = t1x; }
-            // process first line until y value is about to change
-            while (i<dx1) {
-                i++;
-                e1 += dy1;
-                while (e1 >= dx1) {
-                    e1 -= dx1;
-                    if (changed1) t1xp = signx1;//t1x += signx1;
-                    else          goto next1;
-                }
-                if (changed1) break;
-                else t1x += signx1;
-            }
-            // Move line
-            next1:
-            // process second line until y value is about to change
-            while (1) {
-                e2 += dy2;
-                while (e2 >= dx2) {
-                    e2 -= dx2;
-                    if (changed2) t2xp = signx2;//t2x += signx2;
-                    else          goto next2;
-                }
-                if (changed2)     break;
-                else              t2x += signx2;
-            }
-            next2:
-            if (minx>t1x) minx = t1x;
-            if (minx>t2x) minx = t2x;
-            if (maxx<t1x) maxx = t1x;
-            if (maxx<t2x) maxx = t2x;
-            drawline(minx, maxx, y);    // Draw line from min to max points found on the y
-            // Now increase y
-            if (!changed1) t1x += signx1;
-            t1x += t1xp;
-            if (!changed2) t2x += signx2;
-            t2x += t2xp;
-            y += 1;
-            if (y == y2) break;
-
-        }
-        next:
-        // Second half
-        dx1 = (int)(x3 - x2); if (dx1<0) { dx1 = -dx1; signx1 = -1; }
-        else signx1 = 1;
-        dy1 = (int)(y3 - y2);
-        t1x = x2;
-
-        if (dy1 > dx1) {   // swap values
-            SWAP(dy1, dx1);
-            changed1 = true;
-        }
-        else changed1 = false;
-
-        e1 = (int)(dx1 >> 1);
-
-        for (int i = 0; i <= dx1; i++) {
-            t1xp = 0; t2xp = 0;
-            if (t1x<t2x) { minx = t1x; maxx = t2x; }
-            else { minx = t2x; maxx = t1x; }
-            // process first line until y value is about to change
-            while (i<dx1) {
-                e1 += dy1;
-                while (e1 >= dx1) {
-                    e1 -= dx1;
-                    if (changed1) { t1xp = signx1; break; }//t1x += signx1;
-                    else          goto next3;
-                }
-                if (changed1) break;
-                else   	   	  t1x += signx1;
-                if (i<dx1) i++;
-            }
-            next3:
-            // process second line until y value is about to change
-            while (t2x != x3) {
-                e2 += dy2;
-                while (e2 >= dx2) {
-                    e2 -= dx2;
-                    if (changed2) t2xp = signx2;
-                    else          goto next4;
-                }
-                if (changed2)     break;
-                else              t2x += signx2;
-            }
-            next4:
-
-            if (minx>t1x) minx = t1x;
-            if (minx>t2x) minx = t2x;
-            if (maxx<t1x) maxx = t1x;
-            if (maxx<t2x) maxx = t2x;
-            drawline(minx, maxx, y);
-            if (!changed1) t1x += signx1;
-            t1x += t1xp;
-            if (!changed2) t2x += signx2;
-            t2x += t2xp;
-            y += 1;
-            if (y>y3) return;
-        }*/
-
-    }
-
-    public void fillTriangle(
-            int x1, int y1, float u1, float v1, float w1,
-            int x2, int y2, float u2, float v2, float w2,
-            int x3, int y3, float u3, float v3, float w3, int color
-    ) {
         if (y2 < y1) {
             int tempInteger = y1;
             y1 = y2;
@@ -567,18 +388,6 @@ public class Renderer {
             tempInteger = x1;
             x1 = x2;
             x2 = tempInteger;
-
-            float tempFloat = u1;
-            u1 = u2;
-            u2 = tempFloat;
-
-            tempFloat = v1;
-            v1 = v2;
-            v2 = tempFloat;
-
-            tempFloat = w1;
-            w1 = w2;
-            w2 = tempFloat;
         }
 
         if (y3 < y1) {
@@ -589,18 +398,6 @@ public class Renderer {
             tempInteger = x1;
             x1 = x3;
             x3 = tempInteger;
-
-            float tempFloat = u1;
-            u1 = u3;
-            u3 = tempFloat;
-
-            tempFloat = v1;
-            v1 = v3;
-            v3 = tempFloat;
-
-            tempFloat = w1;
-            w1 = w3;
-            w3 = tempFloat;
         }
 
         if (y3 < y2) {
@@ -611,31 +408,13 @@ public class Renderer {
             tempInteger = x2;
             x2 = x3;
             x3 = tempInteger;
-
-            float tempFloat = u2;
-            u2 = u3;
-            u3 = tempFloat;
-
-            tempFloat = v2;
-            v2 = v3;
-            v3 = tempFloat;
-
-            tempFloat = w2;
-            w2 = w3;
-            w3 = tempFloat;
         }
 
         int dy1 = y2 - y1;
         int dx1 = x2 - x1;
-        float dv1 = v2 - v1;
-        float du1 = u2 - u1;
-        float dw1 = w2 - w1;
 
         int dy2 = y3 - y1;
         int dx2 = x3 - x1;
-        float dv2 = v3 - v1;
-        float du2 = u3 - u1;
-        float dw2 = w3 - w1;
 
         float tex_u;
         float tex_v;
@@ -654,73 +433,24 @@ public class Renderer {
         }
 
         if ( dy1 != 0 ) {
-            du1_step = du1 / (float)Math.abs(dy1);
-        }
-        if ( dy1 != 0 ) {
-            dv1_step = dv1 / (float)Math.abs(dy1);
-        }
-        if ( dy1 != 0 ) {
-            dw1_step = dw1 / (float)Math.abs(dy1);
-        }
-
-        if ( dy2 != 0 ) {
-            du2_step = du2 / (float)Math.abs(dy2);
-        }
-        if ( dy2 != 0 ) {
-            dv2_step = dv2 / (float)Math.abs(dy2);
-        }
-        if ( dy2 != 0 ) {
-            dw2_step = dw2 / (float)Math.abs(dy2);
-        }
-
-        if ( dy1 != 0 ) {
             for ( int i = y1; i <= y2; i++ )
             {
                 int ax = (int)(x1 + (float)(i - y1) * dax_step);
                 int bx = (int)(x1 + (float)(i - y1) * dbx_step);
 
-                float tex_su = u1 + (float)(i - y1) * du1_step;
-                float tex_sv = v1 + (float)(i - y1) * dv1_step;
-                float tex_sw = w1 + (float)(i - y1) * dw1_step;
-
-                float tex_eu = u1 + (float)(i - y1) * du2_step;
-                float tex_ev = v1 + (float)(i - y1) * dv2_step;
-                float tex_ew = w1 + (float)(i - y1) * dw2_step;
-
                 if ( ax > bx ) {
                     int tempInteger = ax;
                     ax = bx;
                     bx = tempInteger;
-
-                    float tempFloat = tex_su;
-                    tex_su = tex_eu;
-                    tex_eu = tempFloat;
-
-                    tempFloat = tex_sv;
-                    tex_sv = tex_ev;
-                    tex_ev = tempFloat;
-
-                    tempFloat = tex_sw;
-                    tex_sw = tex_ew;
-                    tex_ew = tempFloat;
                 }
-
-                tex_u = tex_su;
-                tex_v = tex_sv;
-                tex_w = tex_sw;
 
                 float tstep = 1.0f / ((float)(bx - ax));
                 float t = 0.0f;
 
-                for (int j = ax; j < bx; j++)
-                {
-                    tex_u = (1.0f - t) * tex_su + t * tex_eu;
-                    tex_v = (1.0f - t) * tex_sv + t * tex_ev;
-                    tex_w = (1.0f - t) * tex_sw + t * tex_ew;
-                    if (tex_w > p[i * pW + j])
-                    {
+                for (int j = ax; j < bx; j++) {
+                    int index = i * pW + j;
+                    if (index < p.length) {
                         setPixel(j, i, color);
-                        //p[j + i * pW] = (int)(tex_w); // todo esto en el código de Javidx9 es el m_depthBuffer... Aquí no se que es...
                     }
                     t += tstep;
                 }
@@ -729,9 +459,6 @@ public class Renderer {
 
         dy1 = y3 - y2;
         dx1 = x3 - x2;
-        dv1 = v3 - v2;
-        du1 = u3 - u2;
-        dw1 = w3 - w2;
 
         if ( dy1 != 0 ) {
             dax_step = dx1 / (float)Math.abs(dy1);
@@ -742,9 +469,6 @@ public class Renderer {
 
         du1_step = 0;
         dv1_step = 0;
-        if ( dy1 != 0 ) du1_step = du1 / (float)Math.abs(dy1);
-        if ( dy1 != 0 ) dv1_step = dv1 / (float)Math.abs(dy1);
-        if ( dy1 != 0 ) dw1_step = dw1 / (float)Math.abs(dy1);
 
         if ( dy1 != 0 )
         {
@@ -753,46 +477,18 @@ public class Renderer {
                 int ax = (int)(x2 + (float)(i - y2) * dax_step);
                 int bx = (int)(x1 + (float)(i - y1) * dbx_step);
 
-                float tex_su = u2 + (float)(i - y2) * du1_step;
-                float tex_sv = v2 + (float)(i - y2) * dv1_step;
-                float tex_sw = w2 + (float)(i - y2) * dw1_step;
-
-                float tex_eu = u1 + (float)(i - y1) * du2_step;
-                float tex_ev = v1 + (float)(i - y1) * dv2_step;
-                float tex_ew = w1 + (float)(i - y1) * dw2_step;
-
                 if (ax > bx) {
                     int tempInteger = ax;
                     ax = bx;
                     bx = tempInteger;
-
-                    float tempFloat = tex_su;
-                    tex_su = tex_eu;
-                    tex_eu = tempFloat;
-
-                    tempFloat = tex_sv;
-                    tex_sv = tex_ev;
-                    tex_ev = tempFloat;
-
-                    tempFloat = tex_sw;
-                    tex_sw = tex_ew;
-                    tex_ew = tempFloat;
                 }
-
-                tex_u = tex_su;
-                tex_v = tex_sv;
-                tex_w = tex_sw;
 
                 float tstep = 1.0f / ((float)(bx - ax));
                 float t = 0.0f;
 
-                for (int j = ax; j < bx; j++)
-                {
-                    tex_u = (1.0f - t) * tex_su + t * tex_eu;
-                    tex_v = (1.0f - t) * tex_sv + t * tex_ev;
-                    tex_w = (1.0f - t) * tex_sw + t * tex_ew;
-
-                    if (tex_w > p[i * pW + j]) {
+                for (int j = ax; j < bx; j++) {
+                    int index = i * pW + j;
+                    if (index < p.length) {
                         setPixel(j, i, color);
                         //p[i * pW + j] = tex_w;
                     }

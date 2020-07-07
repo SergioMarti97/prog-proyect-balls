@@ -247,16 +247,16 @@ public class MatrixMath {
         return (plane_n.getX() * p.getX() + plane_n.getY() * p.getY() + plane_n.getZ() * p.getZ() - vectorDotProduct(plane_n, plane_p));
     };
 
-    public static int Triangle_ClipAgainstPlane(Vec3d plane_p, Vec3d plane_n, Triangle in_tri, Triangle out_tri1, Triangle out_tri2) {
+    public static int triangleClipAgainstPlane(Vec3d plane_p, Vec3d plane_n, Triangle in_tri, Triangle out_tri1, Triangle out_tri2) {
         // Make sure plane normal is indeed normal
         plane_n = vectorNormalise(plane_n);
 
-        out_tri1.getT()[0] = in_tri.getT()[0];
-        out_tri2.getT()[0] = in_tri.getT()[0];
-        out_tri1.getT()[1] = in_tri.getT()[1];
-        out_tri2.getT()[1] = in_tri.getT()[1];
-        out_tri1.getT()[2] = in_tri.getT()[2];
-        out_tri2.getT()[2] = in_tri.getT()[2];
+        out_tri1.getT()[0].set(in_tri.getT()[0]);
+        out_tri2.getT()[0].set(in_tri.getT()[0]);
+        out_tri1.getT()[1].set(in_tri.getT()[1]);
+        out_tri2.getT()[1].set(in_tri.getT()[1]);
+        out_tri1.getT()[2].set(in_tri.getT()[2]);
+        out_tri2.getT()[2].set(in_tri.getT()[2]);
 
         // Create two temporary storage arrays to classify points either side of plane
         // If distance sign is positive, point lies on "inside" of plane

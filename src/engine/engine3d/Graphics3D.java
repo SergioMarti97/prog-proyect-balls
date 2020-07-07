@@ -8,8 +8,6 @@ public class Graphics3D extends Renderer  {
 
     private RenderFlags renderFlag = RenderFlags.RENDER_TEXTURED;
 
-    private PipeLine pipeLine;
-
     private float depthBuffer;
 
     public Graphics3D(GameContainer gc) {
@@ -33,7 +31,12 @@ public class Graphics3D extends Renderer  {
     }
 
     public void drawTriangleFlat(Triangle triangle) {
-
+        drawFillTriangle(
+                (int)(triangle.getP()[0].getX()), (int)(triangle.getP()[0].getY()),
+                (int)(triangle.getP()[1].getX()), (int)(triangle.getP()[1].getY()),
+                (int)(triangle.getP()[2].getX()), (int)(triangle.getP()[2].getY()),
+                triangle.getColor()
+        );
     }
 
     public void drawTriangleWire(Triangle triangle, int color) {
@@ -41,7 +44,7 @@ public class Graphics3D extends Renderer  {
                 (int)(triangle.getP()[0].getX()), (int)(triangle.getP()[0].getY()),
                 (int)(triangle.getP()[1].getX()), (int)(triangle.getP()[1].getY()),
                 (int)(triangle.getP()[2].getX()), (int)(triangle.getP()[2].getY()),
-                triangle.getColor());
+                color);
     }
 
     public void drawTexturedTriangle(
@@ -292,8 +295,12 @@ public class Graphics3D extends Renderer  {
         }
     }
 
-    public void drawTriangleTex(Triangle triangle, Image spr) {
-
+    public void drawTriangleTex(Triangle triangle, Image image) {
+        drawTexturedTriangle(
+                (int)(triangle.getP()[0].getX()), (int)(triangle.getP()[0].getY()), triangle.getT()[0].getX(), triangle.getT()[0].getY(), triangle.getT()[0].getZ(),
+                (int)(triangle.getP()[1].getX()), (int)(triangle.getP()[1].getY()), triangle.getT()[1].getX(), triangle.getT()[1].getY(), triangle.getT()[1].getZ(),
+                (int)(triangle.getP()[2].getX()), (int)(triangle.getP()[2].getY()), triangle.getT()[2].getX(), triangle.getT()[2].getY(), triangle.getT()[2].getZ(),
+                image);
     }
 
     public RenderFlags getRenderFlag() {

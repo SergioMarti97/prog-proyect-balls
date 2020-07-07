@@ -63,6 +63,13 @@ public class Vec3d {
         this.w = w;
     }
 
+    public void set(Vec3d vec3d) {
+        this.x = vec3d.getX();
+        this.y = vec3d.getY();
+        this.z = vec3d.getZ();
+        this.w = vec3d.getW();
+    }
+
     public void addToX(double amount) {
         this.x += amount;
     }
