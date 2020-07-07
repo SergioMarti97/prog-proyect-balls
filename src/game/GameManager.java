@@ -232,7 +232,7 @@ public class GameManager extends AbstractGame {
             );
         }
 
-        r.drawTriangle(40, 10, 100, 40, 50, 50, 0xffff5033);
+        r.fillTriangle(40, 10, 0, 0, 0, 100, 40, 0, 0, 0, 50, 50, 0, 0, 0, 0xffff5033);
         r.drawCircle(200, 90, 34, 0xff20ff99);
         r.drawRect(100, 110, 130, 90, 0xff5555ff);
         r.drawFillRect(130, 4, 12, 12, 0xff5510ff);

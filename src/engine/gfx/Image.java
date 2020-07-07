@@ -50,6 +50,10 @@ public class Image {
         return alpha;
     }
 
+    public int getSample(int x, int y) {
+        return p[x + w * y];
+    }
+
     public void setW(int w) {
         this.w = w;
     }
