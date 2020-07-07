@@ -4,7 +4,9 @@ import engine.gfx.Image;
 
 public class Font {
 
-    public static final Font STANDARD = new Font("/fonts/standard.png");
+    public static final Font STANDARD = new Font("/fonts/consolas.png");
+
+    public static final Font COMICSANS = new Font("/fonts/comicsans.png");
 
     private Image fontImage;
 
@@ -14,8 +16,8 @@ public class Font {
 
     public Font(String path) {
         fontImage = new Image(path);
-        offsets = new int[59];
-        widths = new int[59];
+        offsets = new int[256];
+        widths = new int[256];
         int unicode = 0;
         for ( int i = 0; i < fontImage.getW(); i++ ) {
             if ( fontImage.getP()[i] == 0xff0000ff ) {

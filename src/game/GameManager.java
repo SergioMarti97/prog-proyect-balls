@@ -179,7 +179,7 @@ public class GameManager extends AbstractGame {
         r.drawFillRect(130, 4, 12, 12, 0xff5510ff);
         r.drawText("Mouse X: " + gc.getInput().getMouseX() + " Y: " + gc.getInput().getMouseY(), 0, 10, 0xff00ffff);
 
-        r.drawImage(image, 10, 10);
+        r.drawImage(image, 100, 100);
         //r.drawImageTile((ImageTile) image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8, 1, 1);
 
     }

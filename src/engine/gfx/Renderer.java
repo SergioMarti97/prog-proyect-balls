@@ -62,13 +62,11 @@ public class Renderer {
                 }
         );
 
-        System.out.println("Start");
         for ( int i = 0; i < imageRequests.size(); i++ ) {
             ImageRequest ir = imageRequests.get(i);
             setZDepth(ir.getzDepth());
             drawImage(ir.getImage(), ir.getOffX(), ir.getOffY());
         }
-        System.out.println("End");
         imageRequests.clear();
         processing = false;
     }
@@ -621,9 +619,8 @@ public class Renderer {
 
     public void drawText(String text, int offX, int offY, int color) {
         int offset = 0;
-        text = text.toUpperCase();
         for ( int i = 0; i < text.length(); i++ ) {
-            int unicode = text.codePointAt(i) -32;
+            int unicode = text.codePointAt(i);
             for ( int y = 0; y < font.getFontImage().getH(); y++ ) {
                 for ( int x = 0; x < font.getWidths()[unicode]; x++ ) {
                     if ( font.getFontImage().getP()[(x + font.getOffsets()[unicode]) + y * font.getFontImage().getW()] == 0xffffffff ) {
