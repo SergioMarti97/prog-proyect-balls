@@ -1,29 +1,31 @@
 package engine.physics;
 
+import engine.gfx.shapes2d.Shape2D;
+
 public class CollidingShapes {
 
-    private Shape shape;
+    private Shape2D shape2D;
 
-    private Shape target;
+    private Shape2D target;
 
-    public CollidingShapes(Shape shape, Shape target) {
-        this.shape = shape;
+    public CollidingShapes(Shape2D shape2D, Shape2D target) {
+        this.shape2D = shape2D;
         this.target = target;
     }
 
-    public Shape getShape() {
-        return shape;
+    public Shape2D getShape2D() {
+        return shape2D;
     }
 
-    public Shape getTarget() {
+    public Shape2D getTarget() {
         return target;
     }
 
-    public void setShape(Shape shape) {
-        this.shape = shape;
+    public void setShape2D(Shape2D shape2D) {
+        this.shape2D = shape2D;
     }
 
-    public void setTarget(Shape target) {
+    public void setTarget(Shape2D target) {
         this.target = target;
     }
 

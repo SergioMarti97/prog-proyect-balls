@@ -5,7 +5,7 @@ import engine.GameContainer;
 import engine.audio.SoundClip;
 import engine.engine3d.Vec2d;
 import engine.gfx.Renderer;
-import engine.physics.Circle;
+import engine.physics.Ball;
 import engine.physics.CollidingShapes;
 
 import java.awt.event.KeyEvent;
@@ -21,7 +21,7 @@ public class BallsGame extends AbstractGame {
 
     private final int NUM_BALLS = 50;
 
-    private ArrayList<Circle> balls;
+    private ArrayList<Ball> balls;
 
     private ArrayList<CollidingShapes> collidingPairs;
 
@@ -44,19 +44,19 @@ public class BallsGame extends AbstractGame {
             float radius = getRandomFloatBetweenRange(30, 10);
             float posX = getRandomFloatBetweenRange((int)(SCREEN_WIDTH - radius), (int)(radius));
             float posY = getRandomFloatBetweenRange((int)(SCREEN_HEIGHT - radius), (int)(radius));
-            Circle circle = new Circle(posX, posY, radius, 0xffffffff);
-            circle.setId(balls.size());
-            balls.add(circle);
+            Ball ball = new Ball(posX, posY, radius, 0xffffffff);
+            ball.setId(balls.size());
+            balls.add(ball);
         }
     }
 
-    private boolean doCirclesOverlap(Circle c1, Circle c2) {
+    private boolean doCirclesOverlap(Ball c1, Ball c2) {
         return Math.abs((c1.getPosX() - c2.getPosX()) * (c1.getPosX() - c2.getPosX()) +
                 (c1.getPosY() - c2.getPosY()) * (c1.getPosY() - c2.getPosY())) <=
                 ((c1.getRadius() + c2.getRadius()) * (c1.getRadius() + c2.getRadius()));
     }
 
-    private boolean isPointInCircle(Circle c1, float posX, float posY) {
+    private boolean isPointInCircle(Ball c1, float posX, float posY) {
         return Math.abs((c1.getPosX() - posX) * (c1.getPosX() - posX) +
                 (c1.getPosY() - posY) * (c1.getPosY() - posY)) <=
                 (c1.getRadius() * c1.getRadius());
@@ -173,8 +173,8 @@ public class BallsGame extends AbstractGame {
         }
 
         for ( int i = 0; i < collidingPairs.size(); i++ ) {
-            Circle b1 = (Circle) collidingPairs.get(i).getShape();
-            Circle b2 = (Circle) collidingPairs.get(i).getTarget();
+            Ball b1 = (Ball) collidingPairs.get(i).getShape2D();
+            Ball b2 = (Ball) collidingPairs.get(i).getTarget();
 
             float distance = (float)(Math.sqrt(
                     (b1.getPosX() - b2.getPosX()) * (b1.getPosX() - b2.getPosX()) +
@@ -201,8 +201,8 @@ public class BallsGame extends AbstractGame {
             b2.setVelX(tx * dpTan2 + nx * m2);
             b2.setVelY(ty * dpTan2 + ny * m2);
 
-            collidingPairs.get(i).setShape(b1);
-            collidingPairs.get(i).setShape(b2);
+            collidingPairs.get(i).setShape2D(b1);
+            collidingPairs.get(i).setShape2D(b2);
         }
 
         collidingPairs.clear();
@@ -214,7 +214,7 @@ public class BallsGame extends AbstractGame {
         r.clear(0xff00007d);
         mousePosition.setX(gc.getInput().getMouseX());
         mousePosition.setY(gc.getInput().getMouseY());
-        for ( Circle ball : balls ) {
+        for ( Ball ball : balls ) {
             if ( ball.isSelected() ) {
                 ball.setPosX(mousePosition.getX());
                 ball.setPosY(mousePosition.getY());

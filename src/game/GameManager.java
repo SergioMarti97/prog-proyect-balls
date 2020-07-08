@@ -7,6 +7,7 @@ import engine.gfx.ImageTile;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
 import engine.gfx.Image;
+import engine.gfx.shapes2d.Triangle2D;
 
 import java.awt.event.KeyEvent;
 
@@ -28,6 +29,8 @@ public class GameManager extends AbstractGame {
 
     private float theta;
 
+    private Triangle2D triangle2D;
+
     private PipeLine pipeLine;
 
     private GameManager() {
@@ -41,6 +44,8 @@ public class GameManager extends AbstractGame {
     public void initialize(GameContainer gc) {
         pipeLine = new PipeLine(gc);
         mesh = pipeLine.getCube();
+        triangle2D = new Triangle2D(200, 200, 200, 250, 150, 150, 250, 150, 0xffffffff);
+        triangle2D.setSolid(true);
         theta = 0;
     }
 
@@ -74,7 +79,9 @@ public class GameManager extends AbstractGame {
         r.drawImage(image, 100, 100);
         //r.drawImageTile((ImageTile) image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8, 1, 1);
 
-        r.drawText("¡Hola Alba Guerrero Izquierdo! Bombón <3", gc.getInput().getMouseX() - 20, gc.getInput().getMouseY(), 0xffaa00aa);
+        r.drawText("¡Hola!", gc.getInput().getMouseX() - 20, gc.getInput().getMouseY(), 0xffaa00aa);
+
+        triangle2D.drawYourSelf(r);
 
         pipeLine.render(mesh.getTris(), RenderFlags.RENDER_WIRE);
 

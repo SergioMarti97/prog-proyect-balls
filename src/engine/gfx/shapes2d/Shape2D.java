@@ -1,8 +1,8 @@
-package engine.physics;
+package engine.gfx.shapes2d;
 
 import engine.gfx.Renderer;
 
-public abstract class Shape {
+public abstract class Shape2D implements Drawable {
 
     protected float posX;
 
@@ -10,13 +10,11 @@ public abstract class Shape {
 
     protected int color;
 
-    public Shape(float posX, float posY, int color) {
+    public Shape2D(float posX, float posY, int color) {
         this.posX = posX;
         this.posY = posY;
         this.color = color;
     }
-
-    public abstract void drawYourSelf(Renderer r);
 
     public float getPosX() {
         return posX;
@@ -41,5 +39,7 @@ public abstract class Shape {
     public void setColor(int color) {
         this.color = color;
     }
+
+    public abstract void drawYourSelf(Renderer r);
 
 }

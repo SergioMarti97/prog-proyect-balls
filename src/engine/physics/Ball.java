@@ -1,10 +1,8 @@
 package engine.physics;
 
-import engine.gfx.Renderer;
+import engine.gfx.shapes2d.Circle2D;
 
-public class Circle extends Shape {
-
-    private float radius;
+public class Ball extends Circle2D {
 
     private float velX;
 
@@ -20,24 +18,14 @@ public class Circle extends Shape {
 
     private boolean isSelected;
 
-    public Circle(float posX, float posY, float radius, int color) {
-        super(posX, posY, color);
-        this.radius = radius;
+    public Ball(float posX, float posY, float radius, int color) {
+        super(posX, posY, radius, color);
         aX = 0.0f;
         aY = 0.0f;
         velX = 0.0f;
         velY = 0.0f;
-        mass = this.radius * 10.0f;
+        mass = radius * 10.0f;
         id = 0;
-    }
-
-    @Override
-    public void drawYourSelf(Renderer r) {
-        r.drawCircle((int)(posX), (int)(posY), (int)(radius), color);
-    }
-
-    public float getRadius() {
-        return radius;
     }
 
     public float getVelX() {
@@ -66,10 +54,6 @@ public class Circle extends Shape {
 
     public boolean isSelected() {
         return isSelected;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
     }
 
     public void setVelX(float velX) {
