@@ -8,6 +8,8 @@ import engine.gfx.Renderer;
 import engine.audio.SoundClip;
 import engine.gfx.Image;
 import engine.gfx.shapes2d.Shape2D;
+import engine.gfx.shapes2d.WayToRender;
+import engine.gfx.shapes2d.shapes.Circle2D;
 import engine.gfx.shapes2d.shapes.Triangle2D;
 
 import java.awt.event.KeyEvent;
@@ -31,17 +33,13 @@ public class GameManager extends AbstractGame {
 
     private SoundClip clip;
 
-    private Mesh mesh;
-
-    private float theta;
-
     private ArrayList<Shape2D> shapes2D;
-
-    private PipeLine pipeLine;
 
     private boolean grewTriangle = false;
 
     private boolean reduceTriangle = false;
+
+    private boolean renderAsBlueprint = false;
 
     private GameManager() {
         image = new Image("/test1.png");
@@ -54,38 +52,62 @@ public class GameManager extends AbstractGame {
 
     @Override
     public void initialize(GameContainer gc) {
-        pipeLine = new PipeLine(gc);
-        mesh = pipeLine.getCube();
-
         shapes2D = new ArrayList<>();
         Triangle2D triangle1 = new Triangle2D(200, 200, 2, 2, 4, 8, 6, 4, 0xffffffff);
-        Triangle2D triangle2 = new Triangle2D(200, 200, -1, 0, 1, 0, 0, 4, 0xffffff00);
-        triangle1.setSolid(true);
+        Triangle2D triangle2 = new Triangle2D(250, 200, -1, 0, 1, 0, 0, 4, 0xffffff00);
         triangle2.setSize(triangle2.getSize() * 3.0f);
+        Circle2D circle = new Circle2D(300, 300, 100, 0xffff00ff);
         shapes2D.add(triangle1);
         shapes2D.add(triangle2);
-
-        theta = 0;
+        shapes2D.add(circle);
     }
 
     @Override
     public void update(GameContainer gc, float dt) {
-        if(gc.getInput().isKeyDown(KeyEvent.VK_A)) {
+        if (gc.getInput().isKeyDown(KeyEvent.VK_A)) {
             clip.play();
             grewTriangle = true;
         }
 
-        if(gc.getInput().isKeyUp(KeyEvent.VK_A)) {
+        if (gc.getInput().isKeyUp(KeyEvent.VK_A)) {
             grewTriangle = false;
         }
 
-        if(gc.getInput().isKeyDown(KeyEvent.VK_Z)) {
+        if (gc.getInput().isKeyDown(KeyEvent.VK_Z)) {
             clip.play();
             reduceTriangle = true;
         }
 
-        if(gc.getInput().isKeyUp(KeyEvent.VK_Z)) {
+        if (gc.getInput().isKeyUp(KeyEvent.VK_Z)) {
             reduceTriangle = false;
+        }
+
+        if (gc.getInput().isKeyDown(KeyEvent.VK_S)) {
+            for (Shape2D shape2D : shapes2D) {
+                shape2D.setWayToRender(WayToRender.SOLID);
+            }
+            renderAsBlueprint = false;
+        }
+
+        if (gc.getInput().isKeyDown(KeyEvent.VK_W)) {
+            for (Shape2D shape2D : shapes2D) {
+                shape2D.setWayToRender(WayToRender.WIRE);
+            }
+            renderAsBlueprint = false;
+        }
+
+        if (gc.getInput().isKeyDown(KeyEvent.VK_B)) {
+            for (Shape2D shape2D : shapes2D) {
+                shape2D.setWayToRender(WayToRender.BLUEPRINT);
+            }
+            renderAsBlueprint = true;
+        }
+
+        if (gc.getInput().isKeyDown(KeyEvent.VK_C)) {
+            for (Shape2D shape2D : shapes2D) {
+                shape2D.setWayToRender(WayToRender.BLACKBOARD);
+            }
+            renderAsBlueprint = false;
         }
 
         if ( gc.getInput().isButtonDown(1) ) {
@@ -128,14 +150,16 @@ public class GameManager extends AbstractGame {
                 }
             }
         }
-
-        theta += dt;
     }
 
     @Override
     public void render(GameContainer gc, Renderer r) {
 
-        r.clear(0xff414141);
+        if ( renderAsBlueprint ) {
+            r.clear(0xff00008b);
+        } else {
+            r.clear(0xff414141);
+        }
 
         for ( int x = 0; x < image.getW(); x++ ) {
             for ( int y = 0; y < image.getH(); y++ ) {
@@ -170,9 +194,6 @@ public class GameManager extends AbstractGame {
         }
 
         r.drawFillTriangle(300, 100, 350, 100,  250, 200, 0xff009955);
-
-        //pipeLine.render(mesh.getTris(), RenderFlags.RENDER_WIRE);
-
     }
 
     public static void main(String[] args) {

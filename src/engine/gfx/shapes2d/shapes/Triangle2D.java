@@ -14,8 +14,6 @@ public class Triangle2D extends Shape2D {
 
     private float size = 10.0f;
 
-    private boolean isSolid = false;
-
     public Triangle2D(float posX, float posY, Point2DFloat[] p, int color) {
         super(posX, posY, color);
         this.pShape = p;
@@ -60,22 +58,52 @@ public class Triangle2D extends Shape2D {
 
     @Override
     public void drawYourSelf(Renderer r) {
-        if ( isSolid ) {
-            r.drawFillTriangle(
-                    (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
-                    (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
-                    (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
-                    color
-            );
-        } else {
-            r.drawTriangle(
-                    (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
-                    (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
-                    (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
-                    color
-            );
+        switch ( wayToRender ) {
+            case WIRE: default:
+                r.drawTriangle(
+                        (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
+                        (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
+                        (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
+                        color
+                );
+                r.drawCircle((int)(posX), (int)(posY), 2, color);
+                break;
+            case SOLID:
+                r.drawFillTriangle(
+                        (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
+                        (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
+                        (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
+                        color
+                );
+                break;
+            case BLACKBOARD:
+                r.drawLine(
+                        (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
+                        (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
+                        0xffff0000 // Rojo
+                );
+                r.drawLine(
+                        (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
+                        (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
+                        0xff0000ff // Azul
+                );
+                r.drawLine(
+                        (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
+                        (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
+                        0xffffff00 // Amarillo
+                );
+                r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
+                break;
+            case BLUEPRINT:
+                r.drawTriangle(
+                        (pFinal[0].getX()).intValue(), (pFinal[0].getY()).intValue(),
+                        (pFinal[1].getX()).intValue(), (pFinal[1].getY()).intValue(),
+                        (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
+                        0xffffffff
+                );
+                r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
+                break;
         }
-        r.drawCircle((int)(posX), (int)(posY), 2, 0xffff0000);
     }
 
     /**
@@ -122,10 +150,6 @@ public class Triangle2D extends Shape2D {
         return size;
     }
 
-    public boolean isSolid() {
-        return isSolid;
-    }
-
     public void setP(Point2DFloat[] p) {
         this.pFinal = p;
     }
@@ -133,10 +157,6 @@ public class Triangle2D extends Shape2D {
     public void setSize(float size) {
         this.size = size;
         scaleAndOffsetPoints();
-    }
-
-    public void setSolid(boolean solid) {
-        isSolid = solid;
     }
 
 }

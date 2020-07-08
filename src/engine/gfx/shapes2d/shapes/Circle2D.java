@@ -22,7 +22,24 @@ public class Circle2D extends Shape2D {
 
     @Override
     public void drawYourSelf(Renderer r) {
-        r.drawCircle((int)(posX), (int)(posY), (int)(radius), color);
+        switch (wayToRender) {
+            case WIRE:
+                r.drawCircle((int)(posX), (int)(posY), (int)(radius), color);
+                break;
+            case SOLID:
+                r.drawFillCircle((int)(posX), (int)(posY), (int)(radius), color);
+                break;
+            case BLACKBOARD:
+                r.drawCircle((int)(posX), (int)(posY), (int)(radius), 0xffff0000);
+                r.drawCircle((int)(posX), (int)(posY), 2, 0xff0000ff);
+                r.drawLine((int)(posX), (int)(posY), (int)(posX + radius), (int)(posY), 0xffffff00);
+                break;
+            case BLUEPRINT:
+                r.drawCircle((int)(posX), (int)(posY), (int)(radius), 0xffffffff);
+                r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
+                r.drawLine((int)(posX), (int)(posY), (int)(posX + radius), (int)(posY), 0xffffffff);
+                break;
+        }
     }
 
     @Override
