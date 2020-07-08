@@ -9,8 +9,6 @@ import engine.audio.SoundClip;
 import engine.gfx.Image;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Comparator;
 
 public class GameManager extends AbstractGame {
 
@@ -32,7 +30,7 @@ public class GameManager extends AbstractGame {
 
     private PipeLine pipeLine;
 
-    public GameManager() {
+    private GameManager() {
         image = new Image("/test3.png");
         image2 = new ImageTile("/test2.png", 16, 16);
         image2.setAlpha(true);
