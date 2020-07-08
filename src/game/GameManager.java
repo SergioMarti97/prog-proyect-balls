@@ -7,17 +7,19 @@ import engine.gfx.ImageTile;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
 import engine.gfx.Image;
-import engine.gfx.shapes2d.Triangle2D;
+import engine.gfx.shapes2d.Shape2D;
+import engine.gfx.shapes2d.shapes.Triangle2D;
 
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 public class GameManager extends AbstractGame {
 
-    private final static int SCREEN_WIDTH = 640; // 320, 1080
+    private final static int SCREEN_WIDTH = 1080; // 320, 1080
 
-    private final static int SCREEN_HEIGHT = 480; // 240, 720
+    private final static int SCREEN_HEIGHT = 720; // 240, 720
 
-    private final static float SCREEN_SCALE = 2.0f;
+    private final static float SCREEN_SCALE = 1.0f;
 
     private Image image;
 
@@ -33,9 +35,13 @@ public class GameManager extends AbstractGame {
 
     private float theta;
 
-    private Triangle2D triangle2D;
+    private ArrayList<Shape2D> shapes2D;
 
     private PipeLine pipeLine;
+
+    private boolean grewTriangle = false;
+
+    private boolean reduceTriangle = false;
 
     private GameManager() {
         image = new Image("/test1.png");
@@ -50,8 +56,15 @@ public class GameManager extends AbstractGame {
     public void initialize(GameContainer gc) {
         pipeLine = new PipeLine(gc);
         mesh = pipeLine.getCube();
-        triangle2D = new Triangle2D(200, 200, 200, 250, 150, 150, 250, 150, 0xffffffff);
-        //triangle2D.setSolid(true);
+
+        shapes2D = new ArrayList<>();
+        Triangle2D triangle1 = new Triangle2D(200, 200, 2, 2, 4, 8, 6, 4, 0xffffffff);
+        Triangle2D triangle2 = new Triangle2D(200, 200, -1, 0, 1, 0, 0, 4, 0xffffff00);
+        triangle1.setSolid(true);
+        triangle2.setSize(triangle2.getSize() * 3.0f);
+        shapes2D.add(triangle1);
+        shapes2D.add(triangle2);
+
         theta = 0;
     }
 
@@ -59,7 +72,63 @@ public class GameManager extends AbstractGame {
     public void update(GameContainer gc, float dt) {
         if(gc.getInput().isKeyDown(KeyEvent.VK_A)) {
             clip.play();
+            grewTriangle = true;
         }
+
+        if(gc.getInput().isKeyUp(KeyEvent.VK_A)) {
+            grewTriangle = false;
+        }
+
+        if(gc.getInput().isKeyDown(KeyEvent.VK_Z)) {
+            clip.play();
+            reduceTriangle = true;
+        }
+
+        if(gc.getInput().isKeyUp(KeyEvent.VK_Z)) {
+            reduceTriangle = false;
+        }
+
+        if ( gc.getInput().isButtonDown(1) ) {
+            clip.play();
+            for (Shape2D shape2D : shapes2D) {
+                /* todo Hay que comprobar este código con el código de las pelotas, porque aquí no se si falla
+                *   el algoritmo que detecta que un punto esta dentro del triangulo o que...*/
+                if (shape2D.isPointInside(gc.getInput().getMouseX(), gc.getInput().getMouseX())) {
+                    shape2D.setSelected(true);
+                }
+            }
+        }
+
+        if ( gc.getInput().isButtonUp(1) ) {
+            for (Shape2D shape2D : shapes2D) {
+                if (shape2D.isSelected()) {
+                    shape2D.setSelected(false);
+                }
+            }
+        }
+
+        if ( grewTriangle ) {
+            for (Shape2D shape2D : shapes2D) {
+                if (shape2D instanceof Triangle2D) {
+                    Triangle2D triangle2D = (Triangle2D) shape2D;
+                    float triangleSize = triangle2D.getSize();
+                    triangleSize += triangleSize * dt;
+                    triangle2D.setSize(triangleSize);
+                }
+            }
+        }
+
+        if ( reduceTriangle ) {
+            for (Shape2D shape2D : shapes2D) {
+                if (shape2D instanceof Triangle2D) {
+                    Triangle2D triangle2D = (Triangle2D) shape2D;
+                    float triangleSize = triangle2D.getSize();
+                    triangleSize -= triangleSize * dt;
+                    triangle2D.setSize(triangleSize);
+                }
+            }
+        }
+
         theta += dt;
     }
 
@@ -90,7 +159,15 @@ public class GameManager extends AbstractGame {
 
         r.drawText("¡Hola!", gc.getInput().getMouseX() - 20, gc.getInput().getMouseY(), 0xffaa00aa);
 
-        triangle2D.drawYourSelf(r);
+        for ( Shape2D shape2D : shapes2D ) {
+            float mouseX = gc.getInput().getMouseX();
+            float mouseY = gc.getInput().getMouseY();
+            if ( shape2D.isPointInside(mouseX, mouseY) ) {
+                shape2D.setPosX(mouseX);
+                shape2D.setPosY(mouseY);
+            }
+            shape2D.drawYourSelf(r);
+        }
 
         r.drawFillTriangle(300, 100, 350, 100,  250, 200, 0xff009955);
 

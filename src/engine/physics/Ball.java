@@ -1,6 +1,6 @@
 package engine.physics;
 
-import engine.gfx.shapes2d.Circle2D;
+import engine.gfx.shapes2d.shapes.Circle2D;
 
 public class Ball extends Circle2D {
 
@@ -52,10 +52,6 @@ public class Ball extends Circle2D {
         return id;
     }
 
-    public boolean isSelected() {
-        return isSelected;
-    }
-
     public void setVelX(float velX) {
         this.velX = velX;
     }
@@ -78,10 +74,6 @@ public class Ball extends Circle2D {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
     }
 
 }

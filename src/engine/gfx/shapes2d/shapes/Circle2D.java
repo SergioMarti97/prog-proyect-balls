@@ -1,6 +1,7 @@
-package engine.gfx.shapes2d;
+package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
+import engine.gfx.shapes2d.Shape2D;
 
 public class Circle2D extends Shape2D {
 
@@ -22,6 +23,11 @@ public class Circle2D extends Shape2D {
     @Override
     public void drawYourSelf(Renderer r) {
         r.drawCircle((int)(posX), (int)(posY), (int)(radius), color);
+    }
+
+    @Override
+    public boolean isPointInside(float x, float y) {
+        return Math.abs((posX - x) * (posX - x) + (posY - y) * (posY - y)) <= (radius * radius);
     }
 
 }
