@@ -13,15 +13,19 @@ import java.awt.event.KeyEvent;
 
 public class GameManager extends AbstractGame {
 
-    private final static int SCREEN_WIDTH = 1080; // 320, 1080
+    private final static int SCREEN_WIDTH = 640; // 320, 1080
 
-    private final static int SCREEN_HEIGHT = 720; // 240, 720
+    private final static int SCREEN_HEIGHT = 480; // 240, 720
 
-    private final static float SCREEN_SCALE = 1.0f;
+    private final static float SCREEN_SCALE = 2.0f;
 
     private Image image;
 
     private Image image2;
+
+    private Image image3;
+
+    private Image image4;
 
     private SoundClip clip;
 
@@ -34,9 +38,11 @@ public class GameManager extends AbstractGame {
     private PipeLine pipeLine;
 
     private GameManager() {
-        image = new Image("/test3.png");
+        image = new Image("/test1.png");
         image2 = new ImageTile("/test2.png", 16, 16);
         image2.setAlpha(true);
+        image3 = new Image("/test3.png");
+        image4 = new Image("/test4.png");
         clip = new SoundClip("/audio/sound.wav");
     }
 
@@ -45,7 +51,7 @@ public class GameManager extends AbstractGame {
         pipeLine = new PipeLine(gc);
         mesh = pipeLine.getCube();
         triangle2D = new Triangle2D(200, 200, 200, 250, 150, 150, 250, 150, 0xffffffff);
-        triangle2D.setSolid(true);
+        //triangle2D.setSolid(true);
         theta = 0;
     }
 
@@ -60,30 +66,35 @@ public class GameManager extends AbstractGame {
     @Override
     public void render(GameContainer gc, Renderer r) {
 
+        r.clear(0xff414141);
+
         for ( int x = 0; x < image.getW(); x++ ) {
             for ( int y = 0; y < image.getH(); y++ ) {
                 r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
             }
         }
 
-        //r.drawFillRect(gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, 32, 32, 0xffffccff);
-        r.drawLine(0, 0, gc.getInput().getMouseX(), gc.getInput().getMouseY(), 0xffE5B501);
-        //r.drawFillCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 50, 0xffffffff);
+        r.drawImage(image4, gc.getInput().getMouseX() -32, gc.getInput().getMouseY() -32);
+        r.drawLine(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, gc.getInput().getMouseX(), gc.getInput().getMouseY(), 0xffE5B501);;
 
-        r.drawFillTriangle(40, 10, 100, 40,  50, 50, 0xffff5033);
+        r.drawFillTriangle(40, 80, 100, 40,  50, 50, 0xffff5033);
         r.drawCircle(200, 90, 34, 0xff20ff99);
         r.drawRect(100, 110, 130, 90, 0xff5555ff);
         r.drawFillRect(130, 4, 12, 12, 0xff5510ff);
-        r.drawText("Mouse X: " + gc.getInput().getMouseX() + " Y: " + gc.getInput().getMouseY(), 0, 10, 0xff00ffff);
+        r.drawText("Mouse X: " + gc.getInput().getMouseX() + " Y: " + gc.getInput().getMouseY(), 0, 10, 0xffffffff);
 
-        r.drawImage(image, 100, 100);
-        //r.drawImageTile((ImageTile) image2, gc.getInput().getMouseX() - 8, gc.getInput().getMouseY() - 8, 1, 1);
+        r.drawImage(image, 200, 250);
+        r.drawImageTile((ImageTile) image2,  500 - 8,  300 - 8, 1, 1);
+        r.drawImage(image2, 446 -32, 246 - 32);
+        r.drawImage(image3, 300, 250);
 
         r.drawText("¡Hola!", gc.getInput().getMouseX() - 20, gc.getInput().getMouseY(), 0xffaa00aa);
 
         triangle2D.drawYourSelf(r);
 
-        pipeLine.render(mesh.getTris(), RenderFlags.RENDER_WIRE);
+        r.drawFillTriangle(300, 100, 350, 100,  250, 200, 0xff009955);
+
+        //pipeLine.render(mesh.getTris(), RenderFlags.RENDER_WIRE);
 
     }
 
