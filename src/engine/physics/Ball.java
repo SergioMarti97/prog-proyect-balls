@@ -36,11 +36,11 @@ public class Ball extends Circle2D {
         return velY;
     }
 
-    public float getaX() {
+    public float getAccelerationX() {
         return aX;
     }
 
-    public float getaY() {
+    public float getAccelerationY() {
         return aY;
     }
 
@@ -64,11 +64,11 @@ public class Ball extends Circle2D {
         this.velY = velY;
     }
 
-    public void setaX(float aX) {
+    public void setAccelerationX(float aX) {
         this.aX = aX;
     }
 
-    public void setaY(float aY) {
+    public void setAccelerationY(float aY) {
         this.aY = aY;
     }
 

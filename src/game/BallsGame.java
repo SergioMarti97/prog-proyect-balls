@@ -46,6 +46,8 @@ public class BallsGame extends AbstractGame {
             float posY = getRandomFloatBetweenRange((int)(SCREEN_HEIGHT - radius), (int)(radius));
             Ball ball = new Ball(posX, posY, radius, 0xffffffff);
             ball.setId(balls.size());
+            ball.setVelX(50.0f);
+            ball.setVelY(50.0f);
             balls.add(ball);
         }
     }
@@ -98,12 +100,38 @@ public class BallsGame extends AbstractGame {
             }
         }
 
-        for ( int i = 0; i < balls.size(); i++ ) {
-            balls.get(i).setaX( - balls.get(i).getVelX() * friction);
-            balls.get(i).setaY( - balls.get(i).getVelY() * friction);
+        Vec2d mousePositionLast = new Vec2d();
 
-            float aX = balls.get(i).getaX();
-            float aY = balls.get(i).getaY();
+        if ( gc.getInput().isButtonDown(2) ) {
+            clip.play();
+            clip.play();
+            mousePositionLast.setX(gc.getInput().getMouseX());
+            mousePositionLast.setY(gc.getInput().getMouseY());
+            for ( int i = 0; i < balls.size(); i++ ) {
+                if ( isPointInCircle(balls.get(i), mousePositionLast.getX(), mousePositionLast.getY()) ) {
+                    balls.get(i).setSelected(true);
+                }
+            }
+        }
+
+        if ( gc.getInput().isButtonUp(2) ) {
+            for ( int i = 0; i < balls.size(); i++ ) {
+                if ( balls.get(i).isSelected() ) {
+                    float newVelX = 5.0f * (gc.getInput().getMouseX() - mousePositionLast.getX());
+                    float newVelY = 5.0f * (gc.getInput().getMouseY() - mousePositionLast.getY());
+                    balls.get(i).setVelX(newVelX);
+                    balls.get(i).setVelY(newVelY);
+                    balls.get(i).setSelected(false);
+                }
+            }
+        }
+
+        for ( int i = 0; i < balls.size(); i++ ) {
+            balls.get(i).setAccelerationX( - balls.get(i).getVelX() * friction);
+            balls.get(i).setAccelerationY( - balls.get(i).getVelY() * friction);
+
+            float aX = balls.get(i).getAccelerationX();
+            float aY = balls.get(i).getAccelerationY();
             float velX = balls.get(i).getVelX();
             float velY = balls.get(i).getVelY();
 
@@ -112,6 +140,9 @@ public class BallsGame extends AbstractGame {
 
             float posX = balls.get(i).getPosX();
             float posY = balls.get(i).getPosY();
+
+            balls.get(i).setPosX(posX + balls.get(i).getVelX() * dt);
+            balls.get(i).setPosY(posY + balls.get(i).getVelY() * dt);
 
             if ( posX < 0 ) {
                 posX += (float)(SCREEN_WIDTH);
