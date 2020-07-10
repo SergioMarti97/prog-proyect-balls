@@ -1,4 +1,4 @@
-package engine.gfx;
+package engine.gfx.images;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

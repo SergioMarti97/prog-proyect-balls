@@ -2,6 +2,10 @@ package engine.gfx;
 
 import engine.GameContainer;
 import engine.gfx.font.Font;
+import engine.gfx.images.Image;
+import engine.gfx.images.ImageRequest;
+import engine.gfx.images.ImageTile;
+import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
@@ -10,7 +14,7 @@ import java.util.Comparator;
 
 public class Renderer {
 
-    protected Font font = Font.COMICSANS;
+    protected Font font = Font.STANDARD24;
 
     protected ArrayList<ImageRequest> imageRequests = new ArrayList<>();
 
@@ -496,6 +500,19 @@ public class Renderer {
                 }
             }
         }
+    }
+
+    public void drawPolygon(ArrayList<Vec2DFloat> points, int color) {
+        for ( int i = 0; i < points.size() - 1; i++ ) {
+            drawLine(
+                    points.get(i).getX().intValue(), points.get(i).getY().intValue(),
+                    points.get(i + 1).getX().intValue(), points.get(i + 1).getY().intValue(),
+                    color);
+        }
+        drawLine(
+                points.get(points.size() - 1).getX().intValue(), points.get(points.size() - 1).getY().intValue(),
+                points.get(0).getX().intValue(), points.get(0).getY().intValue(),
+                color);
     }
 
     public void drawImage(Image image, int offX, int offY) {

@@ -1,10 +1,12 @@
 package engine.gfx.font;
 
-import engine.gfx.Image;
+import engine.gfx.images.Image;
 
 public class Font {
 
     public static final Font STANDARD = new Font("/fonts/consolas.png");
+
+    public static final Font STANDARD24 = new Font("/fonts/consolas24.png");
 
     public static final Font COMICSANS = new Font("/fonts/comicsans.png");
 

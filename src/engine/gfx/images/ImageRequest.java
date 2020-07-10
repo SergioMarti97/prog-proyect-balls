@@ -1,4 +1,4 @@
-package engine.gfx;
+package engine.gfx.images;
 
 public class ImageRequest {
 

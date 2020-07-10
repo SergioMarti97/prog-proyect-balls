@@ -31,15 +31,16 @@ public class Circle2D extends Shape2D {
                 break;
             case BLACKBOARD:
                 r.drawCircle((int)(posX), (int)(posY), (int)(radius), 0xffff0000);
-                r.drawCircle((int)(posX), (int)(posY), 2, 0xff0000ff);
+                r.drawFillCircle((int)(posX), (int)(posY), 2, 0xff0000ff);
                 r.drawLine((int)(posX), (int)(posY), (int)(posX + radius), (int)(posY), 0xffffff00);
                 break;
             case BLUEPRINT:
                 r.drawCircle((int)(posX), (int)(posY), (int)(radius), 0xffffffff);
-                r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
+                r.drawFillCircle((int)(posX), (int)(posY), 2, 0xffffffff);
                 r.drawLine((int)(posX), (int)(posY), (int)(posX + radius), (int)(posY), 0xffffffff);
                 break;
         }
+        super.drawYourSelf(r);
     }
 
     @Override

@@ -2,20 +2,19 @@ package game;
 
 import engine.AbstractGame;
 import engine.GameContainer;
-import engine.engine3d.*;
-import engine.gfx.ImageTile;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
-import engine.gfx.Image;
 import engine.gfx.shapes2d.Shape2D;
 import engine.gfx.shapes2d.WayToRender;
+import engine.gfx.shapes2d.points2d.Vec2DFloat;
 import engine.gfx.shapes2d.shapes.Circle2D;
+import engine.gfx.shapes2d.shapes.Polygon2D;
 import engine.gfx.shapes2d.shapes.Triangle2D;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class GameManager extends AbstractGame {
+public class TestShapes extends AbstractGame {
 
     private final static int SCREEN_WIDTH = 1080; // 320, 1080
 
@@ -23,40 +22,43 @@ public class GameManager extends AbstractGame {
 
     private final static float SCREEN_SCALE = 1.0f;
 
-    private Image image;
-
-    private Image image2;
-
-    private Image image3;
-
-    private Image image4;
-
     private SoundClip clip;
 
     private ArrayList<Shape2D> shapes2D;
+
+    private WayToRender wayToRender = WayToRender.WIRE;
+
+    private Vec2DFloat point;
 
     private boolean grewTriangle = false;
 
     private boolean reduceTriangle = false;
 
-    private boolean renderAsBlueprint = false;
+    private float angle = 0;
 
-    private GameManager() {
-        image = new Image("/test1.png");
-        image2 = new ImageTile("/test2.png", 16, 16);
-        image2.setAlpha(true);
-        image3 = new Image("/test3.png");
-        image4 = new Image("/test4.png");
+    private TestShapes() {
         clip = new SoundClip("/audio/sound.wav");
     }
 
     @Override
     public void initialize(GameContainer gc) {
+        point = new Vec2DFloat(1.0f, 0.0f);
         shapes2D = new ArrayList<>();
-        Triangle2D triangle1 = new Triangle2D(200, 200, 2, 2, 4, 8, 6, 4, 0xffffffff);
-        Triangle2D triangle2 = new Triangle2D(250, 200, -1, 0, 1, 0, 0, 4, 0xffffff00);
+        Triangle2D triangle1 = new Triangle2D(200, 200, 2, 2, 4, 8, 6, 4, 0xffc82a54);
+        Triangle2D triangle2 = new Triangle2D(250, 200, -1, 0, 1, 0, 0, 4, 0xffe7d40A);
         triangle2.setSize(triangle2.getSize() * 3.0f);
-        Circle2D circle = new Circle2D(300, 300, 100, 0xffff00ff);
+        Circle2D circle = new Circle2D(300, 300, 100, 0xffFF689D);
+
+        /*ArrayList<Vec2DFloat> polygonPoints = new ArrayList<>();
+        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
+        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
+        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
+        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
+        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));*/
+
+        Polygon2D polygon1 = new Polygon2D(300, 350, 5, 0xff02AC66);
+        shapes2D.add(polygon1);
+
         shapes2D.add(triangle1);
         shapes2D.add(triangle2);
         shapes2D.add(circle);
@@ -86,36 +88,34 @@ public class GameManager extends AbstractGame {
             for (Shape2D shape2D : shapes2D) {
                 shape2D.setWayToRender(WayToRender.SOLID);
             }
-            renderAsBlueprint = false;
+            wayToRender = WayToRender.SOLID;
         }
 
         if (gc.getInput().isKeyDown(KeyEvent.VK_W)) {
             for (Shape2D shape2D : shapes2D) {
                 shape2D.setWayToRender(WayToRender.WIRE);
             }
-            renderAsBlueprint = false;
+            wayToRender = WayToRender.WIRE;
         }
 
         if (gc.getInput().isKeyDown(KeyEvent.VK_B)) {
             for (Shape2D shape2D : shapes2D) {
                 shape2D.setWayToRender(WayToRender.BLUEPRINT);
             }
-            renderAsBlueprint = true;
+            wayToRender = WayToRender.BLUEPRINT;
         }
 
         if (gc.getInput().isKeyDown(KeyEvent.VK_C)) {
             for (Shape2D shape2D : shapes2D) {
                 shape2D.setWayToRender(WayToRender.BLACKBOARD);
             }
-            renderAsBlueprint = false;
+            wayToRender = WayToRender.BLACKBOARD;
         }
 
         if ( gc.getInput().isButtonDown(1) ) {
             clip.play();
             for (Shape2D shape2D : shapes2D) {
-                /* todo Hay que comprobar este código con el código de las pelotas, porque aquí no se si falla
-                *   el algoritmo que detecta que un punto esta dentro del triangulo o que...*/
-                if (shape2D.isPointInside(gc.getInput().getMouseX(), gc.getInput().getMouseX())) {
+                if (shape2D.isPointInside(gc.getInput().getMouseX(), gc.getInput().getMouseY())) {
                     shape2D.setSelected(true);
                 }
             }
@@ -150,54 +150,70 @@ public class GameManager extends AbstractGame {
                 }
             }
         }
+
+        for (Shape2D shape2D : shapes2D) {
+            if ( shape2D instanceof Polygon2D ) {
+                Polygon2D polygon2D = (Polygon2D) shape2D;
+                angle = polygon2D.getAngle() + 10 * dt;
+                polygon2D.setAngle(angle);
+            }
+        }
+
     }
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-
-        if ( renderAsBlueprint ) {
+        if ( wayToRender.equals(WayToRender.BLUEPRINT) ) {
             r.clear(0xff00008b);
         } else {
             r.clear(0xff414141);
         }
 
-        for ( int x = 0; x < image.getW(); x++ ) {
-            for ( int y = 0; y < image.getH(); y++ ) {
-                r.setLightMap(x, y, image.getP()[x + y * image.getW()]);
-            }
-        }
-
-        r.drawImage(image4, gc.getInput().getMouseX() -32, gc.getInput().getMouseY() -32);
-        r.drawLine(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, gc.getInput().getMouseX(), gc.getInput().getMouseY(), 0xffE5B501);;
-
-        r.drawFillTriangle(40, 80, 100, 40,  50, 50, 0xffff5033);
-        r.drawCircle(200, 90, 34, 0xff20ff99);
-        r.drawRect(100, 110, 130, 90, 0xff5555ff);
-        r.drawFillRect(130, 4, 12, 12, 0xff5510ff);
-        r.drawText("Mouse X: " + gc.getInput().getMouseX() + " Y: " + gc.getInput().getMouseY(), 0, 10, 0xffffffff);
-
-        r.drawImage(image, 200, 250);
-        r.drawImageTile((ImageTile) image2,  500 - 8,  300 - 8, 1, 1);
-        r.drawImage(image2, 446 -32, 246 - 32);
-        r.drawImage(image3, 300, 250);
-
-        r.drawText("¡Hola!", gc.getInput().getMouseX() - 20, gc.getInput().getMouseY(), 0xffaa00aa);
-
+        int textOffSetY = 75;
+        float mouseX = gc.getInput().getMouseX();
+        float mouseY = gc.getInput().getMouseY();
         for ( Shape2D shape2D : shapes2D ) {
-            float mouseX = gc.getInput().getMouseX();
-            float mouseY = gc.getInput().getMouseY();
-            if ( shape2D.isPointInside(mouseX, mouseY) ) {
+            if ( shape2D.isSelected() ) {
                 shape2D.setPosX(mouseX);
                 shape2D.setPosY(mouseY);
             }
             shape2D.drawYourSelf(r);
+            if ( shape2D instanceof Polygon2D ) {
+                Polygon2D polygon = (Polygon2D)(shape2D);
+                r.drawText(
+                        String.format(
+                                "Centro X: %.3f : Y: %.3f",
+                                polygon.getPosX(),
+                                polygon.getPosY()),
+                        0, textOffSetY, 0xffffffff);
+                textOffSetY += 25;
+                for ( int i = 0; i < polygon.getP().size(); i++ ) {
+                    r.drawText(
+                            String.format(
+                                    "Punto %d X: %.3f : Y: %.3f",
+                                    i,
+                                    polygon.getP().get(i).getX(),
+                                    polygon.getP().get(i).getY()),
+                            0, textOffSetY, 0xffffffff);
+                    textOffSetY += 25;
+                }
+            }
         }
 
-        r.drawFillTriangle(300, 100, 350, 100,  250, 200, 0xff009955);
+        if ( wayToRender.equals(WayToRender.BLUEPRINT) ) {
+            r.drawCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 2,0xffffffff);
+        } else {
+            r.drawLine(
+                    SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                    gc.getInput().getMouseX(), gc.getInput().getMouseY(),
+                    0xffE5B501);
+        }
+
+        r.drawText(String.format("Angulo: %f", angle), 0, 50, 0xffffffff);
     }
 
     public static void main(String[] args) {
-        GameContainer gc = new GameContainer(new GameManager());
+        GameContainer gc = new GameContainer(new TestShapes());
         gc.setWidth(SCREEN_WIDTH);
         gc.setHeight(SCREEN_HEIGHT);
         gc.setScale(SCREEN_SCALE);

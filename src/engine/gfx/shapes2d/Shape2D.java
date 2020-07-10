@@ -1,7 +1,7 @@
 package engine.gfx.shapes2d;
 
 import engine.gfx.Renderer;
-import engine.gfx.shapes2d.points2d.Point2DFloat;
+import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 public abstract class Shape2D implements Drawable, SelectableByMouse {
 
@@ -12,6 +12,8 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
     protected int color;
 
     protected boolean isSelected;
+
+    protected boolean isShowingInformation;
 
     protected WayToRender wayToRender = WayToRender.WIRE;
 
@@ -42,6 +44,10 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         return isSelected;
     }
 
+    public boolean isShowingInformation() {
+        return isShowingInformation;
+    }
+
     public void setPosX(float posX) {
         this.posX = posX;
     }
@@ -58,15 +64,27 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         isSelected = selected;
     }
 
+    public void setShowingInformation(boolean showingInformation) {
+        isShowingInformation = showingInformation;
+    }
+
     public void setWayToRender(WayToRender wayToRender) {
         this.wayToRender = wayToRender;
     }
 
-    public abstract void drawYourSelf(Renderer r);
+    public void showInfo(Renderer r, int posX, int posY) {
+
+    }
+
+    public void drawYourSelf(Renderer r) {
+        if ( isSelected ) {
+            r.drawText("¡Seleccionado!", (int)(posX), (int)(posY), 0xffff0000);
+        }
+    }
 
     public abstract boolean isPointInside(float x, float y);
 
-    public boolean isPointInside(Point2DFloat point) {
+    public boolean isPointInside(Vec2DFloat point) {
         return isPointInside(point.getX(), point.getY());
     }
 

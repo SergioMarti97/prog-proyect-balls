@@ -2,23 +2,23 @@ package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
 import engine.gfx.shapes2d.Shape2D;
-import engine.gfx.shapes2d.points2d.Point2DFloat;
+import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 public class Triangle2D extends Shape2D {
 
     private final int numVertex = 3;
 
-    private Point2DFloat[] pShape = new Point2DFloat[numVertex];
+    private Vec2DFloat[] pShape = new Vec2DFloat[numVertex];
 
-    private Point2DFloat[] pFinal = new Point2DFloat[numVertex];
+    private Vec2DFloat[] pFinal = new Vec2DFloat[numVertex];
 
     private float size = 10.0f;
 
-    public Triangle2D(float posX, float posY, Point2DFloat[] p, int color) {
+    public Triangle2D(float posX, float posY, Vec2DFloat[] p, int color) {
         super(posX, posY, color);
         this.pShape = p;
         for (int i = 0; i < numVertex; i++ ) {
-            pFinal[i] = new Point2DFloat();
+            pFinal[i] = new Vec2DFloat();
         }
         scaleAndOffsetPoints();
     }
@@ -26,8 +26,8 @@ public class Triangle2D extends Shape2D {
     public Triangle2D(float posX, float posY, float x0, float y0, float x1, float y1, float x2, float y2, int color) {
         super(posX, posY, color);
         for (int i = 0; i < numVertex; i++ ) {
-            pShape[i] = new Point2DFloat();
-            pFinal[i] = new Point2DFloat();
+            pShape[i] = new Vec2DFloat();
+            pFinal[i] = new Vec2DFloat();
         }
         pShape[0].setX(x0);
         pShape[0].setY(y0);
@@ -39,7 +39,7 @@ public class Triangle2D extends Shape2D {
     }
 
     private void scaleAndOffsetPoints() {
-        // Calculate el centro teórico. Hay varias formas pero lo voy a hacer mediante la media de todos los puntos.
+        // Calcular el centro teórico. Hay varias formas pero lo voy a hacer mediante la media de todos los puntos.
         float sumX = 0;
         float sumY = 0;
         for ( int i = 0; i < numVertex; i++ ) {
@@ -48,7 +48,7 @@ public class Triangle2D extends Shape2D {
         }
         sumX /= numVertex;
         sumY /= numVertex;
-        Point2DFloat center = new Point2DFloat(sumX, sumY);
+        Vec2DFloat center = new Vec2DFloat(sumX, sumY);
 
         for (int i = 0; i < numVertex; i++ ) {
             pFinal[i].setX(((pShape[i].getX() - center.getX()) * size) + posX);
@@ -66,7 +66,6 @@ public class Triangle2D extends Shape2D {
                         (pFinal[2].getX()).intValue(), (pFinal[2].getY()).intValue(),
                         color
                 );
-                r.drawCircle((int)(posX), (int)(posY), 2, color);
                 break;
             case SOLID:
                 r.drawFillTriangle(
@@ -104,6 +103,7 @@ public class Triangle2D extends Shape2D {
                 r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
                 break;
         }
+        super.drawYourSelf(r);
     }
 
     /**
@@ -114,10 +114,10 @@ public class Triangle2D extends Shape2D {
     @Override
     public boolean isPointInside(float x, float y) {
         //Sea d el segmento ab.
-        Point2DFloat d = new Point2DFloat(pFinal[1].getX() - pFinal[0].getX(), pFinal[1].getY() - pFinal[0].getY());
+        Vec2DFloat d = new Vec2DFloat(pFinal[1].getX() - pFinal[0].getX(), pFinal[1].getY() - pFinal[0].getY());
 
         //Sea e el segmento ac.
-        Point2DFloat e = new Point2DFloat(pFinal[2].getX() - pFinal[0].getX(), pFinal[2].getY() - pFinal[0].getY());
+        Vec2DFloat e = new Vec2DFloat(pFinal[2].getX() - pFinal[0].getX(), pFinal[2].getY() - pFinal[0].getY());
 
         //Variable de ponderación a~b
         float w1 = (e.getX() * (pFinal[0].getY() - y) + e.getY() * (x - pFinal[0].getX())) / (d.getX() * e.getY() - d.getY() * e.getX());
@@ -142,7 +142,7 @@ public class Triangle2D extends Shape2D {
         scaleAndOffsetPoints();
     }
 
-    public Point2DFloat[] getP() {
+    public Vec2DFloat[] getP() {
         return pFinal;
     }
 
@@ -150,7 +150,7 @@ public class Triangle2D extends Shape2D {
         return size;
     }
 
-    public void setP(Point2DFloat[] p) {
+    public void setP(Vec2DFloat[] p) {
         this.pFinal = p;
     }
 

@@ -1,7 +1,7 @@
 package engine.engine3d;
 
 import engine.GameContainer;
-import engine.gfx.Image;
+import engine.gfx.images.Image;
 
 import java.util.ArrayList;
 import java.util.Arrays;

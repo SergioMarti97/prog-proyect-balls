@@ -90,6 +90,7 @@ public class GameContainer implements Runnable {
                 game.render(this, this.renderer);
                 renderer.process();
                 renderer.drawText("FPS:" + fps, 0, 0, 0xffffffff );
+                renderer.drawText("Mouse X: " + getInput().getMouseX() + " Y: " + getInput().getMouseY(), 0, 25, 0xffffffff);
                 window.update();
                 frames++;
             } else {

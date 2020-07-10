@@ -1,13 +1,13 @@
 package engine.gfx.shapes2d.points2d;
 
-public class Point2DFloat extends Point2D<Float> {
+public class Vec2DFloat extends Vec2D<Float> {
 
-    public Point2DFloat() {
+    public Vec2DFloat() {
         x = 0.0f;
         y = 0.0f;
     }
 
-    public Point2DFloat(Float x, Float y) {
+    public Vec2DFloat(Float x, Float y) {
         super(x, y);
     }
 
@@ -28,9 +28,14 @@ public class Point2DFloat extends Point2D<Float> {
     }
 
     @Override
-    public void add(Point2D<Float> point) {
+    public void add(Vec2D<Float> point) {
         x += point.getX();
         y += point.getY();
+    }
+
+    public void sub(Vec2D<Float> point) {
+        x -= point.getX();
+        y -= point.getY();
     }
 
     public void multiplyXBy(Float amount) {
@@ -46,7 +51,7 @@ public class Point2DFloat extends Point2D<Float> {
         y *= amount;
     }
 
-    public void multiply(Point2D<Float> point) {
+    public void multiply(Vec2D<Float> point) {
         x *= point.getX();
         y *= point.getY();
     }
@@ -59,21 +64,29 @@ public class Point2DFloat extends Point2D<Float> {
         return x * x + y * y;
     }
 
-    public Point2D<Float> normal() {
+    public Vec2D<Float> normal() {
         float r = 1 / mag();
-        return new Point2DFloat( x * r, y * r);
+        return new Vec2DFloat( x * r, y * r);
     }
 
-    public Point2D<Float> perpendicular() {
-        return new Point2DFloat(-y, x);
+    public Vec2D<Float> perpendicular() {
+        return new Vec2DFloat(-y, x);
     }
 
-    public Float dotProduct(Point2D<Float> point) {
+    public Float dotProduct(Vec2D<Float> point) {
         return x * point.getX() + y * point.getY();
     }
 
-    public Float crossProduct(Point2D<Float> point) {
+    public Float crossProduct(Vec2D<Float> point) {
         return x * point.getY() - y * point.getX();
+    }
+
+    public void translateThisAngle(float angle) {
+        angle *= (Math.PI / 180.0f);
+        float x = (float)((this.x * Math.cos(angle)) - (this.y * Math.sin(angle)));
+        float y = (float)((this.x * Math.sin(angle)) + (this.y * Math.cos(angle)));
+        this.x = x;
+        this.y = y;
     }
 
 }
