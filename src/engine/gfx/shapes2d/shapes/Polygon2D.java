@@ -1,6 +1,7 @@
 package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
+import engine.gfx.shapes2d.QuickMath;
 import engine.gfx.shapes2d.Shape2D;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
@@ -8,52 +9,83 @@ import java.util.ArrayList;
 
 public class Polygon2D extends Shape2D {
 
-    private int numVertex;
+    protected int numVertex;
 
-    private ArrayList<Vec2DFloat> pShape;
+    protected ArrayList<Vec2DFloat> pShape;
 
-    private ArrayList<Vec2DFloat> pFinal;
+    protected ArrayList<Vec2DFloat> pFinal;
 
-    private Vec2DFloat teoricalCenter;
+    protected Vec2DFloat teoricalCenter;
 
-    private float size = 80.0f;
+    protected float size;
 
-    private float angle = 0.0f;
+    protected float angle = 0.0f;
 
-    public Polygon2D(float posX, float posY, ArrayList<Vec2DFloat> p, int color) {
+    public Polygon2D(float posX, float posY, float size, int color) {
         super(posX, posY, color);
+        this.size = size;
+        pShape = new ArrayList<>();
+        pFinal = new ArrayList<>();
+        teoricalCenter = new Vec2DFloat();
+        numVertex = 0;
+    }
+
+    public Polygon2D(float posX, float posY, float size, int color, Vec2DFloat... points) {
+        super(posX, posY, color);
+        this.size = size;
+        pShape = new ArrayList<>();
+        pFinal = new ArrayList<>();
+        for ( Vec2DFloat point : points ) {
+            pShape.add(point);
+            pFinal.add(point);
+        }
+        numVertex = points.length;
+        teoricalCenter = new Vec2DFloat();
+        normalizePShape();
+        calculateTheoreticalCenter();
+        rotateScaleOffsetPoints();
+    }
+
+    public Polygon2D(float posX, float posY, ArrayList<Vec2DFloat> p, float size, int color) {
+        super(posX, posY, color);
+        this.size = size;
         pShape = p;
         pFinal = p;
         numVertex = p.size();
         teoricalCenter = new Vec2DFloat();
         normalizePShape();
-        calculateTeoricalCenter();
+        calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
     }
 
-    public Polygon2D(float posX, float posY, int numVertex, int color) {
+    public Polygon2D(float posX, float posY, float size, int numVertex, int color) {
         super(posX, posY, color);
+        this.size = size;
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
         this.numVertex = numVertex;
         teoricalCenter = new Vec2DFloat();
         float theta = 3.14159f * 2.0f / this.numVertex;
         for (int i = 0; i < this.numVertex; i++) {
-            pShape.add(new Vec2DFloat((float)(size * Math.cos(theta * i)), (float)(size * Math.sin(theta * i))));
-            pFinal.add(new Vec2DFloat((float)(size * Math.cos(theta * i)), (float)(size * Math.sin(theta * i))));
+            pShape.add(new Vec2DFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
+            pFinal.add(new Vec2DFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
         }
         normalizePShape();
-        calculateTeoricalCenter();
+        calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
     }
 
-    private void normalizePShape() {
+    protected void normalizePShape() {
         for ( int i = 0; i < pShape.size(); i++ ) {
             pShape.get(i).set(pShape.get(i).normal());
         }
     }
 
-    private void calculateTeoricalCenter(){
+    /**
+     * calculateTheoreticalCenter()
+     * Calcula el centro teórico. Hay varias formas pero lo voy a hacer mediante la media de todos los puntos.
+     */
+    protected void calculateTheoreticalCenter(){
         float sumX = 0;
         float sumY = 0;
         for ( int i = 0; i < numVertex; i++ ) {
@@ -65,7 +97,7 @@ public class Polygon2D extends Shape2D {
         teoricalCenter = new Vec2DFloat(sumX, sumY);
     }
 
-    private void rotateScaleOffsetPoints() {
+    protected void rotateScaleOffsetPoints() {
         for (int i = 0; i < numVertex; i++ ) {
             Vec2DFloat point = new Vec2DFloat(pShape.get(i).getX(), pShape.get(i).getY());
             point.sub(teoricalCenter);
@@ -126,6 +158,13 @@ public class Polygon2D extends Shape2D {
         return pFinal;
     }
 
+    public void addP(Vec2DFloat p) {
+        pShape.add(p);
+        pFinal.add(p);
+        normalizePShape();
+        calculateTheoreticalCenter();
+    }
+
     public float getSize() {
         return size;
     }
@@ -135,7 +174,10 @@ public class Polygon2D extends Shape2D {
     }
 
     public void setP(ArrayList<Vec2DFloat> p) {
+        this.pShape = p;
         this.pFinal = p;
+        normalizePShape();
+        calculateTheoreticalCenter();
     }
 
     public void setSize(float size) {

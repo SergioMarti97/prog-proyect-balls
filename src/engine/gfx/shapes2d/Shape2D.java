@@ -73,6 +73,7 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
     }
 
     public void showInfo(Renderer r, int posX, int posY) {
+        //r.drawFillRect();
 
     }
 

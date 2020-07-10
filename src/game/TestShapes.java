@@ -4,6 +4,7 @@ import engine.AbstractGame;
 import engine.GameContainer;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
+import engine.gfx.shapes2d.QuickMath;
 import engine.gfx.shapes2d.Shape2D;
 import engine.gfx.shapes2d.WayToRender;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
@@ -28,8 +29,6 @@ public class TestShapes extends AbstractGame {
 
     private WayToRender wayToRender = WayToRender.WIRE;
 
-    private Vec2DFloat point;
-
     private boolean grewTriangle = false;
 
     private boolean reduceTriangle = false;
@@ -42,26 +41,17 @@ public class TestShapes extends AbstractGame {
 
     @Override
     public void initialize(GameContainer gc) {
-        point = new Vec2DFloat(1.0f, 0.0f);
+        QuickMath quickMath = new QuickMath();
         shapes2D = new ArrayList<>();
-        Triangle2D triangle1 = new Triangle2D(200, 200, 2, 2, 4, 8, 6, 4, 0xffc82a54);
-        Triangle2D triangle2 = new Triangle2D(250, 200, -1, 0, 1, 0, 0, 4, 0xffe7d40A);
+        Triangle2D triangle1 = new Triangle2D(200, 200, 1000, 2, 2, 4, 8, 6, 4, 0xffc82a54);
+        Triangle2D triangle2 = new Triangle2D(250, 200, 40, -1, 0, 1, 0, 0, 4, 0xffe7d40A);
         triangle2.setSize(triangle2.getSize() * 3.0f);
         Circle2D circle = new Circle2D(300, 300, 100, 0xffFF689D);
-
-        /*ArrayList<Vec2DFloat> polygonPoints = new ArrayList<>();
-        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
-        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
-        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
-        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));
-        polygonPoints.add(new Vec2DFloat(1.0f, 0.0f));*/
-
-        Polygon2D polygon1 = new Polygon2D(300, 350, 5, 0xff02AC66);
-        shapes2D.add(polygon1);
-
+        Polygon2D polygon1 = new Polygon2D(500, 350, 80, 7, 0xff02AC66);
         shapes2D.add(triangle1);
         shapes2D.add(triangle2);
         shapes2D.add(circle);
+        shapes2D.add(polygon1);
     }
 
     @Override

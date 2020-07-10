@@ -420,14 +420,7 @@ public class Renderer {
         int dy2 = y3 - y1;
         int dx2 = x3 - x1;
 
-        float tex_u;
-        float tex_v;
-        float tex_w;
-
         float dax_step = 0, dbx_step = 0;
-        float du1_step = 0, dv1_step = 0;
-        float du2_step = 0, dv2_step = 0;
-        float dw1_step = 0, dw2_step = 0;
 
         if ( dy1 != 0 ) {
             dax_step = dx1 / (float)Math.abs(dy1);
@@ -470,9 +463,6 @@ public class Renderer {
         if ( dy2 != 0 ) {
             dbx_step = dx2 / (float)Math.abs(dy2);
         }
-
-        du1_step = 0;
-        dv1_step = 0;
 
         if ( dy1 != 0 )
         {

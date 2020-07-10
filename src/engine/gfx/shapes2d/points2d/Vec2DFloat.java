@@ -1,5 +1,7 @@
 package engine.gfx.shapes2d.points2d;
 
+import engine.gfx.shapes2d.QuickMath;
+
 public class Vec2DFloat extends Vec2D<Float> {
 
     public Vec2DFloat() {
