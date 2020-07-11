@@ -132,7 +132,7 @@ public class TestShapes extends AbstractGame {
     public void initialize(GameContainer gc) {
         clip = new SoundClip("/audio/sound.wav");
         shapes2D = new ArrayList<>();
-        Polygon2D triangle = new Polygon2D(500, 150, 80, 3, 0xffe7d40a);
+        /*Polygon2D triangle = new Polygon2D(500, 150, 80, 3, 0xffe7d40a);
         Polygon2D tetrangl = new Polygon2D(100, 250, 80, 4,  0xffe36b2d);
         Polygon2D pentagon = new Polygon2D(500, 350, 80, 5, 0xffef280f);
         Polygon2D heptagon = new Polygon2D(100, 450, 80, 7, 0xffc82a54);
@@ -141,7 +141,12 @@ public class TestShapes extends AbstractGame {
         shapes2D.add(tetrangl);
         shapes2D.add(pentagon);
         shapes2D.add(heptagon);
-        shapes2D.add(circle);
+        shapes2D.add(circle);*/
+        for ( int i = 0; i < 10; i++ ) {
+            int posX = (i % 2 == 0) ? 500 : 100;
+            Polygon2D polygon = new Polygon2D(posX, 150 + i * 100, 80, i + 3, 0xffe7d40a);
+            shapes2D.add(polygon);
+        }
     }
 
     @Override
@@ -194,9 +199,11 @@ public class TestShapes extends AbstractGame {
         for ( int i = 0; i < shapes2D.size(); i++ ) {
             if ( shapes2D.get(i) instanceof Polygon2D ) {
                 Polygon2D polygon1 = (Polygon2D) shapes2D.get(i);
-                //float angle = polygon1.getAngle() + 10 * dt;
-                //polygon1.setAngle(angle);
 
+                float angle = polygon1.getAngle() + 10 * dt;
+                polygon1.setAngle(angle);
+
+                // todo: hay que actualizar que los poligonos no se puedan salir fuera de la pantalla
                 float posX = polygon1.getPosX();
                 float posY = polygon1.getPosY();
 
