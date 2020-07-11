@@ -13,14 +13,6 @@ import java.util.ArrayList;
 
 public class BallsGame extends AbstractGame {
 
-    private final static int SCREEN_WIDTH = 1080; // 320, 1080
-
-    private final static int SCREEN_HEIGHT = 720; // 240, 720
-
-    private final static float SCREEN_SCALE = 1.0f;
-
-    private final int NUM_BALLS = 50;
-
     private ArrayList<Ball> balls;
 
     private ArrayList<CollidingShapes> collidingPairs;
@@ -31,19 +23,20 @@ public class BallsGame extends AbstractGame {
 
     private float friction;
 
-    private BallsGame() {
-        clip = new SoundClip("/audio/sound.wav");
+    private BallsGame(String title) {
+        super(title);
     }
 
     private float getRandomFloatBetweenRange(int max, int min) {
         return (float) ((Math.random() * ((max - min) + 1)) + min);
     }
 
-    private void fillBallsWithRandomBalls() {
-        for ( int i = 0; i < NUM_BALLS; i++ ) {
+    private void fillBallsWithRandomBalls(int width, int height) {
+        int maxBalls = 50;
+        for (int i = 0; i < maxBalls; i++ ) {
             float radius = getRandomFloatBetweenRange(30, 10);
-            float posX = getRandomFloatBetweenRange((int)(SCREEN_WIDTH - radius), (int)(radius));
-            float posY = getRandomFloatBetweenRange((int)(SCREEN_HEIGHT - radius), (int)(radius));
+            float posX = getRandomFloatBetweenRange((int)(width - radius), (int)(radius));
+            float posY = getRandomFloatBetweenRange((int)(height - radius), (int)(radius));
             Ball ball = new Ball(posX, posY, radius, 0xffffffff);
             ball.setId(balls.size());
             ball.setVelX(50.0f);
@@ -66,11 +59,12 @@ public class BallsGame extends AbstractGame {
 
     @Override
     public void initialize(GameContainer gc) {
+        clip = new SoundClip("/audio/sound.wav");
         mousePosition = new Vec2d();
         balls = new ArrayList<>();
         collidingPairs = new ArrayList<>();
         friction = 0.8f;
-        fillBallsWithRandomBalls();
+        fillBallsWithRandomBalls(gc.getWidth(), gc.getHeight());
     }
 
     @Override
@@ -78,24 +72,24 @@ public class BallsGame extends AbstractGame {
         if (gc.getInput().isKeyDown(KeyEvent.VK_A)) {
             clip.play();
             balls.clear();
-            fillBallsWithRandomBalls();
+            fillBallsWithRandomBalls(gc.getWidth(), gc.getHeight());
         }
 
         if ( gc.getInput().isButtonDown(1) ) {
             clip.play();
             mousePosition.setX(gc.getInput().getMouseX());
             mousePosition.setY(gc.getInput().getMouseY());
-            for ( int i = 0; i < balls.size(); i++ ) {
-                if ( isPointInCircle(balls.get(i), mousePosition.getX(), mousePosition.getY()) ) {
-                    balls.get(i).setSelected(true);
+            for (Ball ball : balls) {
+                if (isPointInCircle(ball, mousePosition.getX(), mousePosition.getY())) {
+                    ball.setSelected(true);
                 }
             }
         }
 
         if ( gc.getInput().isButtonUp(1) ) {
-            for ( int i = 0; i < balls.size(); i++ ) {
-                if ( balls.get(i).isSelected() ) {
-                    balls.get(i).setSelected(false);
+            for (Ball ball : balls) {
+                if (ball.isSelected()) {
+                    ball.setSelected(false);
                 }
             }
         }
@@ -107,87 +101,87 @@ public class BallsGame extends AbstractGame {
             clip.play();
             mousePositionLast.setX(gc.getInput().getMouseX());
             mousePositionLast.setY(gc.getInput().getMouseY());
-            for ( int i = 0; i < balls.size(); i++ ) {
-                if ( isPointInCircle(balls.get(i), mousePositionLast.getX(), mousePositionLast.getY()) ) {
-                    balls.get(i).setSelected(true);
+            for (Ball ball : balls) {
+                if (isPointInCircle(ball, mousePositionLast.getX(), mousePositionLast.getY())) {
+                    ball.setSelected(true);
                 }
             }
         }
 
         if ( gc.getInput().isButtonUp(2) ) {
-            for ( int i = 0; i < balls.size(); i++ ) {
-                if ( balls.get(i).isSelected() ) {
+            for (Ball ball : balls) {
+                if (ball.isSelected()) {
                     float newVelX = 5.0f * (gc.getInput().getMouseX() - mousePositionLast.getX());
                     float newVelY = 5.0f * (gc.getInput().getMouseY() - mousePositionLast.getY());
-                    balls.get(i).setVelX(newVelX);
-                    balls.get(i).setVelY(newVelY);
-                    balls.get(i).setSelected(false);
+                    ball.setVelX(newVelX);
+                    ball.setVelY(newVelY);
+                    ball.setSelected(false);
                 }
             }
         }
 
-        for ( int i = 0; i < balls.size(); i++ ) {
-            balls.get(i).setAccelerationX( - balls.get(i).getVelX() * friction);
-            balls.get(i).setAccelerationY( - balls.get(i).getVelY() * friction);
+        for (Ball ball : balls) {
+            ball.setAccelerationX(-ball.getVelX() * friction);
+            ball.setAccelerationY(-ball.getVelY() * friction);
 
-            float aX = balls.get(i).getAccelerationX();
-            float aY = balls.get(i).getAccelerationY();
-            float velX = balls.get(i).getVelX();
-            float velY = balls.get(i).getVelY();
+            float aX = ball.getAccelerationX();
+            float aY = ball.getAccelerationY();
+            float velX = ball.getVelX();
+            float velY = ball.getVelY();
 
-            balls.get(i).setVelX(velX + aX * dt);
-            balls.get(i).setVelY(velY + aY * dt);
+            ball.setVelX(velX + aX * dt);
+            ball.setVelY(velY + aY * dt);
 
-            float posX = balls.get(i).getPosX();
-            float posY = balls.get(i).getPosY();
+            float posX = ball.getPosX();
+            float posY = ball.getPosY();
 
-            balls.get(i).setPosX(posX + balls.get(i).getVelX() * dt);
-            balls.get(i).setPosY(posY + balls.get(i).getVelY() * dt);
+            ball.setPosX(posX + ball.getVelX() * dt);
+            ball.setPosY(posY + ball.getVelY() * dt);
 
-            if ( posX < 0 ) {
-                posX += (float)(SCREEN_WIDTH);
-                balls.get(i).setPosX(posX);
+            if (posX < 0) {
+                posX += (float) (gc.getWidth());
+                ball.setPosX(posX);
             }
 
-            if ( posX >= SCREEN_WIDTH ) {
-                posX -= (float)(SCREEN_WIDTH);
-                balls.get(i).setPosX(posX);
+            if (posX >= gc.getWidth()) {
+                posX -= (float) (gc.getWidth());
+                ball.setPosX(posX);
             }
 
-            if ( posY < 0 ) {
-                posY += (float)(SCREEN_HEIGHT);
-                balls.get(i).setPosY(posY);
+            if (posY < 0) {
+                posY += (float) (gc.getHeight());
+                ball.setPosY(posY);
             }
 
-            if ( posY >= SCREEN_HEIGHT ) {
-                posY -= (float)(SCREEN_HEIGHT);
-                balls.get(i).setPosY(posY);
+            if (posY >= gc.getHeight()) {
+                posY -= (float) (gc.getHeight());
+                ball.setPosY(posY);
             }
 
-            if (Math.abs(balls.get(i).getVelX() * balls.get(i).getVelX() + balls.get(i).getVelY() * balls.get(i).getVelY()) < 0.01f) {
-                balls.get(i).setVelX(0);
-                balls.get(i).setVelY(0);
+            if (Math.abs(ball.getVelX() * ball.getVelX() + ball.getVelY() * ball.getVelY()) < 0.01f) {
+                ball.setVelX(0);
+                ball.setVelY(0);
             }
         }
 
         for ( int i = 0; i < balls.size(); i++ ) {
-            for ( int j = 0; j < balls.size(); j++ ) {
-                if ( balls.get(i).getId() != balls.get(j).getId() ) {
-                    if ( doCirclesOverlap(balls.get(i), balls.get(j)) ) {
-                        CollidingShapes collidingShapes = new CollidingShapes(balls.get(i), balls.get(j));
+            for (Ball ball : balls) {
+                if (balls.get(i).getId() != ball.getId()) {
+                    if (doCirclesOverlap(balls.get(i), ball)) {
+                        CollidingShapes collidingShapes = new CollidingShapes(balls.get(i), ball);
                         collidingPairs.add(collidingShapes);
                         float distance = (float) Math.sqrt(
-                                (balls.get(i).getPosX() - balls.get(j).getPosX()) * (balls.get(i).getPosX() - balls.get(j).getPosX()) +
-                                (balls.get(i).getPosY() - balls.get(j).getPosY()) * (balls.get(i).getPosY() - balls.get(j).getPosY()));
+                                (balls.get(i).getPosX() - ball.getPosX()) * (balls.get(i).getPosX() - ball.getPosX()) +
+                                        (balls.get(i).getPosY() - ball.getPosY()) * (balls.get(i).getPosY() - ball.getPosY()));
 
-                        float overlap = 0.5f * (distance - balls.get(i).getRadius() - balls.get(j).getRadius());
+                        float overlap = 0.5f * (distance - balls.get(i).getRadius() - ball.getRadius());
 
-                        float differenceX = balls.get(i).getPosX() - balls.get(j).getPosX();
-                        float differenceY = balls.get(i).getPosY() - balls.get(j).getPosY();
+                        float differenceX = balls.get(i).getPosX() - ball.getPosX();
+                        float differenceY = balls.get(i).getPosY() - ball.getPosY();
                         float ballPosX = balls.get(i).getPosX();
                         float ballPosY = balls.get(i).getPosY();
-                        float targetPosX = balls.get(j).getPosX();
-                        float targetPosY = balls.get(j).getPosY();
+                        float targetPosX = ball.getPosX();
+                        float targetPosY = ball.getPosY();
 
                         ballPosX -= overlap * differenceX / distance;
                         balls.get(i).setPosX(ballPosX);
@@ -195,21 +189,21 @@ public class BallsGame extends AbstractGame {
                         balls.get(i).setPosY(ballPosY);
 
                         targetPosX += overlap * differenceX / distance;
-                        balls.get(j).setPosX(targetPosX);
+                        ball.setPosX(targetPosX);
                         targetPosY += overlap * differenceY / distance;
-                        balls.get(j).setPosY(targetPosY);
+                        ball.setPosY(targetPosY);
                     }
                 }
             }
         }
 
-        for ( int i = 0; i < collidingPairs.size(); i++ ) {
-            Ball b1 = (Ball) collidingPairs.get(i).getShape2D();
-            Ball b2 = (Ball) collidingPairs.get(i).getTarget();
+        for (CollidingShapes collidingPair : collidingPairs) {
+            Ball b1 = (Ball) collidingPair.getShape2D();
+            Ball b2 = (Ball) collidingPair.getTarget();
 
-            float distance = (float)(Math.sqrt(
+            float distance = (float) (Math.sqrt(
                     (b1.getPosX() - b2.getPosX()) * (b1.getPosX() - b2.getPosX()) +
-                    (b1.getPosY() - b2.getPosY()) * (b1.getPosY() - b2.getPosY())
+                            (b1.getPosY() - b2.getPosY()) * (b1.getPosY() - b2.getPosY())
             ));
 
             float nx = (b2.getPosX() - b1.getPosX()) / distance;
@@ -232,8 +226,8 @@ public class BallsGame extends AbstractGame {
             b2.setVelX(tx * dpTan2 + nx * m2);
             b2.setVelY(ty * dpTan2 + ny * m2);
 
-            collidingPairs.get(i).setShape2D(b1);
-            collidingPairs.get(i).setShape2D(b2);
+            collidingPair.setShape2D(b1);
+            collidingPair.setShape2D(b2);
         }
 
         collidingPairs.clear();
@@ -267,10 +261,7 @@ public class BallsGame extends AbstractGame {
     }
 
     public static void main(String[] args) {
-        GameContainer gc = new GameContainer(new BallsGame());
-        gc.setWidth(SCREEN_WIDTH);
-        gc.setHeight(SCREEN_HEIGHT);
-        gc.setScale(SCREEN_SCALE);
+        GameContainer gc = new GameContainer(new BallsGame("Pelotas"));
         gc.start();
     }
 

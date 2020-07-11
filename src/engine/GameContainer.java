@@ -8,6 +8,8 @@ public class GameContainer implements Runnable {
 
     private final double UPDATE_CAP = 1.0 / 60.0;
 
+    private final String NAME_VERSION = "pre-alpha";
+
     private Window window;
 
     private Renderer renderer;
@@ -150,7 +152,7 @@ public class GameContainer implements Runnable {
     }
 
     public String getTitle() {
-        return title + " FPS: " + fps;
+        return title + " - GameContainer v." + NAME_VERSION + " - fps: " + fps;
     }
 
     public double getUPDATE_CAP() {

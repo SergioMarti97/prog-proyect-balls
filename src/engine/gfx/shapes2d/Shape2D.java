@@ -15,6 +15,8 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
 
     protected boolean isShowingInformation;
 
+    protected boolean isOverlap;
+
     protected WayToRender wayToRender = WayToRender.WIRE;
 
     public Shape2D(float posX, float posY, int color) {
@@ -22,6 +24,7 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         this.posY = posY;
         this.color = color;
         isSelected = false;
+        isOverlap = false;
     }
 
     public float getPosX() {
@@ -81,12 +84,23 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         if ( isSelected ) {
             r.drawText("¡Seleccionado!", (int)(posX), (int)(posY), 0xffff0000);
         }
+        if ( isOverlap ) {
+            r.drawText("¡Superpuesto!", (int)(posX), (int)(posY), 0xffff0000);
+        }
     }
 
     public abstract boolean isPointInside(float x, float y);
 
     public boolean isPointInside(Vec2DFloat point) {
         return isPointInside(point.getX(), point.getY());
+    }
+
+    public boolean isOverlap() {
+        return isOverlap;
+    }
+
+    public void setOverlap(boolean overlap) {
+        isOverlap = overlap;
     }
 
 }
