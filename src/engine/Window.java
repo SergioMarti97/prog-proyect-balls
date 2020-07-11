@@ -17,7 +17,10 @@ public class Window {
 
     private Graphics g;
 
+    private GameContainer gc;
+
     public Window(GameContainer gc) {
+        this.gc = gc;
         image = new BufferedImage(gc.getWidth(), gc.getHeight(), BufferedImage.TYPE_INT_RGB);
 
         canvas = new Canvas();
@@ -41,6 +44,7 @@ public class Window {
     }
 
     public void update() {
+        frame.setTitle(gc.getTitle());
         g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
         bs.show();
     }

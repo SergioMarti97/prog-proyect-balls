@@ -1,7 +1,6 @@
 package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
-import engine.gfx.shapes2d.QuickMath;
 import engine.gfx.shapes2d.Shape2D;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
@@ -15,7 +14,7 @@ public class Polygon2D extends Shape2D {
 
     protected ArrayList<Vec2DFloat> pFinal;
 
-    protected Vec2DFloat teoricalCenter;
+    protected Vec2DFloat theoreticalCenter;
 
     protected float size;
 
@@ -26,7 +25,7 @@ public class Polygon2D extends Shape2D {
         this.size = size;
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
-        teoricalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DFloat();
         numVertex = 0;
     }
 
@@ -40,7 +39,7 @@ public class Polygon2D extends Shape2D {
             pFinal.add(point);
         }
         numVertex = points.length;
-        teoricalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DFloat();
         normalizePShape();
         calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
@@ -52,7 +51,7 @@ public class Polygon2D extends Shape2D {
         pShape = p;
         pFinal = p;
         numVertex = p.size();
-        teoricalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DFloat();
         normalizePShape();
         calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
@@ -64,7 +63,7 @@ public class Polygon2D extends Shape2D {
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
         this.numVertex = numVertex;
-        teoricalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DFloat();
         float theta = 3.14159f * 2.0f / this.numVertex;
         for (int i = 0; i < this.numVertex; i++) {
             pShape.add(new Vec2DFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
@@ -94,13 +93,13 @@ public class Polygon2D extends Shape2D {
         }
         sumX /= numVertex;
         sumY /= numVertex;
-        teoricalCenter = new Vec2DFloat(sumX, sumY);
+        theoreticalCenter = new Vec2DFloat(sumX, sumY);
     }
 
     protected void rotateScaleOffsetPoints() {
         for (int i = 0; i < numVertex; i++ ) {
             Vec2DFloat point = new Vec2DFloat(pShape.get(i).getX(), pShape.get(i).getY());
-            point.sub(teoricalCenter);
+            point.sub(theoreticalCenter);
             point.translateThisAngle(angle);
             point.setX((point.getX() * size) + posX);
             point.setY((point.getY() * size) + posY);
@@ -119,19 +118,19 @@ public class Polygon2D extends Shape2D {
                 r.drawPolygon(pFinal, 0xffffffff);
                 r.drawLine(
                         pFinal.get(0).getX().intValue(), pFinal.get(0).getY().intValue(),
-                        (int) (teoricalCenter.getX().intValue() + posX), (int)(teoricalCenter.getY().intValue() + posY),
+                        (int) (theoreticalCenter.getX().intValue() + posX), (int)(theoreticalCenter.getY().intValue() + posY),
                         0xffffffff);
                 r.drawCircle((int)(posX), (int)(posY), 2, 0xffffffff);
-                r.drawFillCircle((int)(teoricalCenter.getX().intValue() + posX), (int)(teoricalCenter.getY().intValue() + posY), 2, 0xffffffff);
+                r.drawFillCircle((int)(theoreticalCenter.getX().intValue() + posX), (int)(theoreticalCenter.getY().intValue() + posY), 2, 0xffffffff);
                 break;
             case BLACKBOARD:
                 r.drawPolygon(pFinal, 0xffff0000);
                 r.drawLine(
                         pFinal.get(0).getX().intValue(), pFinal.get(0).getY().intValue(),
-                        (int) (teoricalCenter.getX().intValue() + posX), (int)(teoricalCenter.getY().intValue() + posY),
+                        (int) (theoreticalCenter.getX().intValue() + posX), (int)(theoreticalCenter.getY().intValue() + posY),
                         0xffffff00);
                 r.drawCircle((int)(posX), (int)(posY), 2, 0xff0000ff);
-                r.drawFillCircle((int)(teoricalCenter.getX().intValue() + posX), (int)(teoricalCenter.getY().intValue() + posY), 2, 0xff0000ff);
+                r.drawFillCircle((int)(theoreticalCenter.getX().intValue() + posX), (int)(theoreticalCenter.getY().intValue() + posY), 2, 0xff0000ff);
                 break;
         }
         super.drawYourSelf(r);

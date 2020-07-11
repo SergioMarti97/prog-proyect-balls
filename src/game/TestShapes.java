@@ -4,10 +4,8 @@ import engine.AbstractGame;
 import engine.GameContainer;
 import engine.gfx.Renderer;
 import engine.audio.SoundClip;
-import engine.gfx.shapes2d.QuickMath;
 import engine.gfx.shapes2d.Shape2D;
 import engine.gfx.shapes2d.WayToRender;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
 import engine.gfx.shapes2d.shapes.Circle2D;
 import engine.gfx.shapes2d.shapes.Polygon2D;
 import engine.gfx.shapes2d.shapes.Triangle2D;
@@ -16,12 +14,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 public class TestShapes extends AbstractGame {
-
-    private final static int SCREEN_WIDTH = 1080; // 320, 1080
-
-    private final static int SCREEN_HEIGHT = 720; // 240, 720
-
-    private final static float SCREEN_SCALE = 1.0f;
 
     private SoundClip clip;
 
@@ -41,9 +33,8 @@ public class TestShapes extends AbstractGame {
 
     @Override
     public void initialize(GameContainer gc) {
-        QuickMath quickMath = new QuickMath();
         shapes2D = new ArrayList<>();
-        Triangle2D triangle1 = new Triangle2D(200, 200, 1000, 2, 2, 4, 8, 6, 4, 0xffc82a54);
+        Triangle2D triangle1 = new Triangle2D(200, 200, 500, 2, 2, 4, 8, 6, 4, 0xffc82a54);
         Triangle2D triangle2 = new Triangle2D(250, 200, 40, -1, 0, 1, 0, 0, 4, 0xffe7d40A);
         triangle2.setSize(triangle2.getSize() * 3.0f);
         Circle2D circle = new Circle2D(300, 300, 100, 0xffFF689D);
@@ -194,7 +185,7 @@ public class TestShapes extends AbstractGame {
             r.drawCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 2,0xffffffff);
         } else {
             r.drawLine(
-                    SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                    getScreenWidth() / 2, getScreenHeight() / 2,
                     gc.getInput().getMouseX(), gc.getInput().getMouseY(),
                     0xffE5B501);
         }
@@ -204,9 +195,6 @@ public class TestShapes extends AbstractGame {
 
     public static void main(String[] args) {
         GameContainer gc = new GameContainer(new TestShapes());
-        gc.setWidth(SCREEN_WIDTH);
-        gc.setHeight(SCREEN_HEIGHT);
-        gc.setScale(SCREEN_SCALE);
         gc.start();
     }
 

@@ -34,6 +34,9 @@ public class GameContainer implements Runnable {
 
     public GameContainer(AbstractGame game) {
         this.game = game;
+        width = game.getScreenWidth();
+        height = game.getScreenHeight();
+        scale = game.getScreenScale();
     }
 
     public void start() {
@@ -133,7 +136,7 @@ public class GameContainer implements Runnable {
     }
 
     public String getTitle() {
-        return title;
+        return title + " FPS: " + fps;
     }
 
     public void setTitle(String title) {

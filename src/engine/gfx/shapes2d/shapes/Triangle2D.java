@@ -26,7 +26,7 @@ public class Triangle2D extends Polygon2D {
             max.setX(Math.max(max.getX(), pShape.get(i).getX()));
             max.setY(Math.max(max.getY(), pShape.get(i).getY()));
         }
-        max.sub(teoricalCenter);
+        max.sub(theoreticalCenter);
         size = max.mag();
         calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
