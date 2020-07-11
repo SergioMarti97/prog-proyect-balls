@@ -25,14 +25,13 @@ public class TestShapes extends AbstractGame {
 
     private boolean reduceTriangle = false;
 
-    private float angle = 0;
-
-    private TestShapes() {
-        clip = new SoundClip("/audio/sound.wav");
+    private TestShapes(String title) {
+        super(title);
     }
 
     @Override
     public void initialize(GameContainer gc) {
+        clip = new SoundClip("/audio/sound.wav");
         shapes2D = new ArrayList<>();
         Triangle2D triangle1 = new Triangle2D(200, 200, 500, 2, 2, 4, 8, 6, 4, 0xffc82a54);
         Triangle2D triangle2 = new Triangle2D(250, 200, 40, -1, 0, 1, 0, 0, 4, 0xffe7d40A);
@@ -135,7 +134,7 @@ public class TestShapes extends AbstractGame {
         for (Shape2D shape2D : shapes2D) {
             if ( shape2D instanceof Polygon2D ) {
                 Polygon2D polygon2D = (Polygon2D) shape2D;
-                angle = polygon2D.getAngle() + 10 * dt;
+                float angle = polygon2D.getAngle() + 10 * dt;
                 polygon2D.setAngle(angle);
             }
         }
@@ -150,7 +149,6 @@ public class TestShapes extends AbstractGame {
             r.clear(0xff414141);
         }
 
-        int textOffSetY = 75;
         float mouseX = gc.getInput().getMouseX();
         float mouseY = gc.getInput().getMouseY();
         for ( Shape2D shape2D : shapes2D ) {
@@ -159,26 +157,6 @@ public class TestShapes extends AbstractGame {
                 shape2D.setPosY(mouseY);
             }
             shape2D.drawYourSelf(r);
-            if ( shape2D instanceof Polygon2D ) {
-                Polygon2D polygon = (Polygon2D)(shape2D);
-                r.drawText(
-                        String.format(
-                                "Centro X: %.3f : Y: %.3f",
-                                polygon.getPosX(),
-                                polygon.getPosY()),
-                        0, textOffSetY, 0xffffffff);
-                textOffSetY += 25;
-                for ( int i = 0; i < polygon.getP().size(); i++ ) {
-                    r.drawText(
-                            String.format(
-                                    "Punto %d X: %.3f : Y: %.3f",
-                                    i,
-                                    polygon.getP().get(i).getX(),
-                                    polygon.getP().get(i).getY()),
-                            0, textOffSetY, 0xffffffff);
-                    textOffSetY += 25;
-                }
-            }
         }
 
         if ( wayToRender.equals(WayToRender.BLUEPRINT) ) {
@@ -189,12 +167,10 @@ public class TestShapes extends AbstractGame {
                     gc.getInput().getMouseX(), gc.getInput().getMouseY(),
                     0xffE5B501);
         }
-
-        r.drawText(String.format("Angulo: %f", angle), 0, 50, 0xffffffff);
     }
 
     public static void main(String[] args) {
-        GameContainer gc = new GameContainer(new TestShapes());
+        GameContainer gc = new GameContainer(new TestShapes("Sergio GameEngine 1.0v"));
         gc.start();
     }
 

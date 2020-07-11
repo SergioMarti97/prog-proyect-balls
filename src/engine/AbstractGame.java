@@ -10,10 +10,18 @@ public abstract class AbstractGame {
 
     private float screenScale = 1.0f;
 
+    private String title = "default";
+
     public AbstractGame() {
+
     }
 
-    public AbstractGame(int screenWidth, int screenHeight, float screenScale) {
+    public AbstractGame(String title) {
+        this.title = title;
+    }
+
+    public AbstractGame(String title, int screenWidth, int screenHeight, float screenScale) {
+        this.title = title;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.screenScale = screenScale;
@@ -35,6 +43,10 @@ public abstract class AbstractGame {
 
     public int getScreenWidth() {
         return screenWidth;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
 }
