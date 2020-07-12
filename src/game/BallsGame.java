@@ -23,6 +23,8 @@ public class BallsGame extends AbstractGame {
 
     private float friction;
 
+    private float systemVelocity;
+
     private BallsGame(String title) {
         super(title);
     }
@@ -32,15 +34,16 @@ public class BallsGame extends AbstractGame {
     }
 
     private void fillBallsWithRandomBalls(int width, int height) {
-        int maxBalls = 50;
+        int maxBalls = 1000;
         for (int i = 0; i < maxBalls; i++ ) {
-            float radius = getRandomFloatBetweenRange(30, 10);
+            float radius = getRandomFloatBetweenRange(5, 2);
             float posX = getRandomFloatBetweenRange((int)(width - radius), (int)(radius));
             float posY = getRandomFloatBetweenRange((int)(height - radius), (int)(radius));
             Ball ball = new Ball(posX, posY, radius, 0xffffffff);
             ball.setId(balls.size());
-            ball.setVelX(50.0f);
-            ball.setVelY(50.0f);
+            ball.setVelX(getRandomFloatBetweenRange(50, -50));
+            ball.setVelY(getRandomFloatBetweenRange(50, -50));
+            ball.setAccelerationY(9.8f);
             balls.add(ball);
         }
     }
@@ -63,7 +66,8 @@ public class BallsGame extends AbstractGame {
         mousePosition = new Vec2d();
         balls = new ArrayList<>();
         collidingPairs = new ArrayList<>();
-        friction = 0.8f;
+        friction = 0.01f;
+        systemVelocity = 0.0f;
         fillBallsWithRandomBalls(gc.getWidth(), gc.getHeight());
     }
 
@@ -121,10 +125,12 @@ public class BallsGame extends AbstractGame {
         }
 
         for (Ball ball : balls) {
-            ball.setAccelerationX(-ball.getVelX() * friction);
-            ball.setAccelerationY(-ball.getVelY() * friction);
+            //ball.setAccelerationX(ball.getVelX() * friction);
+            //ball.setAccelerationY(ball.getVelY() * friction);
             ball.updateVelocity(dt);
             ball.updatePosition(dt);
+
+            systemVelocity += (float)(Math.sqrt(ball.getVelX() * ball.getVelX() + ball.getVelY() * ball.getVelY()));
 
             float posX = ball.getPosX();
             float posY = ball.getPosY();
@@ -145,7 +151,7 @@ public class BallsGame extends AbstractGame {
             }
 
             if (posY >= gc.getHeight()) {
-                posY -= (float) (gc.getHeight());
+                posY -= (float) (gc.getHeight()); //posY -= (float) (gc.getHeight());
                 ball.setPosY(posY);
             }
 
@@ -187,6 +193,8 @@ public class BallsGame extends AbstractGame {
                 }
             }
         }
+
+        systemVelocity /= balls.size();
 
         for (CollidingShapes collidingPair : collidingPairs) {
             Ball b1 = (Ball) collidingPair.getShape2D();
@@ -249,6 +257,7 @@ public class BallsGame extends AbstractGame {
         */
 
         r.drawCircle((int)(mousePosition.getX()), (int)(mousePosition.getY()), 2, 0xffffff00);
+        r.drawText(String.format("Velocidad del sistema: %f px/s", systemVelocity), 20, 20, 0xffffffff);
     }
 
     public static void main(String[] args) {

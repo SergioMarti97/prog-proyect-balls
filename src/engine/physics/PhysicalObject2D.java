@@ -158,6 +158,8 @@ public class PhysicalObject2D {
         float y = r1.getPosY();
         r1.setPosX(x - overlap * d.getX() / s);
         r1.setPosY(y - overlap * d.getY() / s);
+        posX = r1.getPosX(); // todo aquí como hago esto?
+        posY = r1.getPosY();
         return false;
     }
 
@@ -280,4 +282,7 @@ public class PhysicalObject2D {
         isOverlap = overlap;
     }
 
+    public void setPolygonCollisionAlgorithm(PolygonCollisionAlgorithm polygonCollisionAlgorithm) {
+        this.polygonCollisionAlgorithm = polygonCollisionAlgorithm;
+    }
 }

@@ -7,6 +7,7 @@ import engine.audio.SoundClip;
 import engine.gfx.shapes2d.WayToRender;
 import engine.gfx.shapes2d.shapes.Polygon2D;
 import engine.physics.PhysicalObject2D;
+import engine.physics.PolygonCollisionAlgorithm;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -31,12 +32,13 @@ public class TestShapes extends AbstractGame {
     public void initialize(GameContainer gc) {
         clip = new SoundClip("/audio/sound.wav");
         physicalObjects = new ArrayList<>();
-        for ( int i = 0; i < 10; i++ ) {
+        for ( int i = 0; i < 3; i++ ) {
             int posX = (i % 2 == 0) ? 500 : 100;
             Polygon2D polygon = new Polygon2D(posX, 150 + i * 100, 80, i + 3, 0xffe7d40a);
             PhysicalObject2D physicalObject = new PhysicalObject2D(polygon);
             physicalObject.setVelX(getRandomFloatBetweenRange(50, -50));
             physicalObject.setVelY(getRandomFloatBetweenRange(50, -50));
+            //physicalObject.setPolygonCollisionAlgorithm(PolygonCollisionAlgorithm.SAT_STATIC);
             physicalObjects.add(physicalObject);
         }
     }
