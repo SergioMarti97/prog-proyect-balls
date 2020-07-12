@@ -16,8 +16,6 @@ public class Ball extends Circle2D {
 
     private int id;
 
-    private boolean isSelected;
-
     public Ball(float posX, float posY, float radius, int color) {
         super(posX, posY, radius, color);
         aX = 0.0f;
@@ -26,6 +24,16 @@ public class Ball extends Circle2D {
         velY = 0.0f;
         mass = radius * 10.0f;
         id = 0;
+    }
+
+    public void updateVelocity(float time) {
+        velX += aX * time;
+        velY += aY * time;
+    }
+
+    public void updatePosition(float time) {
+        posX += velX * time;
+        posY += velY * time;
     }
 
     public float getVelX() {

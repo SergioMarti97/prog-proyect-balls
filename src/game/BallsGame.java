@@ -48,13 +48,13 @@ public class BallsGame extends AbstractGame {
     private boolean doCirclesOverlap(Ball c1, Ball c2) {
         return Math.abs((c1.getPosX() - c2.getPosX()) * (c1.getPosX() - c2.getPosX()) +
                 (c1.getPosY() - c2.getPosY()) * (c1.getPosY() - c2.getPosY())) <=
-                ((c1.getRadius() + c2.getRadius()) * (c1.getRadius() + c2.getRadius()));
+                ((c1.getSize() + c2.getSize()) * (c1.getSize() + c2.getSize()));
     }
 
     private boolean isPointInCircle(Ball c1, float posX, float posY) {
         return Math.abs((c1.getPosX() - posX) * (c1.getPosX() - posX) +
                 (c1.getPosY() - posY) * (c1.getPosY() - posY)) <=
-                (c1.getRadius() * c1.getRadius());
+                (c1.getSize() * c1.getSize());
     }
 
     @Override
@@ -123,20 +123,11 @@ public class BallsGame extends AbstractGame {
         for (Ball ball : balls) {
             ball.setAccelerationX(-ball.getVelX() * friction);
             ball.setAccelerationY(-ball.getVelY() * friction);
-
-            float aX = ball.getAccelerationX();
-            float aY = ball.getAccelerationY();
-            float velX = ball.getVelX();
-            float velY = ball.getVelY();
-
-            ball.setVelX(velX + aX * dt);
-            ball.setVelY(velY + aY * dt);
+            ball.updateVelocity(dt);
+            ball.updatePosition(dt);
 
             float posX = ball.getPosX();
             float posY = ball.getPosY();
-
-            ball.setPosX(posX + ball.getVelX() * dt);
-            ball.setPosY(posY + ball.getVelY() * dt);
 
             if (posX < 0) {
                 posX += (float) (gc.getWidth());
@@ -174,7 +165,7 @@ public class BallsGame extends AbstractGame {
                                 (balls.get(i).getPosX() - ball.getPosX()) * (balls.get(i).getPosX() - ball.getPosX()) +
                                         (balls.get(i).getPosY() - ball.getPosY()) * (balls.get(i).getPosY() - ball.getPosY()));
 
-                        float overlap = 0.5f * (distance - balls.get(i).getRadius() - ball.getRadius());
+                        float overlap = 0.5f * (distance - balls.get(i).getSize() - ball.getSize());
 
                         float differenceX = balls.get(i).getPosX() - ball.getPosX();
                         float differenceY = balls.get(i).getPosY() - ball.getPosY();

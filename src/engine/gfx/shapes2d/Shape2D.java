@@ -11,11 +11,11 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
 
     protected int color;
 
+    protected float size = 1.0f;
+
     protected boolean isSelected;
 
     protected boolean isShowingInformation;
-
-    protected boolean isOverlap;
 
     protected WayToRender wayToRender = WayToRender.WIRE;
 
@@ -24,7 +24,23 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         this.posY = posY;
         this.color = color;
         isSelected = false;
-        isOverlap = false;
+    }
+
+    public void showInfo(Renderer r, int posX, int posY) {
+        //r.drawFillRect();
+
+    }
+
+    public void drawYourSelf(Renderer r) {
+        if ( isSelected ) {
+            r.drawText("¡Seleccionado!", (int)(posX), (int)(posY), 0xffff0000);
+        }
+    }
+
+    public abstract boolean isPointInside(float x, float y);
+
+    public boolean isPointInside(Vec2DFloat point) {
+        return isPointInside(point.getX(), point.getY());
     }
 
     public float getPosX() {
@@ -37,6 +53,10 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
 
     public int getColor() {
         return color;
+    }
+
+    public float getSize() {
+        return size;
     }
 
     public WayToRender getWayToRender() {
@@ -63,6 +83,10 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
         this.color = color;
     }
 
+    public void setSize(float size) {
+        this.size = size;
+    }
+
     public void setSelected(boolean selected) {
         isSelected = selected;
     }
@@ -73,34 +97,6 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
 
     public void setWayToRender(WayToRender wayToRender) {
         this.wayToRender = wayToRender;
-    }
-
-    public void showInfo(Renderer r, int posX, int posY) {
-        //r.drawFillRect();
-
-    }
-
-    public void drawYourSelf(Renderer r) {
-        if ( isSelected ) {
-            r.drawText("¡Seleccionado!", (int)(posX), (int)(posY), 0xffff0000);
-        }
-        if ( isOverlap ) {
-            r.drawText("¡Superpuesto!", (int)(posX), (int)(posY), 0xffff0000);
-        }
-    }
-
-    public abstract boolean isPointInside(float x, float y);
-
-    public boolean isPointInside(Vec2DFloat point) {
-        return isPointInside(point.getX(), point.getY());
-    }
-
-    public boolean isOverlap() {
-        return isOverlap;
-    }
-
-    public void setOverlap(boolean overlap) {
-        isOverlap = overlap;
     }
 
 }

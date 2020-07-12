@@ -16,8 +16,6 @@ public class Polygon2D extends Shape2D {
 
     protected Vec2DFloat theoreticalCenter;
 
-    protected float size;
-
     protected float angle = 0.0f;
 
     public Polygon2D(float posX, float posY, float size, int color) {
