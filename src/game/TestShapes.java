@@ -152,7 +152,7 @@ public class TestShapes extends AbstractGame {
         float mouseY = gc.getInput().getMouseY();
         for ( PhysicalObject2D physicalObject2D : physicalObjects) {
             if ( physicalObject2D.isOverlap() ) {
-                r.drawText("¡Superpuesto!", (int)(physicalObject2D.getPosX()), (int)(physicalObject2D.getPosY()), 0xffff0000);
+                r.drawText("Overlap!", (int)(physicalObject2D.getPosX()), (int)(physicalObject2D.getPosY()), 0xffff0000);
             }
             if ( physicalObject2D.getShape2D().isSelected() ) { // todo esto no tiene mucho sentido...
                 physicalObject2D.setPosX(mouseX);

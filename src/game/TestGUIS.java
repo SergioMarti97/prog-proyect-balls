@@ -22,9 +22,7 @@ public class TestGUIS extends AbstractGame {
     public void update(GameContainer gc, float dt) {
         if ( gc.getInput().isButtonDown(1) ) {
             if ( window.isPointInside(gc.getInput().getMouseX(), gc.getInput().getMouseY()) ) {
-                window.setSelected(true);
-            } else {
-                window.setSelected(false);
+                window.setSelected(!window.isSelected());
             }
         }
     }
@@ -38,6 +36,7 @@ public class TestGUIS extends AbstractGame {
             window.setPosY(mouseY);
         }
         window.drawYourSelf(r);
+        r.drawCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 2, 0xffffffff);
     }
 
     public static void main(String[] args) {

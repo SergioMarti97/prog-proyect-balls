@@ -10,38 +10,66 @@ public class GUIWindow extends GUIElement {
 
     private final int FRONT_COLOR = 0xffbba9bb;
 
-    private final int SELECTED_COLOR = 0xffe7d40a;
-
     private final int HEADER_HEIGHT = 20;
 
-    private Font font;
+    private GUIWindowHeader header;
 
-    private String headerTitle;
+    private float offSetX = 0.0f;
 
-    private boolean isSelected;
+    private float offSetY = 0.0f;
+
+    private Font font = Font.STANDARD;
+
+    private String headerTitle = "title";
+
+    private boolean isSelected = false;
 
     public GUIWindow(Input input, int posX, int posY, int width, int height) {
         super(input, posX, posY, width, height);
-        font = Font.STANDARD;
-        headerTitle = "title";
-        isSelected = false;
+        header = new GUIWindowHeader(input, posX, posY, width, HEADER_HEIGHT, headerTitle, FRONT_COLOR);
     }
 
     public GUIWindow(Input input, int posX, int posY, int width, int height, String headerTitle) {
         super(input, posX, posY, width, height);
-        font = Font.STANDARD;
         this.headerTitle = headerTitle;
-        isSelected = false;
+        header = new GUIWindowHeader(input, posX, posY, width, HEADER_HEIGHT, headerTitle, FRONT_COLOR);
+    }
+
+    @Override
+    public boolean isPointInside(float x, float y) {
+        if ( super.isPointInside(x, y) ) {
+            if ( header.isPointInside(x, y) ) {
+                offSetX = x - posX;
+                offSetY = y - posY;
+                header.setOffSetX(offSetX);
+                header.setOffSetY(offSetY);
+            }
+            return true;
+        } else {
+            offSetX = 0.0f;
+            offSetY = 0.0f;
+            header.setOffSetX(0.0f);
+            header.setOffSetY(0.0f);
+            return false;
+        }
     }
 
     @Override
     public void drawYourSelf(Renderer r) {
-        r.drawFillRect(posX, posY, width, height + HEADER_HEIGHT, BACKGROUND_COLOR);
-        r.drawFillRect(posX, posY, width, HEADER_HEIGHT, FRONT_COLOR);
-        r.drawText(headerTitle, posX, posY, 0xff000000, font);
-        if ( isSelected ) {
-            r.drawRect(posX, posY, width, HEADER_HEIGHT, SELECTED_COLOR);
-        }
+        r.drawFillRect(posX, posY, width, height, BACKGROUND_COLOR);
+        header.drawYourSelf(r);
+    }
+
+    @Override
+    public void setPosX(int posX) {
+        super.setPosX((int)(posX - offSetX));
+        header.setPosX(posX);
+    }
+
+    @Override
+    public void setPosY(int posY) {
+        super.setPosY((int)(posY - offSetY));
+        header.setPosY(posY);
     }
 
     public boolean isSelected() {
@@ -50,6 +78,7 @@ public class GUIWindow extends GUIElement {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+        header.setSelected(selected);
     }
 
 }

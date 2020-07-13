@@ -1,7 +1,5 @@
 package engine.gfx.shapes2d.points2d;
 
-import engine.gfx.shapes2d.QuickMath;
-
 public class Vec2DFloat extends Vec2D<Float> {
 
     public Vec2DFloat() {
@@ -56,6 +54,11 @@ public class Vec2DFloat extends Vec2D<Float> {
     public void multiply(Vec2D<Float> point) {
         x *= point.getX();
         y *= point.getY();
+    }
+
+    public void division(Vec2D<Float> point) {
+        x /= point.getX();
+        y /= point.getY();
     }
 
     public Float mag() {
