@@ -50,8 +50,13 @@ public class Image {
         return alpha;
     }
 
-    public int getSample(int x, int y) {
-        return p[x + w * y];
+    public int getSample(int x, int y) throws ArrayIndexOutOfBoundsException {
+        int index = x + w * y;
+        if ( index < p.length ) {
+            return p[x + w * y];
+        } else {
+            throw new ArrayIndexOutOfBoundsException();
+        }
     }
 
     public void setW(int w) {

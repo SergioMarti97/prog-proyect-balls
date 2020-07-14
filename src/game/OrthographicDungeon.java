@@ -39,7 +39,6 @@ public class OrthographicDungeon extends AbstractGame {
 
     private Vec2DInteger tileSize = new Vec2DInteger(32, 32);
 
-
     private OrthographicDungeon(String title) {
         super(title);
     }
