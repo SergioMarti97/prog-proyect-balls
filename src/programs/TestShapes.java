@@ -1,4 +1,4 @@
-package game;
+package programs;
 
 import engine.AbstractGame;
 import engine.GameContainer;
@@ -7,7 +7,6 @@ import engine.audio.SoundClip;
 import engine.gfx.shapes2d.WayToRender;
 import engine.gfx.shapes2d.shapes.Polygon2D;
 import engine.physics.PhysicalObject2D;
-import engine.physics.PolygonCollisionAlgorithm;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class TestShapes extends AbstractGame {
     public void initialize(GameContainer gc) {
         clip = new SoundClip("/audio/sound.wav");
         physicalObjects = new ArrayList<>();
-        for ( int i = 0; i < 3; i++ ) {
+        for ( int i = 0; i < 8; i++ ) {
             int posX = (i % 2 == 0) ? 500 : 100;
             Polygon2D polygon = new Polygon2D(posX, 150 + i * 100, 80, i + 3, 0xffe7d40a);
             PhysicalObject2D physicalObject = new PhysicalObject2D(polygon);
@@ -100,7 +99,7 @@ public class TestShapes extends AbstractGame {
                 physicalObject1.setShape2D(polygon);
             }
 
-            physicalObject1.updatePosition(dt);
+            //physicalObject1.updatePosition(dt);
 
             // todo: hay que actualizar que los poligonos no se puedan salir fuera de la pantalla
             float posX = physicalObject1.getPosX();

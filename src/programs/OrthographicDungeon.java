@@ -1,17 +1,15 @@
-package game;
+package programs;
 
 import engine.AbstractGame;
 import engine.GameContainer;
 import engine.engine3d.Vec3d;
 import engine.engine3d.orthographic.*;
 import engine.gfx.Renderer;
-import engine.gfx.images.ImageTile;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 import engine.gfx.shapes2d.points2d.Vec2DInteger;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class OrthographicDungeon extends AbstractGame {
 

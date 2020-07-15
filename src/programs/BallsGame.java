@@ -1,4 +1,4 @@
-package game;
+package programs;
 
 import engine.AbstractGame;
 import engine.GameContainer;

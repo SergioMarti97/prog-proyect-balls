@@ -34,6 +34,12 @@ public class Image {
         this.h = h;
     }
 
+    public Image(int w, int h) {
+        this.w = w;
+        this.h = h;
+        p = new int[w * h];
+    }
+
     public int getW() {
         return w;
     }

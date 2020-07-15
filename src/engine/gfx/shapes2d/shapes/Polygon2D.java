@@ -106,11 +106,26 @@ public class Polygon2D extends Shape2D {
         }
     }
 
+    private void drawSolidPolygon(Renderer r) {
+        r.drawPolygon(pFinal, color);
+        if ( pFinal.size() > 4 ) {
+            for ( int i = 2; i <= pFinal.size() -2; i++ ) {
+                r.drawLine(
+                        pFinal.get(0).getX().intValue(), pFinal.get(0).getY().intValue(),
+                        pFinal.get(i).getX().intValue(), pFinal.get(i).getY().intValue(),
+                        color);
+            }
+        }
+    }
+
     @Override
     public void drawYourSelf(Renderer r) {
         switch ( wayToRender) {
-            case WIRE: case SOLID: default:
+            case WIRE: default:
                 r.drawPolygon(pFinal, color);
+                break;
+            case SOLID:
+                drawSolidPolygon(r);
                 break;
             case BLUEPRINT:
                 r.drawPolygon(pFinal, 0xffffffff);

@@ -5,6 +5,8 @@ import engine.gfx.font.Font;
 import engine.gfx.images.Image;
 import engine.gfx.images.ImageRequest;
 import engine.gfx.images.ImageTile;
+import engine.gfx.images.maths.Matrix3x3Float;
+import engine.gfx.images.maths.MatrixOperations;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.awt.image.DataBufferInt;
@@ -548,6 +550,48 @@ public class Renderer {
         for ( int y = newY; y < newHeight; y++ ) {
             for ( int x = newX; x < newWidth; x++ ) {
                 setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
+            }
+        }
+    }
+
+    public void drawImage(Image image, Matrix3x3Float transformation) {
+        Matrix3x3Float transformationInv;
+        transformationInv = MatrixOperations.invert(transformation);
+
+        Vec2DFloat p = MatrixOperations.forward(transformation, 0.0f, 0.0f);
+        Vec2DFloat end = new Vec2DFloat();
+        Vec2DFloat start = new Vec2DFloat();
+
+        start.set(p);
+        end.set(p);
+
+        p = MatrixOperations.forward(transformation, (float)(image.getW()), (float)(image.getH()));
+        start.setX(Math.min(start.getX(), p.getX()));
+        start.setY(Math.min(start.getY(), p.getY()));
+        end.setX(Math.max(end.getX(), p.getX()));
+        end.setY(Math.max(end.getY(), p.getY()));
+
+        p = MatrixOperations.forward(transformation, 0.0f, (float)(image.getH()));
+        start.setX(Math.min(start.getX(), p.getX()));
+        start.setY(Math.min(start.getY(), p.getY()));
+        end.setX(Math.max(end.getX(), p.getX()));
+        end.setY(Math.max(end.getY(), p.getY()));
+
+        p = MatrixOperations.forward(transformation, (float)(image.getW()), 0.0f);
+        start.setX(Math.min(start.getX(), p.getX()));
+        start.setY(Math.min(start.getY(), p.getY()));
+        end.setX(Math.max(end.getX(), p.getX()));
+        end.setY(Math.max(end.getY(), p.getY()));
+
+        int pixel;
+        Vec2DFloat newPos;
+        for ( int x = start.getX().intValue(); x < end.getX().intValue(); x++ ) {
+            for ( int y = start.getY().intValue(); y < end.getY().intValue(); y++ ) {
+                newPos = MatrixOperations.forward(transformationInv, (float)(x), (float)(y));
+                if ( newPos.getX() >= 0 && newPos.getX() < image.getW() && newPos.getY() >= 0 && newPos.getY() < image.getH() ) {
+                    pixel = image.getSample((int) (newPos.getX().intValue() + 0.5f), (int) (newPos.getY().intValue() + 0.5f));
+                    setPixel(x, y, pixel);
+                }
             }
         }
     }
