@@ -6,6 +6,7 @@ import engine.gfx.Renderer;
 import engine.gfx.images.Image;
 import engine.gfx.images.ImageTile;
 import engine.gfx.images.maths.Matrix3x3Float;
+import engine.gfx.images.maths.MatrixOperations;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.awt.event.KeyEvent;
@@ -24,51 +25,6 @@ public class TestImageTransformations extends AbstractGame {
 
     private float getRandomFloatBetweenRange(int max, int min) {
         return (float) ((Math.random() * ((max - min) + 1)) + min);
-    }
-
-    private Vec2DFloat forward(Matrix3x3Float matrix, float in_x, float in_y) {
-        float out_x = in_x * matrix.getM()[0][0] + in_y * matrix.getM()[1][0] + matrix.getM()[2][0];
-        float out_y = in_x * matrix.getM()[0][1] + in_y * matrix.getM()[1][1] + matrix.getM()[2][1];
-        return new Vec2DFloat(out_x, out_y);
-    }
-
-    private Matrix3x3Float multiply(Matrix3x3Float matrix1, Matrix3x3Float matrix2) {
-        int cols = matrix1.getNUM_COLS();
-        int rows = matrix1.getNUM_ROWS();
-        float[][] result = new float[cols][rows];
-        for ( int c = 0; c < cols; c++ ) {
-            for ( int r = 0; r < rows; r++ ) {
-                result[c][r] = matrix2.getM()[0][r] * matrix1.getM()[c][0] +
-                        matrix2.getM()[1][r] * matrix1.getM()[c][1] +
-                        matrix2.getM()[2][r] * matrix1.getM()[c][2];
-            }
-        }
-        Matrix3x3Float matResult = new Matrix3x3Float();
-        matResult.setM(result);
-        return matResult;
-    }
-
-    private Matrix3x3Float invert(Matrix3x3Float m) {
-        float[][] matOut = new float[m.getNUM_COLS()][m.getNUM_COLS()];
-
-        float det = m.getM()[0][0] * (m.getM()[1][1] * m.getM()[2][2] - m.getM()[1][2] * m.getM()[2][1]) -
-                m.getM()[1][0] * (m.getM()[0][1] * m.getM()[2][2] - m.getM()[2][1] * m.getM()[0][2]) +
-                m.getM()[2][0] * (m.getM()[0][1] * m.getM()[1][2] - m.getM()[1][1] * m.getM()[0][2]);
-
-        float ident = 1.0f / det;
-        matOut[0][0] = (m.getM()[1][1] * m.getM()[2][2] - m.getM()[1][2] * m.getM()[2][1]) * ident;
-        matOut[1][0] = (m.getM()[2][0] * m.getM()[1][2] - m.getM()[1][0] * m.getM()[2][2]) * ident;
-        matOut[2][0] = (m.getM()[1][0] * m.getM()[2][1] - m.getM()[2][0] * m.getM()[1][1]) * ident;
-        matOut[0][1] = (m.getM()[2][1] * m.getM()[0][2] - m.getM()[0][1] * m.getM()[2][2]) * ident;
-        matOut[1][1] = (m.getM()[0][0] * m.getM()[2][2] - m.getM()[2][0] * m.getM()[0][2]) * ident;
-        matOut[2][1] = (m.getM()[0][1] * m.getM()[2][0] - m.getM()[0][0] * m.getM()[2][1]) * ident;
-        matOut[0][2] = (m.getM()[0][1] * m.getM()[1][2] - m.getM()[0][2] * m.getM()[1][1]) * ident;
-        matOut[1][2] = (m.getM()[0][2] * m.getM()[1][0] - m.getM()[0][0] * m.getM()[1][2]) * ident;
-        matOut[2][2] = (m.getM()[0][0] * m.getM()[1][1] - m.getM()[0][1] * m.getM()[1][0]) * ident;
-
-        Matrix3x3Float matResult = new Matrix3x3Float();
-        matResult.setM(matOut);
-        return matResult;
     }
 
     private TestImageTransformations(String title) {
@@ -153,11 +109,11 @@ public class TestImageTransformations extends AbstractGame {
 
         matrixA.setAsTranslate(-image.getW() / 2.0f, -image.getH() / 2.0f);
         matrixB.setAsRotate(rotation);
-        matrixC = multiply(matrixA, matrixB);
+        matrixC = MatrixOperations.multiply(matrixA, matrixB);
 
         matrixA.setAsTranslate(position.getX(), position.getY());
 
-        matrixFinal = multiply(matrixC, matrixA);
+        matrixFinal = MatrixOperations.multiply(matrixC, matrixA);
 
         r.drawImage(image, matrixFinal);
 
@@ -170,7 +126,7 @@ public class TestImageTransformations extends AbstractGame {
 
     public static void main(String[] args) {
         GameContainer gc = new GameContainer(new TestImageTransformations("Test image Transformations"));
-        gc.setCappedTo60fps(false);
+        gc.setCappedTo60fps(true);
         gc.start();
     }
 
