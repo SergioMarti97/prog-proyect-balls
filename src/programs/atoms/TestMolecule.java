@@ -10,7 +10,7 @@ import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.awt.event.KeyEvent;
 
-public class TestAtoms extends AbstractGame {
+public class TestMolecule extends AbstractGame {
 
     private final int NUM_ATOMS = 6; // C H O N P S
 
@@ -22,11 +22,9 @@ public class TestAtoms extends AbstractGame {
 
     private Image[] images = new Image[NUM_ATOMS];
 
-    private Atom atom;
+    Vec2DFloat mousePosition = new Vec2DFloat();
 
-    private float rotation = 0;
-
-    private TestAtoms(String title) {
+    private TestMolecule(String title) {
         super(title);
     }
 
@@ -35,8 +33,6 @@ public class TestAtoms extends AbstractGame {
         clip = new SoundClip("/audio/sound.wav");
         molecule = new Molecule();
 
-        atom = new Atom(gc.getWidth() / 2.0f, gc.getHeight() / 2.0f);
-
         int tile_size = 64;
         images = new Image[NUM_ATOMS];
         ImageTile imageTile = new ImageTile("/atoms/atoms_tiles.png", tile_size, tile_size);
@@ -44,6 +40,7 @@ public class TestAtoms extends AbstractGame {
             images[i] = new Image(tile_size, tile_size);
             images[i] = imageTile.getTileImage(i, 0);
         }
+
     }
 
     @Override
@@ -70,32 +67,53 @@ public class TestAtoms extends AbstractGame {
             boolean isShowingLinks = molecule.isShowingLinks();
             molecule.setShowingLinks(!isShowingLinks);
         }
+
         if ( gc.getInput().isButtonDown(1) ) {
-            Vec2DFloat mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
-            molecule.setPosition(mousePosition);
-        }
-        if ( gc.getInput().isButtonDown(3) ) {
-            Vec2DFloat mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
+            mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
             IdAndPosition idAndPosition = molecule.isPointInsideALink(mousePosition.getX(), mousePosition.getY());
+            if ( molecule.isPointInside(mousePosition) != null ) {
+                boolean moleculeIsSelected = molecule.isSelected();
+                molecule.setSelected(!moleculeIsSelected);
+            }
             if ( idAndPosition != null ) {
                 clip.play();
                 Atom atomToAdd = new Atom();
                 atomToAdd.setImage(images[puttingAtom]);
-                if ( puttingAtom == 1 ) {
-                    float radius = atomToAdd.getRadius();
-                    atomToAdd.setRadius(radius / 2.0f);
+                float radius;
+                switch ( puttingAtom ) {
+                    case 0: case 2: case 3: default: // Carbon, Oxygen, Nitrogen
+                        break;
+                    case 1: // Hydrogen
+                        radius = atomToAdd.getRadius();
+                        atomToAdd.setRadius(radius/2.0f);
+                        break;
+                    case 4: case 5: // Phosphorus, Sulfur
+                        radius = atomToAdd.getRadius();
+                        atomToAdd.setRadius(radius * 1.5f);
+                        break;
                 }
                 molecule.addAtomTo(idAndPosition.getId(), atomToAdd, idAndPosition.getPosition());
             }
         }
+        if ( gc.getInput().isButtonDown(3) ) {
+            mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
+            Atom atomToDelete = molecule.isPointInside(mousePosition);
+            if ( atomToDelete != null ) {
+                molecule.deleteAtom(atomToDelete.getPosition());
+            }
+        }
 
-        rotation += 2.0f * dt;
-        atom.setRotation(60);
     }
 
     @Override
     public void render(GameContainer gc, Renderer r) {
+
+        if ( molecule.isSelected() ) {
+            molecule.setPosition(new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY())));
+        }
+
         molecule.drawYourSelf(r);
+
         String nameAtom;
         switch ( puttingAtom ) {
             case 0: default:
@@ -118,8 +136,6 @@ public class TestAtoms extends AbstractGame {
                 break;
         }
 
-        //atom.drawYourSelf(r);
-
         r.drawText(String.format("Adding %s. Code: %d", nameAtom, puttingAtom), 10, 10, 0xffffffff);
         r.drawText("Press 'C' to add Carbon", 10, 40, 0xffffffff);
         r.drawText("Press 'H' to add Hydrogen", 10, 70, 0xffffffff);
@@ -127,11 +143,10 @@ public class TestAtoms extends AbstractGame {
         r.drawText("Press 'N' to add Nitrogen", 10, 130, 0xffffffff);
         r.drawText("Press 'P' to add Phosphor", 10, 160, 0xffffffff);
         r.drawText("Press 'S' to add Sulfur", 10, 190, 0xffffffff);
-        //r.drawText("Rotation: " + rotation + "degrees", 10, 220, 0xffffffff);
     }
 
     public static void main(String[] args) {
-        GameContainer gc = new GameContainer(new TestAtoms("Test atoms"));
+        GameContainer gc = new GameContainer(new TestMolecule("Test atoms"));
         gc.setCappedTo60fps(false);
         gc.start();
     }

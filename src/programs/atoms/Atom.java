@@ -79,6 +79,14 @@ public class Atom implements Drawable, SelectableByMouse {
         return radius;
     }
 
+    public Vec2DFloat getPosition() {
+        return position;
+    }
+
+    public float getRotation() {
+        return rotation;
+    }
+
     public boolean isShowingLinks() {
         return isShowingLinks;
     }
@@ -166,7 +174,7 @@ public class Atom implements Drawable, SelectableByMouse {
 
     @Override
     public boolean isPointInside(float x, float y) {
-        return isPointInsideCircle(position.getX(), position.getY(), x, y, radius);
+        return isPointInsideCircle(position.getX(), position.getY(), x, y, radius / 4);
     }
 
     public int isPointInsideALink(float x, float y) {

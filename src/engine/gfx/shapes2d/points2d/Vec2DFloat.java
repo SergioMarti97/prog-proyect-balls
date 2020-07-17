@@ -94,4 +94,14 @@ public class Vec2DFloat extends Vec2D<Float> {
         this.y = y;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if ( obj instanceof Vec2DFloat ) {
+            Vec2DFloat vec2DFloat = (Vec2DFloat)(obj);
+            return this.x.equals(vec2DFloat.getX()) && this.y.equals(vec2DFloat.getY());
+        } else {
+            return false;
+        }
+    }
+
 }

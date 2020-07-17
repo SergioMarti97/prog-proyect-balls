@@ -7,7 +7,7 @@ import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.util.ArrayList;
 
-public class Molecule implements Drawable, SelectableByMouse {
+public class Molecule implements Drawable {
 
     private Vec2DFloat position = new Vec2DFloat(0.0f, 0.0f);
 
@@ -16,6 +16,8 @@ public class Molecule implements Drawable, SelectableByMouse {
     private ArrayList<Atom> atoms;
 
     private boolean isShowingLinks = true;
+
+    private boolean isSelected = false;
 
     public Molecule() {
         atoms = new ArrayList<>();
@@ -44,6 +46,10 @@ public class Molecule implements Drawable, SelectableByMouse {
         return isShowingLinks;
     }
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
     public Atom getAtom(int index) {
         return atoms.get(index);
     }
@@ -60,7 +66,7 @@ public class Molecule implements Drawable, SelectableByMouse {
             if ( atom.getId() == idAtom ) {
                 Vec2DFloat linkPosition = atom.getLinkPosition(position);
                 newAtom.setPosition(linkPosition);
-                newAtom.setRotation(rotation + 60 * atoms.size());
+                newAtom.setRotation((rotation + 60 + atom.getRotation()) % 360);
                 atom.getLinkedAtomsIndexes().add(new IdAndPosition(newAtom.getId(), position));
             }
         }
@@ -69,30 +75,11 @@ public class Molecule implements Drawable, SelectableByMouse {
         atoms.add(newAtom);
     }
 
-    private void resetAllAtomsPositions(Vec2DFloat position) { // todo esto es una cosa recursiva, hacerlo de forma iterativa es un dolor de muelas
-        for ( Atom atom : atoms ) {
-            atom.setPosition(position);
-            for ( Atom atom1 : atoms ) {
-                for ( IdAndPosition linkedAtomIndex : atom.getLinkedAtomsIndexes() ) {
-                    if ( atom1.getId() == linkedAtomIndex.getId() ) {
-                        Vec2DFloat linkPosition = atom.getLinkPosition(linkedAtomIndex.getPosition());
-                        atom1.setPosition(linkPosition);
-                    }
-                }
-            }
-        }
-    }
-
-    private void resetAllAtomsPositions(float rotation) { // todo esto es una cosa recursiva, hacerlo de forma iterativa es un dolor de muelas
-        atoms.get(0).setRotation(rotation);
-        for ( Atom atom : atoms ) {
-            for ( Atom atom1 : atoms ) {
-                for ( IdAndPosition linkedAtomIndex : atom.getLinkedAtomsIndexes() ) {
-                    if ( atom1.getId() == linkedAtomIndex.getId() ) {
-                        Vec2DFloat linkPosition = atom.getLinkPosition(linkedAtomIndex.getPosition());
-                        atom1.setPosition(linkPosition);
-                    }
-                }
+    public void deleteAtom(Vec2DFloat position) {
+        for ( int i = atoms.size() - 1; i >= 0; i-- ) {
+            if ( atoms.get(i).getPosition().equals(position) ) {
+                atoms.remove(i);
+                break;
             }
         }
     }
@@ -104,14 +91,41 @@ public class Molecule implements Drawable, SelectableByMouse {
         }
     }
 
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     public void setPosition(Vec2DFloat position) {
+        float disX = position.getX() - this.position.getX();
+        float disY = position.getY() - this.position.getY();
+        for ( Atom atom : atoms ) {
+            float atomPositionX = atom.getPosition().getX();
+            float atomPositionY = atom.getPosition().getY();
+            atom.setPosition(new Vec2DFloat(atomPositionX + disX, atomPositionY + disY));
+        }
         this.position = position;
-        resetAllAtomsPositions(this.position);
     }
 
     public void setRotation(float rotation) {
+
+        Vec2DFloat mediumPosition = new Vec2DFloat();
+        for ( Atom atom : atoms ) {
+            mediumPosition.addToX(atom.getPosition().getX());
+            mediumPosition.addToY(atom.getPosition().getY());
+        }
+        float x = mediumPosition.getX() / atoms.size();
+        float y = mediumPosition.getY() / atoms.size();
+        mediumPosition.setX(x);
+        mediumPosition.setY(y);
+
+        for ( Atom atom : atoms ) {
+            float diffX = atom.getPosition().getX() - mediumPosition.getX();
+            float diffY = atom.getPosition().getY() - mediumPosition.getY();
+            Vec2DFloat difference = new Vec2DFloat(diffX, diffY);
+            ///difference.translateThisAngle();
+        }
+
         this.rotation = rotation;
-        resetAllAtomsPositions(rotation);
     }
 
     @Override
@@ -121,14 +135,18 @@ public class Molecule implements Drawable, SelectableByMouse {
         }
     }
 
-    @Override
-    public boolean isPointInside(float x, float y) {
+
+    public Atom isPointInside(float x, float y) {
         for ( Atom atom : atoms ) {
             if ( atom.isPointInside(x, y) ) {
-                return true;
+                return atom;
             }
         }
-        return false;
+        return null;
+    }
+
+    public Atom isPointInside(Vec2DFloat position) {
+        return isPointInside(position.getX(), position.getY());
     }
 
     public IdAndPosition isPointInsideALink(float x, float y) {
@@ -140,6 +158,10 @@ public class Molecule implements Drawable, SelectableByMouse {
             }
         }
         return null;
+    }
+
+    public IdAndPosition isPointInsideALink(Vec2DFloat position) {
+        return isPointInsideALink(position.getX(), position.getY());
     }
 
 }
