@@ -2,6 +2,14 @@ package engine;
 
 import java.awt.event.*;
 
+/**
+ * La clase que controla las entradas del ratón y el teclado.
+ *
+ * @class: Input.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     private GameContainer gc;

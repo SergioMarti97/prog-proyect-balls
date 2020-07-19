@@ -1,0 +1,15 @@
+engine
+engine.audio
+engine.engine3d
+engine.engine3d.orthographic
+engine.gfx
+engine.gfx.font
+engine.gfx.images
+engine.gfx.images.maths
+engine.gfx.shapes2d
+engine.gfx.shapes2d.points2d
+engine.gfx.shapes2d.shapes
+engine.physics
+gui
+programs
+programs.atoms

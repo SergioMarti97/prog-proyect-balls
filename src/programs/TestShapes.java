@@ -164,7 +164,7 @@ public class TestShapes extends AbstractGame {
             r.drawCircle(gc.getInput().getMouseX(), gc.getInput().getMouseY(), 2,0xffffffff);
         } else {
             r.drawLine(
-                    getScreenWidth() / 2, getScreenHeight() / 2,
+                    gc.getWidth() / 2, gc.getHeight() / 2,
                     gc.getInput().getMouseX(), gc.getInput().getMouseY(),
                     0xffE5B501);
         }

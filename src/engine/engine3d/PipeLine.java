@@ -36,7 +36,7 @@ public class PipeLine {
         viewMatrix = new Mat4x4();
         worldMatrix = new Mat4x4();
 
-        /* Esto es un cubo, siemmpre es útil a la hora de probar los gráficos en 3D */
+        /* Esto es un cubo, siempre es útil a la hora de probar los gráficos en 3D */
         cube = new Mesh();
         ArrayList<Triangle> tris = new ArrayList<>();
         // SOUTH
@@ -221,11 +221,9 @@ public class PipeLine {
 
                     }
                     if ( flag == RenderFlags.RENDER_WIRE ) {
-                        // todo aquí es donde iría la función para dibujar una malla
                         gfx.drawTriangleWire(triangleRasterized, 0xffffffff);
                     }
                     if ( flag == RenderFlags.RENDER_FLAT ) {
-                        // todo aquí es donde iría la función para dibujar un triangulo lleno...
                         gfx.drawTriangleFlat(triangleRasterized);
                     }
 

@@ -4,6 +4,15 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+/**
+ * Esta clase es el objeto que representa una imagen para
+ * poder dibujarla.
+ *
+ * @class: Image.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Image {
 
     private int w;

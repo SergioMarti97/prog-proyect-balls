@@ -22,8 +22,6 @@ public class TestMolecule extends AbstractGame {
 
     private Image[] images = new Image[NUM_ATOMS];
 
-    Vec2DFloat mousePosition = new Vec2DFloat();
-
     private TestMolecule(String title) {
         super(title);
     }
@@ -68,6 +66,7 @@ public class TestMolecule extends AbstractGame {
             molecule.setShowingLinks(!isShowingLinks);
         }
 
+        Vec2DFloat mousePosition;
         if ( gc.getInput().isButtonDown(1) ) {
             mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
             IdAndPosition idAndPosition = molecule.isPointInsideALink(mousePosition.getX(), mousePosition.getY());

@@ -41,7 +41,7 @@ public class OrthographicDungeon extends AbstractGame {
         super(title);
     }
 
-    private ArrayList<Vec3d> createCube(Vec2DInteger cell, float angle, float pitch, float scale, Vec3d camera) {
+    private ArrayList<Vec3d> createCube(Vec2DInteger cell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera) {
         int arraySize = 8;
         ArrayList<Vec3d> unitCube = new ArrayList<>();
         ArrayList<Vec3d> rotCube = new ArrayList<>();
@@ -93,8 +93,8 @@ public class OrthographicDungeon extends AbstractGame {
 
         // Project cube Orthographically - Full screen Centered
         for ( int i = 0; i < arraySize; i++ ) {
-            projectionCube.get(i).setX(worldCube.get(i).getX() + getScreenWidth() * 0.5f);
-            projectionCube.get(i).setY(worldCube.get(i).getY() + getScreenHeight() * 0.5f);
+            projectionCube.get(i).setX(worldCube.get(i).getX() + screenWidth * 0.5f);
+            projectionCube.get(i).setY(worldCube.get(i).getY() + screenHeight * 0.5f);
             projectionCube.get(i).setZ(worldCube.get(i).getZ());
         }
 
@@ -133,8 +133,8 @@ public class OrthographicDungeon extends AbstractGame {
         );
     }
 
-    private void getFaceQuads(Vec2DInteger vectorCell, float angle, float pitch, float scale, Vec3d camera, ArrayList<Quad> renderer) {
-        ArrayList<Vec3d> projectionCube = createCube(vectorCell, angle, pitch, scale, camera);
+    private void getFaceQuads(Vec2DInteger vectorCell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera, ArrayList<Quad> renderer) {
+        ArrayList<Vec3d> projectionCube = createCube(vectorCell, angle, pitch, scale, screenWidth, screenHeight, camera);
         Cell cell = world.getCell(vectorCell);
         if ( !cell.isWall() ) {
             if ( visible[Integer.parseInt(String.valueOf(Face.FLOOR))] ) {
@@ -324,7 +324,7 @@ public class OrthographicDungeon extends AbstractGame {
 
         ArrayList<Vec3d> cullCube = createCube(
                 new Vec2DInteger(0, 0),
-                cameraAngle, cameraPitch, cameraZoom,
+                cameraAngle, cameraPitch, cameraZoom, gc.getWidth(), gc.getHeight(),
                 new Vec3d(
                         cameraPos.getX(),
                         0.0f,
@@ -336,7 +336,7 @@ public class OrthographicDungeon extends AbstractGame {
             for ( int x = 0; x < world.getSize().getX(); x++ ) {
                 getFaceQuads(
                         new Vec2DInteger(x, y),
-                        cameraAngle, cameraPitch, cameraZoom,
+                        cameraAngle, cameraPitch, cameraZoom, gc.getWidth(), gc.getHeight(),
                         new Vec3d(
                                 cameraPos.getX(),
                                 0.0f,
@@ -352,7 +352,7 @@ public class OrthographicDungeon extends AbstractGame {
         tileCursor.multiply(tileSize);
         //r.drawImageTile((ImageTile)rendAllWalls.getImage(), tileCursor.getX(), tileSize.getX(), 10, 10); // todo esto es mal.
         quads.clear();
-        getFaceQuads(cursor, cameraAngle, cameraPitch, cameraZoom, new Vec3d(cameraPos.getX(), 0.0f, cameraPos.getY()), quads);
+        getFaceQuads(cursor, cameraAngle, cameraPitch, cameraZoom, gc.getWidth(), gc.getHeight(), new Vec3d(cameraPos.getX(), 0.0f, cameraPos.getY()), quads);
         for (Quad q : quads){
             //r.drawImageTile(rendSelect.decal, {{q.points[0].x, q.points[0].y}, {q.points[1].x, q.points[1].y}, {q.points[2].x, q.points[2].y}, {q.points[3].x, q.points[3].y}});
         }

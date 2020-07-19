@@ -14,6 +14,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+/**
+ * Es la clase de renderización. Aquí es donde están todos los
+ * métodos de dibujado. Los métodos están pensandos para trabajar
+ * sobre un array unidimensional de pixeles.
+ * En este caso los pixeles son ints. En estos ints se almacenan
+ * códigos tipo hexadecimales (cómo 0xff000000 = negro) que
+ * posteriormente se interpretarán como colores.
+ *
+ * @class: Renderer.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Renderer {
 
     protected Font font = Font.STANDARD24;

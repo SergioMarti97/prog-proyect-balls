@@ -1,14 +1,25 @@
 package engine;
 
 import engine.gfx.Renderer;
-
 import java.awt.event.KeyEvent;
 
+/**
+ * La <class>GameContainer</class> es la clase que se encarga de gestionar
+ * todos los programas. Principalmente contiene el código del bucle del programa.
+ * Se encarga de crear la ventana <class>Window</class>, crear el controlador de
+ * las entradas de teclado y ratón <class>Input</class> y el objeto que se encarga
+ * de dibujar <class>Renderer</class>.
+ *
+ * @class: GameContainer.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class GameContainer implements Runnable {
 
     private final double UPDATE_CAP = 1.0 / 60.0;
 
-    private final String NAME_VERSION = "pre-alpha";
+    private final String NAME_VERSION = "0.0.01 pre-alpha";
 
     private Window window;
 
@@ -20,11 +31,11 @@ public class GameContainer implements Runnable {
 
     private String title;
 
-    private int width;
+    private int width = 1080;
 
-    private int height;
+    private int height = 720;
 
-    private float scale;
+    private float scale = 1.0f;
 
     private double frameTime = 0;
 
@@ -40,19 +51,35 @@ public class GameContainer implements Runnable {
 
     private boolean isShowingInformation = false;
 
+    /**
+     * Es el constructor de la clase.
+     * @param game es el programa, aplicación o juego que se va a manejar/controlar.
+     */
     public GameContainer(AbstractGame game) {
         this.game = game;
-        width = game.getScreenWidth();
-        height = game.getScreenHeight();
-        scale = game.getScreenScale();
         title = game.getTitle();
     }
 
+    /**
+     * Este método muestra información por pantalla interesante
+     * como los fps, o la posición del ratón en pantalla.
+     */
     private void showInformation() {
         renderer.drawText("FPS:" + fps, 0, 0, 0xffffffff );
         renderer.drawText("Mouse X: " + getInput().getMouseX() + " Y: " + getInput().getMouseY(), 0, 25, 0xffffffff);
     }
 
+    /**
+     * Es el método el cual se llama para ejectuar el programa. En este método se
+     * instancian los campos de:
+     * - <class>Window</class>: la ventana del programa.
+     * - <class>Renderer</class>: el renderizador, o la clase que tiene todos los métodos de dibujado.
+     * - <class>input</class>: el controlador de las entradas del programa. Cliks, teclas, etc...
+     * También es donde se llama al <method>initialize</method> de <class>AbstractGame</class>,
+     * por lo cual también se instancian todos los objetos que tenga el programa, juego o
+     * aplicación.
+     * Por último, también se llama a <method>run</method> del campo <field>thread</field>.
+     */
     public void start() {
         window = new Window(this);
         renderer = new Renderer(this);
@@ -63,10 +90,23 @@ public class GameContainer implements Runnable {
         thread.run();
     }
 
+    /**
+     * Es el método al cual se tiene que llamar si se quiere parar el programa.
+     */
     public void stop() {
         running = false;
     }
 
+    /**
+     * Este método hereda de <interface>Runnable</interface>. Se ejecuta
+     * en el hilo de ejecución de <class>GameContainer</class>. Aquí es donde
+     * se encuentra el bucle del programa, donde se calculan los "frames" por
+     * segundo y el tiempo transcurrido entre actualización y actualización.
+     * Además, aquí es donde se llaman a los métodos <method>update</method> y
+     * <method>render</method> de <class>AbstractGame</class>. Es la parte
+     * más importante de esta clase.
+     * @see Runnable
+     */
     @Override
     public void run() {
         boolean render;
@@ -127,7 +167,10 @@ public class GameContainer implements Runnable {
         dispose();
     }
 
-    public void dispose() {
+    /**
+     * Este método no se que hace.
+     */
+    private void dispose() {
 
     }
 

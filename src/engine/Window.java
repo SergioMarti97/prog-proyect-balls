@@ -5,6 +5,15 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 
+/**
+ * La clase que controla la ventana. Se construye con la
+ * información presente en <class>GameContainer</class>
+ *
+ * @class: Window.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Window {
 
     private JFrame frame;

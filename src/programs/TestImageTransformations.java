@@ -82,8 +82,8 @@ public class TestImageTransformations extends AbstractGame {
             float velX = velocity.getX();
             velocity.setX(-velX);
         }
-        if ( position.getX() > getScreenWidth() - (image.getW() / 2.0f)  ) {
-            position.setX((float)(getScreenWidth()) - (image.getW() / 2.0f));
+        if ( position.getX() > gc.getWidth() - (image.getW() / 2.0f)  ) {
+            position.setX((float)(gc.getWidth()) - (image.getW() / 2.0f));
             float velX = velocity.getX();
             velocity.setX(-velX);
         }
@@ -92,8 +92,8 @@ public class TestImageTransformations extends AbstractGame {
             float velY = velocity.getY();
             velocity.setY(-velY);
         }
-        if ( position.getY() > getScreenHeight() - (image.getH() / 2.0f) ) {
-            position.setY((float)(getScreenHeight()) - (image.getH() / 2.0f));
+        if ( position.getY() > gc.getHeight() - (image.getH() / 2.0f) ) {
+            position.setY((float)(gc.getHeight()) - (image.getH() / 2.0f));
             float velY = velocity.getY();
             velocity.setY(-velY);
         }
