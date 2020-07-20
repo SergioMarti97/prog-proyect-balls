@@ -1,6 +1,6 @@
 <h1>Sergio Game Engine. V. 0.0.01 pre-alfa.</h1>
-<p>Este es un proyecto programado en Java con el cual quiero crear un motor simple que permita crear de una forma rápida 
-y sencilla, aplicaciones de ventana.</p>
+<p>Este es un proyecto programado en Java con el cual quiero crear un motor simple que de una forma rápida y sencilla, 
+permita desarrollar aplicaciones de ventana en Windows.</p>
 <p>Fecha de creación del proyecto: 06/07/2020.</p>
 <h2>Descripción del proyecto</h2>
 <p>El término motor de videojuego (en inglés game engine), o simplemente motor de juego, hace referencia a una serie de 
@@ -144,5 +144,5 @@ son muy bajos.</p>
 <h2>Creditos y Agradecimientos</h2>
 <p>Muchísimas gracias a David Barr y la comunidad de OneLoneCoder. También infinitas gracias a mi padre 
 Rubén Martí Torregrosa por enseñarme a programar y por su paciencia inacabable. Por último agradecer también 
-el trabajo dey a Alexandre Coloma I Gisbert como tutor y a todo el equipo de profesores del centro educativo 
+el trabajo de a Alexandre Coloma I Gisbert como tutor y a todo el equipo de profesores del centro educativo 
 CIPFP Batoi por enseñarme a programar en Java e introducirme en el mundo de la informática.</p>
