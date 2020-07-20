@@ -1,7 +1,7 @@
 package engine.gfx.shapes2d.points2d;
 
 import engine.gfx.Renderer;
-import engine.gfx.shapes2d.Drawable;
+import engine.gfx.Drawable;
 
 public abstract class Vec2D<T> implements Drawable {
 

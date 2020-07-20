@@ -2,6 +2,17 @@ package engine.gfx.images.maths;
 
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
+/**
+ * Esta clase contiene las operaciones necesarias para realizar transformaciones
+ * a imagenes. Quizá en un futuro se deba de generalizar las clases de las
+ * matrices, vetores y las operaciones entre ellas. Sería una forma más
+ * fácil de mantener el código.
+ *
+ * @class: MatrixOperations.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class MatrixOperations {
 
     public static Vec2DFloat forward(Matrix3x3Float matrix, float in_x, float in_y) {

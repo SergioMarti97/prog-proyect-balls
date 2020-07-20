@@ -3,7 +3,7 @@ package programs;
 import engine.AbstractGame;
 import engine.GameContainer;
 import engine.gfx.Renderer;
-import gui.GUIWindow;
+import engine.gui.GUIWindow;
 
 public class TestGUIS extends AbstractGame {
 

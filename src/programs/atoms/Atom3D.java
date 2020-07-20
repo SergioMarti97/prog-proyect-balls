@@ -1,8 +1,8 @@
 package programs.atoms;
 
-import engine.engine3d.Mat4x4;
-import engine.engine3d.MatrixMath;
-import engine.engine3d.Vec3d;
+import engine.gfx.engine3d.normal.Mat4x4;
+import engine.gfx.engine3d.normal.MatrixMath;
+import engine.gfx.engine3d.normal.Vec3d;
 
 public class Atom3D {
 

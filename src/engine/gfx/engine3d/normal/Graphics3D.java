@@ -1,4 +1,4 @@
-package engine.engine3d;
+package engine.gfx.engine3d.normal;
 
 import engine.GameContainer;
 import engine.gfx.images.Image;

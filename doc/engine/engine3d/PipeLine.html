@@ -99,7 +99,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <!-- ======== START OF CLASS DATA ======== -->
 <main role="main">
 <div class="header">
-<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">engine.engine3d</a></div>
+<div class="subTitle"><span class="packageLabelInType">Package</span>&nbsp;<a href="package-summary.html">engine.gfx.engine3d</a></div>
 <h2 title="Class PipeLine" class="title">Class PipeLine</h2>
 </div>
 <div class="contentContainer">
@@ -107,7 +107,7 @@ $('.navPadding').css('padding-top', $('.fixedNav').css("height"));
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>engine.engine3d.PipeLine</li>
+<li>engine.gfx.engine3d.normal.PipeLine</li>
 </ul>
 </li>
 </ul>
@@ -140,22 +140,22 @@ extends java.lang.Object</pre>
 </tr>
 <tbody>
 <tr class="altColor">
-<td class="colFirst"><code>private <a href="Mesh.html" title="class in engine.engine3d">Mesh</a></code></td>
+<td class="colFirst"><code>private <a href="Mesh.html" title="class in engine.gfx.engine3d">Mesh</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#cube">cube</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>private <a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a></code></td>
+<td class="colFirst"><code>private <a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#gfx">gfx</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a></code></td>
+<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#projectionMatrix">projectionMatrix</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>private <a href="RenderFlags.html" title="enum in engine.engine3d">RenderFlags</a></code></td>
+<td class="colFirst"><code>private <a href="RenderFlags.html" title="enum in engine.gfx.engine3d">RenderFlags</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#renderFlag">renderFlag</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -170,7 +170,7 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a></code></td>
+<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#viewMatrix">viewMatrix</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -190,7 +190,7 @@ extends java.lang.Object</pre>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a></code></td>
+<td class="colFirst"><code>private <a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#worldMatrix">worldMatrix</a></span></code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -243,42 +243,42 @@ extends java.lang.Object</pre>
 </tr>
 <tbody>
 <tr class="altColor" id="i0">
-<td class="colFirst"><code><a href="Mesh.html" title="class in engine.engine3d">Mesh</a></code></td>
+<td class="colFirst"><code><a href="Mesh.html" title="class in engine.gfx.engine3d">Mesh</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getCube()">getCube</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor" id="i1">
-<td class="colFirst"><code><a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a></code></td>
+<td class="colFirst"><code><a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a></code></td>
 <th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#getGfx()">getGfx</a></span>()</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor" id="i2">
 <td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#render(java.util.ArrayList)">render</a></span>&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.engine3d">Triangle</a>&gt;&nbsp;triangles)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#render(java.util.ArrayList)">render</a></span>&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.gfx.engine3d">Triangle</a>&gt;&nbsp;triangles)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor" id="i3">
 <td class="colFirst"><code>int</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#render(java.util.ArrayList,engine.engine3d.RenderFlags)">render</a></span>&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.engine3d">Triangle</a>&gt;&nbsp;triangles,
-      <a href="RenderFlags.html" title="enum in engine.engine3d">RenderFlags</a>&nbsp;flag)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#render(java.util.ArrayList,engine.gfx.engine3d.RenderFlags)">render</a></span>&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.gfx.engine3d">Triangle</a>&gt;&nbsp;triangles,
+      <a href="RenderFlags.html" title="enum in engine.gfx.engine3d">RenderFlags</a>&nbsp;flag)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor" id="i4">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCamera(engine.engine3d.Vec3d,engine.engine3d.Vec3d,engine.engine3d.Vec3d)">setCamera</a></span>&#8203;(<a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;pos,
-         <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;lookAt,
-         <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;up)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setCamera(engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.Vec3d)">setCamera</a></span>&#8203;(<a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;pos,
+         <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;lookAt,
+         <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;up)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="rowColor" id="i5">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGfx(engine.engine3d.Graphics3D)">setGfx</a></span>&#8203;(<a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a>&nbsp;gfx)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setGfx(engine.gfx.engine3d.Graphics3D)">setGfx</a></span>&#8203;(<a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a>&nbsp;gfx)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 <tr class="altColor" id="i6">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLightSource(engine.engine3d.Vec3d,engine.engine3d.Vec3d,int)">setLightSource</a></span>&#8203;(<a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;pos,
-              <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;dir,
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setLightSource(engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.normal.Vec3d,int)">setLightSource</a></span>&#8203;(<a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;pos,
+              <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;dir,
               int&nbsp;color)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
@@ -301,7 +301,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr class="rowColor" id="i9">
 <td class="colFirst"><code>void</code></td>
-<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTransform(engine.engine3d.Mat4x4)">setTransform</a></span>&#8203;(<a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a>&nbsp;transform)</code></th>
+<th class="colSecond" scope="row"><code><span class="memberNameLink"><a href="#setTransform(engine.gfx.engine3d.Mat4x4)">setTransform</a></span>&#8203;(<a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a>&nbsp;transform)</code></th>
 <td class="colLast">&nbsp;</td>
 </tr>
 </tbody>
@@ -337,7 +337,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>renderFlag</h4>
-<pre>private&nbsp;<a href="RenderFlags.html" title="enum in engine.engine3d">RenderFlags</a> renderFlag</pre>
+<pre>private&nbsp;<a href="RenderFlags.html" title="enum in engine.gfx.engine3d">RenderFlags</a> renderFlag</pre>
 </li>
 </ul>
 <a id="gfx">
@@ -346,7 +346,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>gfx</h4>
-<pre>private&nbsp;<a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a> gfx</pre>
+<pre>private&nbsp;<a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a> gfx</pre>
 </li>
 </ul>
 <a id="projectionMatrix">
@@ -355,7 +355,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>projectionMatrix</h4>
-<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a> projectionMatrix</pre>
+<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a> projectionMatrix</pre>
 </li>
 </ul>
 <a id="viewMatrix">
@@ -364,7 +364,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>viewMatrix</h4>
-<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a> viewMatrix</pre>
+<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a> viewMatrix</pre>
 </li>
 </ul>
 <a id="worldMatrix">
@@ -373,7 +373,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>worldMatrix</h4>
-<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a> worldMatrix</pre>
+<pre>private&nbsp;<a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a> worldMatrix</pre>
 </li>
 </ul>
 <a id="texture">
@@ -427,7 +427,7 @@ extends java.lang.Object</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>cube</h4>
-<pre>private&nbsp;<a href="Mesh.html" title="class in engine.engine3d">Mesh</a> cube</pre>
+<pre>private&nbsp;<a href="Mesh.html" title="class in engine.gfx.engine3d">Mesh</a> cube</pre>
 </li>
 </ul>
 </li>
@@ -475,24 +475,24 @@ extends java.lang.Object</pre>
                           float&nbsp;height)</pre>
 </li>
 </ul>
-<a id="setCamera(engine.engine3d.Vec3d,engine.engine3d.Vec3d,engine.engine3d.Vec3d)">
+<a id="setCamera(engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.Vec3d)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setCamera</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setCamera&#8203;(<a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;pos,
-                      <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;lookAt,
-                      <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;up)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setCamera&#8203;(<a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;pos,
+                      <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;lookAt,
+                      <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;up)</pre>
 </li>
 </ul>
-<a id="setTransform(engine.engine3d.Mat4x4)">
+<a id="setTransform(engine.gfx.engine3d.Mat4x4)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setTransform</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setTransform&#8203;(<a href="Mat4x4.html" title="class in engine.engine3d">Mat4x4</a>&nbsp;transform)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setTransform&#8203;(<a href="Mat4x4.html" title="class in engine.gfx.engine3d">Mat4x4</a>&nbsp;transform)</pre>
 </li>
 </ul>
 <a id="setTexture(engine.gfx.images.Image)">
@@ -504,25 +504,25 @@ extends java.lang.Object</pre>
 <pre class="methodSignature">public&nbsp;void&nbsp;setTexture&#8203;(<a href="../gfx/images/Image.html" title="class in engine.gfx.images">Image</a>&nbsp;texture)</pre>
 </li>
 </ul>
-<a id="setLightSource(engine.engine3d.Vec3d,engine.engine3d.Vec3d,int)">
+<a id="setLightSource(engine.gfx.engine3d.normal.Vec3d,engine.gfx.engine3d.normal.Vec3d,int)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setLightSource</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setLightSource&#8203;(<a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;pos,
-                           <a href="Vec3d.html" title="class in engine.engine3d">Vec3d</a>&nbsp;dir,
+<pre class="methodSignature">public&nbsp;void&nbsp;setLightSource&#8203;(<a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;pos,
+                           <a href="Vec3d.html" title="class in engine.gfx.engine3d">Vec3d</a>&nbsp;dir,
                            int&nbsp;color)</pre>
 </li>
 </ul>
-<a id="render(java.util.ArrayList,engine.engine3d.RenderFlags)">
+<a id="render(java.util.ArrayList,engine.gfx.engine3d.RenderFlags)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>render</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;render&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.engine3d">Triangle</a>&gt;&nbsp;triangles,
-                  <a href="RenderFlags.html" title="enum in engine.engine3d">RenderFlags</a>&nbsp;flag)</pre>
+<pre class="methodSignature">public&nbsp;int&nbsp;render&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.gfx.engine3d">Triangle</a>&gt;&nbsp;triangles,
+                  <a href="RenderFlags.html" title="enum in engine.gfx.engine3d">RenderFlags</a>&nbsp;flag)</pre>
 </li>
 </ul>
 <a id="render(java.util.ArrayList)">
@@ -531,7 +531,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>render</h4>
-<pre class="methodSignature">public&nbsp;int&nbsp;render&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.engine3d">Triangle</a>&gt;&nbsp;triangles)</pre>
+<pre class="methodSignature">public&nbsp;int&nbsp;render&#8203;(java.util.ArrayList&lt;<a href="Triangle.html" title="class in engine.gfx.engine3d">Triangle</a>&gt;&nbsp;triangles)</pre>
 </li>
 </ul>
 <a id="getGfx()">
@@ -540,16 +540,16 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getGfx</h4>
-<pre class="methodSignature">public&nbsp;<a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a>&nbsp;getGfx()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a>&nbsp;getGfx()</pre>
 </li>
 </ul>
-<a id="setGfx(engine.engine3d.Graphics3D)">
+<a id="setGfx(engine.gfx.engine3d.Graphics3D)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setGfx</h4>
-<pre class="methodSignature">public&nbsp;void&nbsp;setGfx&#8203;(<a href="Graphics3D.html" title="class in engine.engine3d">Graphics3D</a>&nbsp;gfx)</pre>
+<pre class="methodSignature">public&nbsp;void&nbsp;setGfx&#8203;(<a href="Graphics3D.html" title="class in engine.gfx.engine3d">Graphics3D</a>&nbsp;gfx)</pre>
 </li>
 </ul>
 <a id="getCube()">
@@ -558,7 +558,7 @@ extends java.lang.Object</pre>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getCube</h4>
-<pre class="methodSignature">public&nbsp;<a href="Mesh.html" title="class in engine.engine3d">Mesh</a>&nbsp;getCube()</pre>
+<pre class="methodSignature">public&nbsp;<a href="Mesh.html" title="class in engine.gfx.engine3d">Mesh</a>&nbsp;getCube()</pre>
 </li>
 </ul>
 </li>

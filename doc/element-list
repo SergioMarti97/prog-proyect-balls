@@ -1,7 +1,7 @@
 engine
 engine.audio
-engine.engine3d
-engine.engine3d.orthographic
+engine.gfx.engine3d
+engine.gfx.engine3d.orthographic
 engine.gfx
 engine.gfx.font
 engine.gfx.images
@@ -10,6 +10,6 @@ engine.gfx.shapes2d
 engine.gfx.shapes2d.points2d
 engine.gfx.shapes2d.shapes
 engine.physics
-gui
+engine.gui
 programs
 programs.atoms

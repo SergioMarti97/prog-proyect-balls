@@ -1,4 +1,4 @@
-package engine.engine3d.orthographic;
+package engine.gfx.engine3d.orthographic;
 
 import engine.gfx.shapes2d.points2d.Vec2DInteger;
 

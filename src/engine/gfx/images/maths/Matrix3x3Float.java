@@ -1,7 +1,14 @@
 package engine.gfx.images.maths;
 
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
-
+/**
+ * Una matriz de 3x3 de tipo float. Se utiliza principalmente para
+ * hacer transformaciones a imagenes.
+ *
+ * @class: Matrix3x3Float.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Matrix3x3Float extends Matrix3x3<Float> {
 
     public Matrix3x3Float() {

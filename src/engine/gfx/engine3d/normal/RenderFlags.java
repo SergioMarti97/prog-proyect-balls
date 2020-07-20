@@ -1,4 +1,4 @@
-package engine.engine3d;
+package engine.gfx.engine3d.normal;
 
 public enum RenderFlags {
     RENDER_WIRE,

@@ -26,9 +26,15 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
-public class FontCreator extends JFrame
-{
+/**
+ * Esta clase no la he escrito yo. Pero es un creador de tipografias.
+ *
+ * @class: FontCreator.
+ * @autor: Unknown.
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
+public class FontCreator extends JFrame {
 
     /**
      *

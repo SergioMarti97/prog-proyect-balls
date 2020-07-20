@@ -1,8 +1,8 @@
-package gui;
+package engine.gui;
 
 import engine.Input;
-import engine.gfx.shapes2d.Drawable;
-import engine.gfx.shapes2d.SelectableByMouse;
+import engine.gfx.Drawable;
+import engine.gfx.SelectableByMouse;
 
 public abstract class GUIElement implements Drawable, SelectableByMouse {
 

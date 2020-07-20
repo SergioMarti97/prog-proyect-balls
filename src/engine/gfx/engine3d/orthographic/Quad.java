@@ -1,6 +1,6 @@
-package engine.engine3d.orthographic;
+package engine.gfx.engine3d.orthographic;
 
-import engine.engine3d.Vec3d;
+import engine.gfx.engine3d.normal.Vec3d;
 import engine.gfx.shapes2d.points2d.Vec2DInteger;
 
 public class Quad {

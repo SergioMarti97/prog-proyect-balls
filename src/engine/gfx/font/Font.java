@@ -2,6 +2,14 @@ package engine.gfx.font;
 
 import engine.gfx.images.Image;
 
+/**
+ * Esta clase es la fuente de la tipografía de los textos que se muestran por pantalla.
+ *
+ * @class: Font.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Font {
 
     public static final Font STANDARD = new Font("/fonts/consolas.png");

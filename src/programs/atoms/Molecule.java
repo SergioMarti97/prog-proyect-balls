@@ -1,8 +1,7 @@
 package programs.atoms;
 
 import engine.gfx.Renderer;
-import engine.gfx.shapes2d.Drawable;
-import engine.gfx.shapes2d.SelectableByMouse;
+import engine.gfx.Drawable;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.util.ArrayList;

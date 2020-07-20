@@ -2,8 +2,8 @@ package programs.atoms;
 
 import engine.AbstractGame;
 import engine.GameContainer;
-import engine.engine3d.*;
 import engine.gfx.Renderer;
+import engine.gfx.engine3d.normal.*;
 import engine.gfx.images.Image;
 import engine.gfx.images.maths.Matrix3x3Float;
 import engine.gfx.images.maths.MatrixOperations;

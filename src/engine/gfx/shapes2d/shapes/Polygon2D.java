@@ -6,18 +6,55 @@ import engine.gfx.shapes2d.points2d.Vec2DFloat;
 
 import java.util.ArrayList;
 
+/**
+ * Esta clase permite representar un poligno de "n" número de vertices.
+ * Además, incluye distintas funciones para transladar el polígono,
+ * escalarlo o rotarlo.
+ *
+ * @class: Polygon2D.
+ * @autor: Sergio Martí Torregrosa. sMartiTo
+ * @version: 0.0.01 pre-alpha.
+ * @date: 2020-07-06
+ */
 public class Polygon2D extends Shape2D {
 
+    /**
+     * El número de vertices del polígono.
+     */
     protected int numVertex;
 
+    /**
+     * Son los puntos de los vertices del polígono sin modificar,
+     * es decir, los originales.
+     */
     protected ArrayList<Vec2DFloat> pShape;
 
+    /**
+     * Son los puntos de los vertices del polígono modificados,
+     * es decir, después de haber sido escalados, rotados, escalados...
+     */
     protected ArrayList<Vec2DFloat> pFinal;
 
+    /**
+     * El centro teórico de la figura.
+     */
     protected Vec2DFloat theoreticalCenter;
 
+    /**
+     * El ángulo de rotación de la figura.
+     */
     protected float angle = 0.0f;
 
+    /**
+     * Constructor, en este caso sería el constructor nulo;
+     * ya que no se definen los vertices que conforman el
+     * polígono.
+     *
+     * @param posX Posición X del polígono.
+     * @param posY Posición Y del polígono.
+     * @param size Tamaño del polígono.
+     * @param color El color del polígno.
+     */
     public Polygon2D(float posX, float posY, float size, int color) {
         super(posX, posY, color);
         this.size = size;
@@ -27,6 +64,17 @@ public class Polygon2D extends Shape2D {
         numVertex = 0;
     }
 
+    /**
+     * Constructor, mediante un array de puntos para los vértices
+     * del polígono.
+     *
+     * @param posX Posición X del polígono.
+     * @param posY Posición Y del polígono.
+     * @param size Tamaño del polígono.
+     * @param color El color del polígno.
+     * @param points Los puntos que conforman el poligono. Se utiliza un array
+     *               de objetos <class>Vec2DFloat</class>.
+     */
     public Polygon2D(float posX, float posY, float size, int color, Vec2DFloat... points) {
         super(posX, posY, color);
         this.size = size;
@@ -43,6 +91,17 @@ public class Polygon2D extends Shape2D {
         rotateScaleOffsetPoints();
     }
 
+
+    /**
+     * Constructor, mediante un arrayList de puntos <class>Vec2DFloat</class>
+     * para los vértices del polígono.
+     *
+     * @param posX Posición X del polígono.
+     * @param posY Posición Y del polígono.
+     * @param p <class>ArrayList</class>
+     * @param size Tamaño del polígono.
+     * @param color El color del polígno.
+     */
     public Polygon2D(float posX, float posY, ArrayList<Vec2DFloat> p, float size, int color) {
         super(posX, posY, color);
         this.size = size;
@@ -55,6 +114,17 @@ public class Polygon2D extends Shape2D {
         rotateScaleOffsetPoints();
     }
 
+    /**
+     * Constructor para un polígono regular. Solo hace falta indicar
+     * el número de vertices, y el constructor se encarga de crear
+     * el polígono regular.
+     *
+     * @param posX Posición X del polígono.
+     * @param posY Posición Y del polígono.
+     * @param size Tamaño del polígono.
+     * @param numVertex Número de vertices el polígono regular.
+     * @param color El color del polígono.
+     */
     public Polygon2D(float posX, float posY, float size, int numVertex, int color) {
         super(posX, posY, color);
         this.size = size;
@@ -79,8 +149,9 @@ public class Polygon2D extends Shape2D {
     }
 
     /**
-     * calculateTheoreticalCenter()
-     * Calcula el centro teórico. Hay varias formas pero lo voy a hacer mediante la media de todos los puntos.
+     * Calcula el centro teórico. Hay varias formas de hacerlo.
+     * En este caso se calcula mediante la media de todos los puntos
+     * que forman el poligono.
      */
     protected void calculateTheoreticalCenter(){
         float sumX = 0;
@@ -94,6 +165,10 @@ public class Polygon2D extends Shape2D {
         theoreticalCenter = new Vec2DFloat(sumX, sumY);
     }
 
+    /**
+     * Este método calcula las posiciónes finales de los vertices
+     * del polígono.
+     */
     protected void rotateScaleOffsetPoints() {
         for (int i = 0; i < numVertex; i++ ) {
             Vec2DFloat point = new Vec2DFloat(pShape.get(i).getX(), pShape.get(i).getY());
@@ -106,6 +181,24 @@ public class Polygon2D extends Shape2D {
         }
     }
 
+    /**
+     * Hay distintas formas de pintar un polígo sólido. En esta versión aún
+     * no se ha implementado el código para poder rellenar un poligono.
+     * Una primera aproximación es dividir el polígono en triángulos,
+     * y gracias a que Renderer tiene un método para pintar un triángulo
+     * relleno "drawFillTriangle", se pintan los triangulos que conforman el
+     * polígono.
+     *
+     * El problema es que la triangulación de polígonos es un tema de programación
+     * muy complicado. La forma más simple, pero que incrementa mucho el número
+     * de triangulos en los que se subdivide un polígono y por lo tanto el costo,
+     * es crear los triangulos desde el centro a los vertices. Como si fuera
+     * una tarta.
+     *
+     * @param r El objeto <class>Renderer</class> que tiene todos los métodos de dibujado.
+     * @see Renderer
+     * @see "https://en.wikipedia.org/wiki/Polygon_triangulation"
+     */
     private void drawSolidPolygon(Renderer r) {
         r.drawPolygon(pFinal, color);
         if ( pFinal.size() > 4 ) {
@@ -118,6 +211,11 @@ public class Polygon2D extends Shape2D {
         }
     }
 
+    /**
+     * El método de dibujado del polígono.
+     *
+     * @param r Es el objeto <class>Renderer</class> que sirve para poder utilizar todos los métodos de dibujado.
+     */
     @Override
     public void drawYourSelf(Renderer r) {
         switch ( wayToRender) {
@@ -149,6 +247,13 @@ public class Polygon2D extends Shape2D {
         super.drawYourSelf(r);
     }
 
+    /**
+     * El método para saber si un punto esta dentro del polígono o no.
+     *
+     * @param x La posición x del punto que se va a probar si esta dentro del área.
+     * @param y La posición y del punto que se va a probar si esta dentro del área.
+     * @return Devuelve si el punto esta dentro o fuera del área del polígono.
+     */
     @Override
     public boolean isPointInside(float x, float y) {
         return Math.abs((posX - x) * (posX - x) + (posY - y) * (posY - y)) <= (size * size);

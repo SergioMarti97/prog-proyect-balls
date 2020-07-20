@@ -8,7 +8,12 @@ import java.awt.event.KeyEvent;
  * todos los programas. Principalmente contiene el código del bucle del programa.
  * Se encarga de crear la ventana <class>Window</class>, crear el controlador de
  * las entradas de teclado y ratón <class>Input</class> y el objeto que se encarga
- * de dibujar <class>Renderer</class>.
+ * de dibujar por pantalla <class>Renderer</class>.
+ *
+ * Clase copiada del canal de Youtube Majoolwip.
+ * "https://www.youtube.com/channel/UCYdJWlQWeuhDZicBbxM0-mg"
+ * Vídeo: "2D Java Game Engine #1 : Game Loop"
+ * @see "https://www.youtube.com/watch?v=4iPEjFUZNsw"
  *
  * @class: GameContainer.
  * @autor: Sergio Martí Torregrosa. sMartiTo

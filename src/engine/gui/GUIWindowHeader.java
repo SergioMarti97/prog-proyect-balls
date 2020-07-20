@@ -1,4 +1,4 @@
-package gui;
+package engine.gui;
 
 import engine.Input;
 import engine.gfx.Renderer;

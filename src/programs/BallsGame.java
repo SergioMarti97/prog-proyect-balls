@@ -3,7 +3,7 @@ package programs;
 import engine.AbstractGame;
 import engine.GameContainer;
 import engine.audio.SoundClip;
-import engine.engine3d.Vec2d;
+import engine.gfx.engine3d.normal.Vec2d;
 import engine.gfx.Renderer;
 import engine.physics.Ball;
 import engine.physics.CollidingShapes;

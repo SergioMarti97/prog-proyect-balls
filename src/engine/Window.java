@@ -28,6 +28,16 @@ public class Window {
 
     private GameContainer gc;
 
+    /**
+     * Este método es el que crea:
+     * - la imágen <class>BufferedImage</class>.
+     * - El frame <class>JFrame</class>. Es la própia clase del paquete <package>swing</package> de Java que
+     *   crea la ventana.
+     * - El canvas o lienzo <class>Canvas</class>.
+     * - El bufferStrategy <class>BufferStrategy</class>.
+     * - El objeto de gráficos <class>Graphics</class>.
+     * @param gc El objeto de la clase <class>GameContainer</class>, que contiene toda la información de la aplicación.
+     */
     public Window(GameContainer gc) {
         this.gc = gc;
         image = new BufferedImage(gc.getWidth(), gc.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -52,6 +62,10 @@ public class Window {
         g = bs.getDrawGraphics();
     }
 
+    /**
+     * El método update se encarga de actualizar el título de la barra de título de la ventana
+     * y de redibujar la ventana.
+     */
     public void update() {
         frame.setTitle(gc.getTitle());
         g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
