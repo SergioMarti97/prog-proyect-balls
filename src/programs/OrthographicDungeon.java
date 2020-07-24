@@ -5,6 +5,7 @@ import engine.GameContainer;
 import engine.gfx.engine3d.normal.Vec3d;
 import engine.gfx.engine3d.orthographic.*;
 import engine.gfx.Renderer;
+import engine.gfx.images.ImageTile;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
 import engine.gfx.shapes2d.points2d.Vec2DInteger;
 

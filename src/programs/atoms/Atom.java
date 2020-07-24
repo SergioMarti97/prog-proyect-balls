@@ -26,7 +26,7 @@ public class Atom implements Drawable, SelectableByMouse {
 
     private ArrayList<Vec2DFloat> linkPositions = new ArrayList<>();
 
-    private ArrayList<IdAndPosition> linkedAtomsIndexes = new ArrayList<>();
+    private ArrayList<IdAndPos> linkedAtomsIndexes = new ArrayList<>();
 
     private boolean isShowingLinks = true;
 
@@ -95,7 +95,7 @@ public class Atom implements Drawable, SelectableByMouse {
         return linkPositions.get(id);
     }
 
-    public ArrayList<IdAndPosition> getLinkedAtomsIndexes() {
+    public ArrayList<IdAndPos> getLinkedAtomsIndexes() {
         return linkedAtomsIndexes;
     }
 

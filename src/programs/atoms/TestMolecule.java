@@ -69,12 +69,12 @@ public class TestMolecule extends AbstractGame {
         Vec2DFloat mousePosition;
         if ( gc.getInput().isButtonDown(1) ) {
             mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
-            IdAndPosition idAndPosition = molecule.isPointInsideALink(mousePosition.getX(), mousePosition.getY());
+            IdAndPos idAndPos = molecule.isPointInsideALink(mousePosition.getX(), mousePosition.getY());
             if ( molecule.isPointInside(mousePosition) != null ) {
                 boolean moleculeIsSelected = molecule.isSelected();
                 molecule.setSelected(!moleculeIsSelected);
             }
-            if ( idAndPosition != null ) {
+            if ( idAndPos != null ) {
                 clip.play();
                 Atom atomToAdd = new Atom();
                 atomToAdd.setImage(images[puttingAtom]);
@@ -91,7 +91,7 @@ public class TestMolecule extends AbstractGame {
                         atomToAdd.setRadius(radius * 1.5f);
                         break;
                 }
-                molecule.addAtomTo(idAndPosition.getId(), atomToAdd, idAndPosition.getPosition());
+                molecule.addAtomTo(idAndPos.getId(), atomToAdd, idAndPos.getPosition());
             }
         }
         if ( gc.getInput().isButtonDown(3) ) {

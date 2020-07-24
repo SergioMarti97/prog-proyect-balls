@@ -137,7 +137,7 @@ olcPixelGameEngine para crear este.</p>
 son muy bajos.</p>
 <h2>Solución de problemas</h2>
 <p>De momento solamente yo estoy gastando el motor.</p>
-<h2>Registro de cambios.</h2>
+<h2>Registro de cambios</h2>
 <p>De momento no ha habido ningún cambio significativo desde el comienzo del programa.</p>
 <h2>Noticias</h2>
 <p>De momento no hay noticias.</p>

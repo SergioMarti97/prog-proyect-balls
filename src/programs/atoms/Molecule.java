@@ -66,7 +66,7 @@ public class Molecule implements Drawable {
                 Vec2DFloat linkPosition = atom.getLinkPosition(position);
                 newAtom.setPosition(linkPosition);
                 newAtom.setRotation((rotation + 60 + atom.getRotation()) % 360);
-                atom.getLinkedAtomsIndexes().add(new IdAndPosition(newAtom.getId(), position));
+                atom.getLinkedAtomsIndexes().add(new IdAndPos(newAtom.getId(), position));
             }
         }
         newAtom.setShowingLinks(isShowingLinks);
@@ -148,18 +148,18 @@ public class Molecule implements Drawable {
         return isPointInside(position.getX(), position.getY());
     }
 
-    public IdAndPosition isPointInsideALink(float x, float y) {
+    public IdAndPos isPointInsideALink(float x, float y) {
         int position;
         for ( Atom atom : atoms ) {
             position = atom.isPointInsideALink(x, y);
             if ( position > 0 ) {
-                return new IdAndPosition(atom.getId(), position);
+                return new IdAndPos(atom.getId(), position);
             }
         }
         return null;
     }
 
-    public IdAndPosition isPointInsideALink(Vec2DFloat position) {
+    public IdAndPos isPointInsideALink(Vec2DFloat position) {
         return isPointInsideALink(position.getX(), position.getY());
     }
 

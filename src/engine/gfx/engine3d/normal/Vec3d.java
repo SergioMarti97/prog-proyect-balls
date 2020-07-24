@@ -14,14 +14,14 @@ public class Vec3d {
         x = 0.0f;
         y = 0.0f;
         z = 0.0f;
-        w = 0.0f;
+        w = 1.0f;
     }
 
     public Vec3d(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.w = 0.0f;
+        this.w = 1.0f;
     }
 
     public Vec3d(float x, float y, float z, float w) {
@@ -68,6 +68,13 @@ public class Vec3d {
         this.y = vec3d.getY();
         this.z = vec3d.getZ();
         this.w = vec3d.getW();
+    }
+
+    public void set(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.w = 1.0f;
     }
 
     public void addToX(double amount) {

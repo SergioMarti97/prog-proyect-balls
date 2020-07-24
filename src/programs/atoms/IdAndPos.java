@@ -1,12 +1,17 @@
 package programs.atoms;
 
-public class IdAndPosition {
+/**
+ * Esta clase sirve para guardar el identificador del
+ * átomo y la posición (0, 1, 2 o 3).
+ *
+ */
+public class IdAndPos {
 
     private int id;
 
     private int position;
 
-    public IdAndPosition(int id, int position) {
+    public IdAndPos(int id, int position) {
         this.id = id;
         this.position = position;
     }
