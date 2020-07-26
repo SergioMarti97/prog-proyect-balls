@@ -124,4 +124,14 @@ public class Vec3d {
         return this.getX() * v.getX() + this.getY() * v.getY() + this.getZ() * v.getZ();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if ( obj instanceof Vec3d ) {
+            Vec3d vec3d = (Vec3d) obj;
+            return vec3d.getX() == this.x && vec3d.getY() == this.y && vec3d.getZ() == this.z;
+        } else {
+            return false;
+        }
+    }
+
 }

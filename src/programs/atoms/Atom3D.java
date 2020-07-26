@@ -104,8 +104,7 @@ public class Atom3D {
         points3dFinal[2] = linkPoint;
     }
 
-    public void transform(Mat4x4 transform) {
-        int MAX_POINTS = 5;
+    public void transform(Mat4x4 transform) { ;
         for (int i = 0; i < points3dModel.length; i++) {
             Vec3d pTransformed;
             pTransformed = MatrixMath.matrixMultiplyVector(transform, points3dModel[i]);

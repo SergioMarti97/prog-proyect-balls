@@ -20,8 +20,7 @@ public class Molecule implements Drawable {
 
     public Molecule() {
         atoms = new ArrayList<>();
-        Atom atom = new Atom();
-        addAtom(atom, position);
+        addAtom(new Atom(), position);
     }
 
     public Molecule(float x, float y) {
@@ -121,7 +120,6 @@ public class Molecule implements Drawable {
             float diffX = atom.getPosition().getX() - mediumPosition.getX();
             float diffY = atom.getPosition().getY() - mediumPosition.getY();
             Vec2DFloat difference = new Vec2DFloat(diffX, diffY);
-            ///difference.translateThisAngle();
         }
 
         this.rotation = rotation;
