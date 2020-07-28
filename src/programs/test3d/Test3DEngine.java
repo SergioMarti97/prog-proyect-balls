@@ -169,7 +169,7 @@ public class Test3DEngine extends AbstractGame {
         Mat4x4 matTranslation = MatrixMath.matrixMakeTranslation(cubeTranslation.getX(), cubeTranslation.getY(), cubeTranslation.getZ());
         Mat4x4 matRotTrans = MatrixMath.matrixMultiplyMatrix(matRot, matTranslation);
         for ( Triangle triangle : cube.getTris() ) {
-            transformTriangle(matRotTrans, triangle.getP());
+            triangle.setP(transformPoints(matRotTrans, triangle.getP()));
         }
 
     }
@@ -182,21 +182,6 @@ public class Test3DEngine extends AbstractGame {
     private int calculateColor(float light) {
         light *= 256;
         return (255 << 24 | (int)light << 16 | (int)light << 8 | (int)light);
-    }
-
-    /**
-     * Transforma los puntos que forman un triangulo en 3D en función de una matriz.
-     * Modifica los puntos pasados por parámetro.
-     * @param transform la matriz de transformación a aplicar al triangulo.
-     * @param triangle es el array de vectores (puntos) que constituyen el triangulo en 3D.
-     * @deprecated hay que substituir el uso de este metodo por transform points.
-     */
-    private void transformTriangle(Mat4x4 transform, Vec3d[] triangle) {
-        Vec3d pTransformed;
-        for (int i = 0; i < triangle.length; i++) {
-            pTransformed = MatrixMath.matrixMultiplyVector(transform, triangle[i]);
-            triangle[i] = pTransformed;
-        }
     }
 
     /**
