@@ -1,14 +1,15 @@
 # Sergio Game Engine Version: 0.0.01 pre-alpha
 <p>This is a project made by Sergio Martí Torregrosa during the months of July and august. It pretends to be a simple 
 game engine to develop window applications, coded in Java.</p>
-<p>For the moment, it uses the java.swing package <a>https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html</a>. However, in the future the project 
+<p>For the moment, it uses the java.swing package 
+<a>https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html</a>. However, in the future the project 
 is wanted to be able to also use JavaFx, or ported it to mobile applications in Android Studio.</p>
 <p>The project is not finished. When it be, the version will change to 1.0.0. But now, it is in the pre-alpha state.
 The project will be considered finished when it has all the points that appear in the description</p>
 <p>Project date start: 06/07/2020.</p>
 
 ## Project description
-<p>The concept of game engine refers to a programming routine set which allows to build, design and run a 
+<p>The concept of game engine refers to a programming routines set which allows to build, design and run a 
 game or application.</p>
 <p>The normal functions of a game engine includes:</p>
 <ul>
@@ -24,7 +25,8 @@ game or application.</p>
       </li>
     </ul>
   </li>
-  <li>Physics engine: it has to simulates the physics rules. Or, in a more simply approach, only has to do collision detection.</li>
+  <li>Physics engine: it has to simulates the physics rules. Or, in a more simply approach, only 
+  has to do collision detection.</li>
   <li>Animation.</li>
   <li>Scripting.</li>
   <li>Manage music and sounds.</li>
@@ -32,7 +34,7 @@ game or application.</p>
   <li>Networks.</li> 
   <li>Broadcasting.</li>
   <li>Memory management.</li>
-  <li>Graphic environment.</li>
+  <li>Graphical user interfaces (GUIs).</li>
   <li>Scripted language support.</li>
 </ul>
 
@@ -155,6 +157,11 @@ public class Example extends AbstractGame {
 <p>Thought, all the code is inspired and copied from the PixelGameEngine, develop by David Barr (Javidx9) 
 <a>https://github.com/OneLoneCoder</a>. Besides, the One Lone Coder community had help lots.</p>
 
+## Contributing
+<p>Pull requests are welcome. For major changes, please open an issue first to discuss what you 
+would like to change.</p>
+<p>Please make sure to update tests as appropriate.</p>
+
 ## Bugs
 <p>There are lots of bugs for the moment.</p>
 <p>More remarkable: the atoms positions in the 3d molecule is not set fine.</p>
@@ -197,7 +204,7 @@ In a short while, it will be working in:
 * Networks.
 * Broadcasting.
 * Memory management.
-* Graphic environment.
+* Graphical User Interfaces (GUIs).
 * Scripted language support.
 
 <p>There aren't more news.</p>
