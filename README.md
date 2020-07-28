@@ -145,4 +145,4 @@ son muy bajos.</p>
 <p>Muchísimas gracias a David Barr y la comunidad de OneLoneCoder. También infinitas gracias a mi padre 
 Rubén Martí Torregrosa por enseñarme a programar y por su paciencia inacabable. Por último agradecer también 
 el trabajo de a Alexandre Coloma I Gisbert como tutor y a todo el equipo de profesores del centro educativo 
-CIPFP Batoi por enseñarme a programar en Java e introducirme en el mundo de la informática.</p>
+CIPFP Batoi por enseñarme a programar en Java e introducirme en el mundo de la informática.</p>"# prog-proyect-balls" 
