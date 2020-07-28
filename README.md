@@ -1,3 +1,7 @@
+# Sergio Game Engine Version: 0.0.01 pre-alpha
+Este es un proyecto programado en Java el cual pretende ser un motor simple.
+
+
 ```html
 <html>
   <head>
