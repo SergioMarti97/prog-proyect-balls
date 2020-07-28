@@ -43,4 +43,6 @@ public class HexColors {
 
     public static  final int DARK_BLUE = 0xff024a86;
 
+    public static  final int ROYAL_BLUE = 0xff002366;
+
 }

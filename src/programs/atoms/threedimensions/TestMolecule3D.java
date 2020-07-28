@@ -2,6 +2,7 @@ package programs.atoms.threedimensions;
 
 import engine.AbstractGame;
 import engine.GameContainer;
+import engine.gfx.HexColors;
 import engine.gfx.Renderer;
 import engine.gfx.engine3d.normal.Camera;
 import engine.gfx.engine3d.normal.Mat4x4;
@@ -170,7 +171,7 @@ public class TestMolecule3D extends AbstractGame {
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        r.clear(0xff002366);
+        r.clear(HexColors.ROYAL_BLUE);
         Vec3d center;
         int i;
         for ( i = 0; i < molecule.getAtoms().size(); i++ ) {
@@ -180,7 +181,6 @@ public class TestMolecule3D extends AbstractGame {
 
             pointsProjected.sort((o1, o2) -> Float.compare(o2.getZ(), o1.getZ()));
 
-
             for ( Vec3d point : pointsProjected ) {
                 if ( point.equals(center) ) {
                     drawAtomSprite(r, molecule.getAtoms().get(i).getImage(), point);
@@ -189,15 +189,15 @@ public class TestMolecule3D extends AbstractGame {
                     switch ( i % 3 ) {
                         case 0: default:
                             r.drawCircle((int)(point.getX()), (int)(point.getY()),
-                                    10, 0xffff0000);
+                                    10, HexColors.RED);
                             break;
                         case 1:
                             r.drawCircle((int)(point.getX()), (int)(point.getY()),
-                                    10, 0xff00ff00);
+                                    10, HexColors.GREEN);
                             break;
                         case 2:
                             r.drawCircle((int)(point.getX()), (int)(point.getY()),
-                                    10, 0xff0000ff);
+                                    10, HexColors.BLUE);
                             break;
                     }
                 }
