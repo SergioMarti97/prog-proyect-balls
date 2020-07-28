@@ -108,7 +108,8 @@ public class Test3DEngine extends AbstractGame {
         buildCameraMatrices();
 
         cubeRotation.setX(0.01f);
-        cubeRotation.setY(0.02f);
+        cubeRotation.setY(0.01f);
+        cubeRotation.setZ(0.025f);
 
         lightDirection = new Vec3d(0.0f, 0.0f, -1.0f);
         float l = (float) Math.sqrt(
@@ -128,7 +129,15 @@ public class Test3DEngine extends AbstractGame {
             isShowingInformation = !isShowingInformation;
         }
 
-        // Panning
+        // Change the render flag.
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_H) ) {
+            renderFlag = RenderFlags.RENDER_WIRE;
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_J) ) {
+            renderFlag = RenderFlags.RENDER_FLAT;
+        }
+
+        // Camera panning
         if ( gc.getInput().isKeyDown(KeyEvent.VK_UP) ) {
             cameraObj.getOrigin().addToY(8.0f * dt);
         }
@@ -163,15 +172,26 @@ public class Test3DEngine extends AbstractGame {
         matView = cameraObj.getMatView();
 
         // Cube transformations
+        transformCube();
+
+    }
+
+    /**
+     * Esta función sirve para transformar los triangulos que forman el la malla (el cubo).
+     */
+    private void transformCube() {
+        Mat4x4 matIdentity = MatrixMath.matrixMakeIdentity();
         Mat4x4 matRotX = MatrixMath.matrixMakeRotationX(cubeRotation.getX());
+        matRotX = MatrixMath.matrixMultiplyMatrix(matIdentity, matRotX);
         Mat4x4 matRotY = MatrixMath.matrixMakeRotationY(cubeRotation.getY());
-        Mat4x4 matRot = MatrixMath.matrixMultiplyMatrix(matRotX, matRotY);
+        Mat4x4 matRotXY = MatrixMath.matrixMultiplyMatrix(matRotY, matRotX);
+        Mat4x4 matRotZ = MatrixMath.matrixMakeRotationZ(cubeRotation.getZ());
+        Mat4x4 matRot = MatrixMath.matrixMultiplyMatrix(matRotXY, matRotZ);
         Mat4x4 matTranslation = MatrixMath.matrixMakeTranslation(cubeTranslation.getX(), cubeTranslation.getY(), cubeTranslation.getZ());
         Mat4x4 matRotTrans = MatrixMath.matrixMultiplyMatrix(matRot, matTranslation);
         for ( Triangle triangle : cube.getTris() ) {
             triangle.setP(transformPoints(matRotTrans, triangle.getP()));
         }
-
     }
 
     /**
@@ -194,11 +214,11 @@ public class Test3DEngine extends AbstractGame {
      * @return devuelve un nuevo array con los puntos pasados por parámetro transformados.
      */
     private Vec3d[] transformPoints(Mat4x4 transform, Vec3d[] vec3ds) {
-        Vec3d[] pointsViewed = new Vec3d[3];
+        Vec3d[] pointsTransformed = new Vec3d[3];
         for ( int i = 0; i < vec3ds.length; i++ ) {
-            pointsViewed[i] = MatrixMath.matrixMultiplyVector(transform, vec3ds[i]);
+            pointsTransformed[i] = MatrixMath.matrixMultiplyVector(transform, vec3ds[i]);
         }
-        return pointsViewed;
+        return pointsTransformed;
     }
 
     /**
@@ -255,21 +275,37 @@ public class Test3DEngine extends AbstractGame {
      */
     private ArrayList<Triangle> projectTriangles(ArrayList<Triangle> triangles, int width, int height) {
         ArrayList<Triangle> trianglesProjected = new ArrayList<>();
+        int color;
         for ( Triangle triangle : triangles ) {
             Vec3d[] pointsViewed = transformPoints(matView, triangle.getP());
+
             Vec3d normal = calculateNormalToPlane(pointsViewed);
+
             Vec3d diffViewedPointCameraOrigin = new Vec3d(
                     pointsViewed[0].getX() - cameraObj.getOrigin().getX(),
                     pointsViewed[0].getY() - cameraObj.getOrigin().getY(),
                     pointsViewed[0].getZ() - cameraObj.getOrigin().getZ()
             );
+
             if ( MatrixMath.vectorDotProduct(normal, diffViewedPointCameraOrigin) < 0.0f ) {
-                int color = calculateColor(MatrixMath.vectorDotProduct(normal, lightDirection));
-                Vec3d[] pointsProjected = transformPoints(projectionMatrix, pointsViewed);
-                offSetProjectedPoints(pointsProjected, width, height);
-                trianglesProjected.add(new Triangle(pointsProjected, triangle.getT(), color));
+                color = calculateColor(MatrixMath.vectorDotProduct(normal, lightDirection));
+
+                ArrayList<Triangle> clippedTriangles = MatrixMath.triangleClipAgainstPlane(
+                        new Vec3d(0.0f, 0.0f, 0.1f),
+                        new Vec3d(0.0f, 0.0f, 1.0f),
+                        new Triangle(pointsViewed)
+                );
+
+                for ( Triangle triangleClipped : clippedTriangles ) {
+                    Vec3d[] pointsProjected = transformPoints(projectionMatrix, triangleClipped.getP());
+
+                    offSetProjectedPoints(pointsProjected, width, height);
+
+                    trianglesProjected.add(new Triangle(pointsProjected, triangle.getT(), color));
+                }
             }
         }
+
         return trianglesProjected;
     }
 
@@ -286,9 +322,37 @@ public class Test3DEngine extends AbstractGame {
         cameraObj.showInformation(r, 10, 40, 0xffffffff);
     }
 
+    /**
+     * Este método recorre un ArrayList de triangulos y los dibuja, en función del tipo de renderizado
+     * que este activado.
+     * @param r el objeto render con todas las funciones de dibujado.
+     * @param triangles los triangulos a dibujar. En este caso, lo triangulos proyectados.
+     */
+    private void renderTriangle(Renderer r, ArrayList<Triangle> triangles) {
+        for ( Triangle tri : triangles ) {
+            switch ( renderFlag ) {
+                case RENDER_FLAT:
+                    r.drawFillTriangle(
+                            (int)tri.getP()[0].getX(), (int)tri.getP()[0].getY(),
+                            (int)tri.getP()[1].getX(), (int)tri.getP()[1].getY(),
+                            (int)tri.getP()[2].getX(), (int)tri.getP()[2].getY(),
+                            tri.getColor()
+                    );
+                    break;
+                case RENDER_WIRE:
+                    r.drawTriangle(
+                            (int)tri.getP()[0].getX(), (int)tri.getP()[0].getY(),
+                            (int)tri.getP()[1].getX(), (int)tri.getP()[1].getY(),
+                            (int)tri.getP()[2].getX(), (int)tri.getP()[2].getY(),
+                            tri.getColor()
+                    );
+                    break;
+            }
+        }
+    }
+
     @Override
     public void render(GameContainer gc, Renderer r) {
-
         ArrayList<Triangle> projectedTriangles = projectTriangles(cube.getTris(), gc.getWidth(), gc.getHeight());
 
         projectedTriangles.sort(
@@ -307,31 +371,11 @@ public class Test3DEngine extends AbstractGame {
                 }
         );
 
-        for ( Triangle triangleProjected : projectedTriangles ) {
-            switch ( renderFlag ) {
-                case RENDER_FLAT:
-                    r.drawFillTriangle(
-                            (int)triangleProjected.getP()[0].getX(), (int)triangleProjected.getP()[0].getY(),
-                            (int)triangleProjected.getP()[1].getX(), (int)triangleProjected.getP()[1].getY(),
-                            (int)triangleProjected.getP()[2].getX(), (int)triangleProjected.getP()[2].getY(),
-                            triangleProjected.getColor()
-                    );
-                    break;
-                case RENDER_WIRE:
-                    r.drawTriangle(
-                            (int)triangleProjected.getP()[0].getX(), (int)triangleProjected.getP()[0].getY(),
-                            (int)triangleProjected.getP()[1].getX(), (int)triangleProjected.getP()[1].getY(),
-                            (int)triangleProjected.getP()[2].getX(), (int)triangleProjected.getP()[2].getY(),
-                            triangleProjected.getColor()
-                    );
-                    break;
-            }
-        }
+        renderTriangle(r, projectedTriangles);
 
         if ( isShowingInformation ) {
             showingInformation(gc, r);
         }
-
     }
 
     public static void main(String[] args) {

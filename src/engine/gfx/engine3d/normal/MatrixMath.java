@@ -1,5 +1,7 @@
 package engine.gfx.engine3d.normal;
 
+import java.util.ArrayList;
+
 public class MatrixMath {
 
     public static Vec3d  matrixMultiplyVector(Mat4x4 m, Vec3d i) {
@@ -265,18 +267,27 @@ public class MatrixMath {
         // Return signed shortest distance from point to plane, plane normal must be normalised
         Vec3d n = vectorNormalise(p);
         return (plane_n.getX() * p.getX() + plane_n.getY() * p.getY() + plane_n.getZ() * p.getZ() - vectorDotProduct(plane_n, plane_p));
-    };
+    }
 
-    public static int triangleClipAgainstPlane(Vec3d plane_p, Vec3d plane_n, Triangle in_tri, Triangle out_tri1, Triangle out_tri2) {
+    private static Triangle copyTriangleTexture(Triangle input) {
+        Triangle output = new Triangle();
+        for ( int i = 0; i < input.getT().length; i++ ) {
+            output.getT()[i].set(input.getT()[i]);
+        }
+        return output;
+    }
+
+    public static ArrayList<Triangle> triangleClipAgainstPlane(Vec3d plane_p, Vec3d plane_n, Triangle triangle) {
+        ArrayList<Triangle> trianglesClipped = new ArrayList<>();
+        Triangle out_tri1;
+        Triangle out_tri2;
+
         // Make sure plane normal is indeed normal
         plane_n = vectorNormalise(plane_n);
 
-        out_tri1.getT()[0].set(in_tri.getT()[0]);
-        out_tri2.getT()[0].set(in_tri.getT()[0]);
-        out_tri1.getT()[1].set(in_tri.getT()[1]);
-        out_tri2.getT()[1].set(in_tri.getT()[1]);
-        out_tri1.getT()[2].set(in_tri.getT()[2]);
-        out_tri2.getT()[2].set(in_tri.getT()[2]);
+        // Copy the texture of the triangle
+        out_tri1 = copyTriangleTexture(triangle);
+        out_tri2 = copyTriangleTexture(triangle);
 
         // Create two temporary storage arrays to classify points either side of plane
         // If distance sign is positive, point lies on "inside" of plane
@@ -290,55 +301,54 @@ public class MatrixMath {
         int nOutsideTexCount = 0;
 
         // Get signed distance of each point in triangle to plane
-        float d0 = dist(in_tri.getP()[0], plane_p, plane_n);
-        float d1 = dist(in_tri.getP()[1], plane_p, plane_n);
-        float d2 = dist(in_tri.getP()[2], plane_p, plane_n);
+        float d0 = dist(triangle.getP()[0], plane_p, plane_n);
+        float d1 = dist(triangle.getP()[1], plane_p, plane_n);
+        float d2 = dist(triangle.getP()[2], plane_p, plane_n);
 
-        if (d0 >= 0) { inside_points[nInsidePointCount++] = in_tri.getP()[0]; inside_tex[nInsideTexCount++] = in_tri.getT()[0]; }
-        else {
-            outside_points[nOutsidePointCount++] = in_tri.getP()[0]; outside_tex[nOutsideTexCount++] = in_tri.getT()[0];
+        if ( d0 >= 0 ) {
+            inside_points[nInsidePointCount++] = triangle.getP()[0]; inside_tex[nInsideTexCount++] = triangle.getT()[0];
+        } else {
+            outside_points[nOutsidePointCount++] = triangle.getP()[0]; outside_tex[nOutsideTexCount++] = triangle.getT()[0];
         }
-        if (d1 >= 0) {
-            inside_points[nInsidePointCount++] = in_tri.getP()[1]; inside_tex[nInsideTexCount++] = in_tri.getT()[1];
+
+        if ( d1 >= 0 ) {
+            inside_points[nInsidePointCount++] = triangle.getP()[1]; inside_tex[nInsideTexCount++] = triangle.getT()[1];
+        } else {
+            outside_points[nOutsidePointCount++] = triangle.getP()[1];  outside_tex[nOutsideTexCount++] = triangle.getT()[1];
         }
-        else {
-            outside_points[nOutsidePointCount++] = in_tri.getP()[1];  outside_tex[nOutsideTexCount++] = in_tri.getT()[1];
-        }
-        if (d2 >= 0) {
-            inside_points[nInsidePointCount++] = in_tri.getP()[2]; inside_tex[nInsideTexCount++] = in_tri.getT()[2];
-        }
-        else {
-            outside_points[nOutsidePointCount++] = in_tri.getP()[2];  outside_tex[nOutsideTexCount++] = in_tri.getT()[2];
+
+        if ( d2 >= 0 ) {
+            inside_points[nInsidePointCount++] = triangle.getP()[2]; inside_tex[nInsideTexCount++] = triangle.getT()[2];
+        } else {
+            outside_points[nOutsidePointCount++] = triangle.getP()[2];  outside_tex[nOutsideTexCount++] = triangle.getT()[2];
         }
 
         // Now classify triangle points, and break the input triangle into
         // smaller output triangles if required. There are four possible
         // outcomes...
-
-        if (nInsidePointCount == 0)
-        {
+        if ( nInsidePointCount == 0 ) {
             // All points lie on the outside of plane, so clip whole triangle
             // It ceases to exist
 
-            return 0; // No returned triangles are valid
+            return trianglesClipped; // No returned triangles are valid
         }
 
-        if ( nInsidePointCount == 3 )
-        {
+        if ( nInsidePointCount == 3 ) {
             // All points lie on the inside of plane, so do nothing
             // and allow the triangle to simply pass through
-            out_tri1 = in_tri;
+            out_tri1 = triangle;
 
-            return 1; // Just the one returned original triangle is valid
+            //return 1; // Just the one returned original triangle is valid
+            trianglesClipped.add(out_tri1);
+            return trianglesClipped;
         }
 
-        if ( nInsidePointCount == 1 && nOutsidePointCount == 2 )
-        {
+        if ( nInsidePointCount == 1 && nOutsidePointCount == 2 ) {
             // Triangle should be clipped. As two points lie outside
             // the plane, the triangle simply becomes a smaller triangle
 
             // Copy appearance info to new triangle
-            out_tri1.setColor(0xffff00ff);// in_tri.getColor;
+            out_tri1.setColor(0xffff00ff);// triangle.getColor;
 
             // The inside point is valid, so keep that...
             out_tri1.getP()[0] = inside_points[0];
@@ -357,7 +367,9 @@ public class MatrixMath {
             out_tri1.getT()[2].setY(t * (outside_tex[1].getY() - inside_tex[0].getY()) + inside_tex[0].getY());
             out_tri1.getT()[2].setZ(t * (outside_tex[1].getZ() - inside_tex[0].getZ()) + inside_tex[0].getZ());
 
-            return 1; // Return the newly formed single triangle
+            //return 1; // Return the newly formed single triangle
+            trianglesClipped.add(out_tri1);
+            return trianglesClipped;
         }
 
         if ( nInsidePointCount == 2 && nOutsidePointCount == 1 ) {
@@ -366,8 +378,8 @@ public class MatrixMath {
             // represent a quad with two new triangles
 
             // Copy appearance info to new triangles
-            out_tri1.setColor(0xff00ff00);// in_tri.getColor();
-            out_tri2.setColor(0xffff0000);// in_tri.getColor();
+            out_tri1.setColor(0xff00ff00);// triangle.getColor();
+            out_tri2.setColor(0xffff0000);// triangle.getColor();
 
             // The first triangle consists of the two inside points and a new
             // point determined by the location where one side of the triangle
@@ -395,10 +407,14 @@ public class MatrixMath {
             out_tri2.getT()[2].setX(t * (outside_tex[0].getX() - inside_tex[1].getX()) + inside_tex[1].getX());
             out_tri2.getT()[2].setY(t * (outside_tex[0].getY() - inside_tex[1].getY()) + inside_tex[1].getY());
             out_tri2.getT()[2].setZ(t * (outside_tex[0].getZ() - inside_tex[1].getZ()) + inside_tex[1].getZ());
-            return 2; // Return two newly formed triangles which form a quad
+            //return 2; // Return two newly formed triangles which form a quad
+            trianglesClipped.add(out_tri1);
+            trianglesClipped.add(out_tri2);
+            return trianglesClipped;
         }
 
-        return 0;
+        //return 0;
+        return trianglesClipped;
     }
 
 }

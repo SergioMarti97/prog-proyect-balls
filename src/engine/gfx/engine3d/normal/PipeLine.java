@@ -123,7 +123,7 @@ public class PipeLine {
             Triangle[] clipped = new Triangle[2]; // todo, con esto hay un problema... No se cual es pero hay un problema...
             clipped[0] = new Triangle();
             clipped[1] = new Triangle();
-            numTrianglesClipped = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, 0.0f, 0.1f), new Vec3d(0.0f, 0.0f, 1.0f), triangleTransformed, clipped[0], clipped[1]);
+            ArrayList<Triangle> clippedTriangles = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, 0.0f, 0.1f), new Vec3d(0.0f, 0.0f, 1.0f), triangleTransformed);
 
             for ( int n = 0; n < numTrianglesClipped; n++ ) {
                 Triangle triangleProjected = clipped[n];
@@ -173,16 +173,16 @@ public class PipeLine {
 
                         switch (p) {
                             case 0:
-                                numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, -1.0f, 0.0f), new Vec3d(0.0f, 1.0f, 0.0f), test, sclipped[0], sclipped[1]);
+                                //numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, -1.0f, 0.0f), new Vec3d(0.0f, 1.0f, 0.0f), test, sclipped[0], sclipped[1]);
                                 break;
                             case 1:
-                                numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, +1.0f, 0.0f), new Vec3d(0.0f, -1.0f, 0.0f), test, sclipped[0], sclipped[1]);
+                                //numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(0.0f, +1.0f, 0.0f), new Vec3d(0.0f, -1.0f, 0.0f), test, sclipped[0], sclipped[1]);
                                 break;
                             case 2:
-                                numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(-1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f), test, sclipped[0], sclipped[1]);
+                                //numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(-1.0f, 0.0f, 0.0f), new Vec3d(1.0f, 0.0f, 0.0f), test, sclipped[0], sclipped[1]);
                                 break;
                             case 3:
-                                numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(-1.0f, 0.0f, 0.0f), test, sclipped[0], sclipped[1]);
+                                //numTrianglesToAdd = MatrixMath.triangleClipAgainstPlane(new Vec3d(1.0f, 0.0f, 0.0f), new Vec3d(-1.0f, 0.0f, 0.0f), test, sclipped[0], sclipped[1]);
                                 break;
                         }
 
