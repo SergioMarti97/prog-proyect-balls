@@ -1,5 +1,9 @@
 # Sergio Game Engine Version: 0.0.01 pre-alpha
-Este es un proyecto programado en Java el cual pretende ser un motor simple.
+This is a project made by Sergio Martí Torregrosa during the months of July and august. It pretends to be a simple 
+game engine to develop window applications, coded in Java.
+For the moment, it uses the java.swing package 
+< https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html>. However, in the future the project 
+is wanted to be able to also use JavaFx, or ported it to mobile applications in Android Studio.
 
 
 ```html
