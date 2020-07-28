@@ -1,13 +1,14 @@
-<h1>Sergio Game Engine. V. 0.0.01 pre-alfa.</h1>
+```html
 <html>
   <head>
   </head>
   <boyd>
+    <h1>Sergio Game Engine. V. 0.0.01 pre-alfa.</h1>
     <p>Este es un proyecto programado en Java el cual pretende ser un motor simple que de una forma rápida y sencilla, 
     permita crear aplicaciones de ventana.</p>
     <p>De momento utiliza el paquete java.swing 
     (<a>https://docs.oracle.com/javase/7/docs/api/javax/swing/package-summary.html</a>). Pero en un futuro, se quiere 
-    pasar a que el proyecto también pueda utilizar JavaFx.</p>
+    pasar a que el proyecto también pueda utilizar JavaFx, o aplicaciones móviles con AndroidStudio</p>
     <p>Fecha de creación del proyecto: 06/07/2020.</p>
     <h2>Descripción del proyecto</h2>
     <p>El término motor de videojuego (en inglés game engine), o simplemente motor de juego, hace referencia a una serie de 
@@ -62,6 +63,86 @@
       <li>Compilar y ejecutar el programa.</li>
     </ol>
     <p>Esta sería una aplicación de ejemplo:</p>
+    <code>
+      import engine.AbstractGame;
+      import engine.GameContainer;
+      import engine.gfx.Renderer;
+      
+      /**
+       * Esta es un ejemplo de una aplicación creada con este mótor.
+       *
+       * @class: AbstractGame.
+       * @autor: Sergio Martí Torregrosa. sMartiTo
+       * @version: 0.0.01 pre-alpha.
+       * @date: 2020-07-20
+       */
+      public class Example extends AbstractGame {
+      
+          /**
+           * El constructor de la clase.
+           *
+           * @param title El título que va a tener el programa en la barra de título de la ventana.
+           */
+          public Example(String title) {
+              super(title);
+          }
+      
+      
+          /**
+           * Calcula un valor Hexadecimal correspondiente a un color
+           * dentro de un rango expecificado.
+           *
+           * @param max Color máximo.
+           * @param min Color mínimo.
+           * @return Devuelve un código de color hexadecimal.
+           */
+          private int getRandomColorHexBetweenRange(int max, int min) {
+              return (int) ((Math.random() * ((max - min) + 1)) + min);
+          }
+      
+          /**
+           * El método de inicialización.
+           * @param gc El objeto <class>GameContainer</class> que maneja programa <class>AbstractGame</class>.
+           */
+          @Override
+          public void initialize(GameContainer gc) {
+      
+          }
+      
+          /**
+           * El método de actualización.
+           * @param gc El objeto <class>GameContainer</class> que maneja programa <class>AbstractGame</class>.
+           * @param dt Es la variable del tiempo transcurrido, el equivalente a fElapsedTime.
+           */
+          @Override
+          public void update(GameContainer gc, float dt) {
+      
+          }
+      
+          /**
+           * El método de dibujado.
+           * @param gc El objeto <class>GameContainer</class> que maneja programa <class>AbstractGame</class>.
+           * @param r  El objeto <class>Render</class> que contiene todas las funciones de dibujado.
+           */
+          @Override
+          public void render(GameContainer gc, Renderer r) {
+              for ( int x = 0; x < gc.getWidth(); x++ ) {
+                  for ( int y = 0; y < gc.getHeight(); y++ ) {
+                      r.setPixel(x, y, getRandomColorHexBetweenRange(0xffffffff, 0xff000000));
+                  }
+              }
+          }
+      
+          public static void main(String[] args) {
+              GameContainer gc = new GameContainer(new Example("Example"));
+              gc.setWidth(540);
+              gc.setHeight(360);
+              gc.setScale(2.0f);
+              gc.start();
+          }
+      
+      }
+    </code>
     <h2>Manifiesto de archivos</h2>
     <p>Poner aquí todos los archivos y clases que hay.</p>
     <h2>Licencia</h2>
@@ -88,3 +169,4 @@
     CIPFP Batoi por enseñarme a programar en Java e introducirme en el mundo de la informática.</p>
   </boyd>
 </html>
+```
