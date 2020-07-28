@@ -6,7 +6,35 @@ is wanted to be able to also use JavaFx, or ported it to mobile applications in 
 <p>Project date start: 06/07/2020.</p>
 
 ## Project description
-<p>The concept </p>
+<p>The concept of game engine makes reference to a programming routine set which allows to build, design and run of a 
+game or application.</p>
+<p>The normal functions of a game engine includes</p>
+<ul>
+  <li>2D and 3D Graphic engines.
+    <ul>
+      <li>Motor 2D:
+        <p>it is able to make sprite 2D affine transformations (translation, rotation and scale). 
+        In the future, it will be implemented the method to set shear matrices.</p>
+      </li>
+      <li>Motor 3D.
+        <ul>
+          <li>Cámara ortográfica.</li>
+          <li>Cámara normal.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Un motor físico que simule las leyes de la física (o simplemente para generar detección de colisiones).</li>
+  <li>Animación.</li>
+  <li>Scripting.</li>
+  <li>Sonidos.</li>
+  <li>Inteligencia artificial.</li>
+  <li>Redes.</li> 
+  <li>Retransmisión.</li>
+  <li>Gestión de memoria.</li>
+  <li>Escenarios gráficos.</li>
+  <li>Soporte para lenguaje por secuencia de comandos.</li>
+</ul>
 
 
 ```html
