@@ -1,9 +1,12 @@
-package programs.atoms;
+package programs.atoms.threedimensions;
 
 import engine.gfx.engine3d.normal.Mat4x4;
 import engine.gfx.engine3d.normal.MatrixMath;
 import engine.gfx.engine3d.normal.Vec3d;
 import engine.gfx.images.Image;
+import programs.atoms.AtomKind;
+import programs.atoms.CarbonHybridization;
+import programs.atoms.IdAndPos;
 
 import java.util.ArrayList;
 
@@ -11,7 +14,7 @@ public class Atom3D {
 
     private int id = 0;
 
-    private float radius = 0.1f;
+    private float radius = 0.5f;
 
     private Image image = new Image("/atoms/Carbon.png");
 
@@ -22,6 +25,10 @@ public class Atom3D {
     private Vec3d[] points3dFinal;
 
     private ArrayList<IdAndPos> linkedAtomsIndexes = new ArrayList<>();
+
+    private Vec3d translate = new Vec3d();
+
+    private Vec3d rotation = new Vec3d();
 
     public Atom3D(Vec3d center, CarbonHybridization hybridization) {
         switch ( hybridization ) {
@@ -36,6 +43,53 @@ public class Atom3D {
             case SP:
                 initializeArrayPoints(3);
                 buildSpHybridization(center);
+                break;
+        }
+    }
+
+    public Atom3D(Vec3d center, CarbonHybridization hybridization, AtomKind atomKind) {
+        switch ( hybridization ) {
+            case SP3: default:
+                initializeArrayPoints(5);
+                buildSp3Hybridization(center);
+                break;
+            case SP2:
+                initializeArrayPoints(4);
+                buildSp2Hybridization(center);
+                break;
+            case SP:
+                initializeArrayPoints(3);
+                buildSpHybridization(center);
+                break;
+        }
+
+        switch ( atomKind ) {
+            case CARBON: default:
+                image = new Image("/atoms/Carbon.png");
+                break;
+            case HYDROGEN:
+                points3dModel = new Vec3d[2];
+                points3dFinal = new Vec3d[2];
+                points3dModel[0] = center;
+                points3dFinal[0] = center;
+                Vec3d point = new Vec3d(center.getX(), center.getY(), center.getZ());
+                point.addToY(1);
+                points3dModel[1] = point;
+                points3dFinal[1] = point;
+                radius = 0.1f;
+                image = new Image("/atoms/Hydrogen.png");
+                break;
+            case OXYGEN:
+                image = new Image("/atoms/Oxygen.png");
+                break;
+            case NITROGEN:
+                image = new Image("/atoms/Nitrogen.png");
+                break;
+            case PHOSPHOR:
+                image = new Image("/atoms/Phosphorus.png");
+                break;
+            case SULFUR:
+                image = new Image("/atoms/Sulfur.png");
                 break;
         }
     }
@@ -104,12 +158,16 @@ public class Atom3D {
         points3dFinal[2] = linkPoint;
     }
 
-    public void transform(Mat4x4 transform) { ;
+    public void transform(Mat4x4 transform) {
+        Vec3d pTransformed;
         for (int i = 0; i < points3dModel.length; i++) {
-            Vec3d pTransformed;
             pTransformed = MatrixMath.matrixMultiplyVector(transform, points3dModel[i]);
             points3dFinal[i] = pTransformed;
         }
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Vec3d[] getPoints3dModel() {
@@ -128,8 +186,28 @@ public class Atom3D {
         return radius;
     }
 
+    public Vec3d getTranslate() {
+        return translate;
+    }
+
+    public Vec3d getRotation() {
+        return rotation;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setRadius(float radius) {
         this.radius = radius;
+    }
+
+    public void setTranslate(Vec3d translate) {
+        this.translate = translate;
+    }
+
+    public void setRotation(Vec3d rotation) {
+        this.rotation = rotation;
     }
 
 }

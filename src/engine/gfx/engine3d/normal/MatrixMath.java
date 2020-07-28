@@ -66,6 +66,14 @@ public class MatrixMath {
         return matrix;
     }
 
+    public static Mat4x4 matrixMakeRotation(Vec3d rotation) {
+        Mat4x4 matRotX = MatrixMath.matrixMakeRotationX(rotation.getX());
+        Mat4x4 matRotY = MatrixMath.matrixMakeRotationY(rotation.getY());
+        Mat4x4 matRotZ = MatrixMath.matrixMakeRotationZ(rotation.getZ());
+        Mat4x4 matRotXY = MatrixMath.matrixMultiplyMatrix(matRotX, matRotY);
+        return MatrixMath.matrixMultiplyMatrix(matRotZ, matRotXY);
+    }
+
     public static Mat4x4 matrixMakeScale(float x, float y, float z) {
         Mat4x4 matrix = new Mat4x4();
         matrix.getM()[0][0] = x;
@@ -84,6 +92,18 @@ public class MatrixMath {
         matrix.getM()[3][0] = x;
         matrix.getM()[3][1] = y;
         matrix.getM()[3][2] = z;
+        return matrix;
+    }
+
+    public static Mat4x4 matrixMakeTranslation(Vec3d vec3d) {
+        Mat4x4 matrix = new Mat4x4();
+        matrix.getM()[0][0] = 1.0f;
+        matrix.getM()[1][1] = 1.0f;
+        matrix.getM()[2][2] = 1.0f;
+        matrix.getM()[3][3] = 1.0f;
+        matrix.getM()[3][0] = vec3d.getX();
+        matrix.getM()[3][1] = vec3d.getY();
+        matrix.getM()[3][2] = vec3d.getZ();
         return matrix;
     }
 

@@ -1,8 +1,9 @@
-package programs.atoms;
+package programs.atoms.twodimensions;
 
 import engine.gfx.Renderer;
 import engine.gfx.Drawable;
 import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import programs.atoms.IdAndPos;
 
 import java.util.ArrayList;
 

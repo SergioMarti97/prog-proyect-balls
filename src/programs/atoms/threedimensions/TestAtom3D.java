@@ -1,4 +1,4 @@
-package programs.atoms;
+package programs.atoms.threedimensions;
 
 import engine.AbstractGame;
 import engine.GameContainer;
@@ -7,9 +7,14 @@ import engine.gfx.engine3d.normal.*;
 import engine.gfx.images.Image;
 import engine.gfx.images.maths.Matrix3x3Float;
 import engine.gfx.images.maths.MatrixOperations;
+import programs.atoms.CarbonHybridization;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+
+/**
+ *
+ */
 
 public class TestAtom3D extends AbstractGame {
 
@@ -275,32 +280,7 @@ public class TestAtom3D extends AbstractGame {
         r.drawText(String.format("Arrows: %s.", isMovingCamera ? "moving camera" : "moving molecule"),
                 10, 250, 0xffffffff);
 
-        r.drawText("Camera", 10, 280, 0xffffffff);
-        r.drawText(
-                String.format("  origin X: %.3f Y: %.3f Z: %.3f",
-                        cameraObj.getOrigin().getX(),
-                        cameraObj.getOrigin().getY(),
-                        cameraObj.getOrigin().getZ()), 10, 310, 0xffffffff);
-        r.drawText(
-                String.format("  look direction X: %.3f Y: %.3f Z: %.3f",
-                        cameraObj.getLookDirection().getX(),
-                        cameraObj.getLookDirection().getY(),
-                        cameraObj.getLookDirection().getZ()), 10, 340, 0xffffffff);
-        r.drawText(
-                String.format("  up X: %.3f Y: %.3f Z: %.3f",
-                        cameraObj.getUp().getX(),
-                        cameraObj.getUp().getY(),
-                        cameraObj.getUp().getZ()), 10, 370, 0xffffffff);
-        r.drawText(
-                String.format("  target X: %.3f Y: %.3f Z: %.3f",
-                        cameraObj.getTarget().getX(),
-                        cameraObj.getTarget().getY(),
-                        cameraObj.getTarget().getZ()), 10, 400, 0xffffffff);
-        r.drawText(
-                String.format("  rotation X: %.3f Y: %.3f Z: %.3f",
-                        cameraObj.getCameraRot().getX(),
-                        cameraObj.getCameraRot().getY(),
-                        cameraObj.getCameraRot().getZ()), 10, 430, 0xffffffff);
+        cameraObj.showInformation(r, 10, 280, 0xffffffff);
     }
 
     @Override
