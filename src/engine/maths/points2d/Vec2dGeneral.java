@@ -3,6 +3,9 @@ package engine.maths.points2d;
 import engine.gfx.Renderer;
 import engine.gfx.Drawable;
 
+/**
+ * Tratando de subir esto a github.
+ */
 public abstract class Vec2dGeneral<T> implements Drawable {
 
     protected final int color = 0xffffffff;
