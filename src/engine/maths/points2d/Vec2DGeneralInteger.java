@@ -1,13 +1,13 @@
-package engine.gfx.shapes2d.points2d;
+package engine.maths.points2d;
 
-public class Vec2DInteger extends Vec2D<Integer> {
+public class Vec2DGeneralInteger extends Vec2dGeneral<Integer> {
 
-    public Vec2DInteger() {
+    public Vec2DGeneralInteger() {
         x = 0;
         y = 0;
     }
 
-    public Vec2DInteger(Integer x, Integer y) {
+    public Vec2DGeneralInteger(Integer x, Integer y) {
         super(x, y);
     }
 
@@ -28,12 +28,12 @@ public class Vec2DInteger extends Vec2D<Integer> {
     }
 
     @Override
-    public void add(Vec2D<Integer> point) {
+    public void add(Vec2dGeneral<Integer> point) {
         x += point.getX();
         y += point.getY();
     }
 
-    public void sub(Vec2D<Integer> point) {
+    public void sub(Vec2dGeneral<Integer> point) {
         x -= point.getX();
         y -= point.getY();
     }
@@ -55,12 +55,12 @@ public class Vec2DInteger extends Vec2D<Integer> {
     }
 
     @Override
-    public void multiply(Vec2D<Integer> point) {
+    public void multiply(Vec2dGeneral<Integer> point) {
         x *= point.getX();
         y *= point.getY();
     }
 
-    public void division(Vec2D<Integer> point) {
+    public void division(Vec2dGeneral<Integer> point) {
         x /= point.getX();
         y /= point.getY();
     }
@@ -76,23 +76,23 @@ public class Vec2DInteger extends Vec2D<Integer> {
     }
 
     @Override
-    public Vec2D<Integer> normal() {
+    public Vec2dGeneral<Integer> normal() {
         int r = 1 / mag();
-        return new Vec2DInteger( x * r, y * r);
+        return new Vec2DGeneralInteger( x * r, y * r);
     }
 
     @Override
-    public Vec2D<Integer> perpendicular() {
-        return new Vec2DInteger(-y, x);
+    public Vec2dGeneral<Integer> perpendicular() {
+        return new Vec2DGeneralInteger(-y, x);
     }
 
     @Override
-    public Integer dotProduct(Vec2D<Integer> point) {
+    public Integer dotProduct(Vec2dGeneral<Integer> point) {
         return x * point.getX() + y * point.getY();
     }
 
     @Override
-    public Integer crossProduct(Vec2D<Integer> point) {
+    public Integer crossProduct(Vec2dGeneral<Integer> point) {
         return x * point.getY() - y * point.getX();
     }
 

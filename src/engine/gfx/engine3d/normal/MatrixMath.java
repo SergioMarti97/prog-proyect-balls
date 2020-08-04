@@ -1,5 +1,9 @@
 package engine.gfx.engine3d.normal;
 
+import engine.maths.Mat4x4;
+import engine.maths.Vec2d;
+import engine.maths.Vec3d;
+
 import java.util.ArrayList;
 
 public class MatrixMath {

@@ -1,9 +1,9 @@
 package engine.gfx.engine3d.normal;
 
+import engine.maths.Vec3d;
+
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Mesh {
 
@@ -26,85 +26,60 @@ public class Mesh {
     }
 
     public boolean loadFromObjectFile(String path) {
+        ArrayList<Vec3d> vertex = new ArrayList<>();
         try {
-            ClassLoader classLoader = this.getClass().getClassLoader();
-
-            File file = new File(Objects.requireNonNull(classLoader.getResource(path)).getFile());
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(path);
-
-            BufferedReader bf = new BufferedReader(new FileReader(file));
+            BufferedReader bf = new BufferedReader(new FileReader(path)); //"resources/monkey.obj"
             String line = "";
 
-            ArrayList<Vec3d> vertex = new ArrayList<>();
-
-            do {
-
-                if ( line.charAt(0) == 'v' ) {
-                    Vec3d v = new Vec3d();
-                    String[] lineSplit = line.split(" ");
-                    v.setX(Float.parseFloat(lineSplit[1]));
-                    v.setX(Float.parseFloat(lineSplit[2]));
-                    v.setX(Float.parseFloat(lineSplit[3]));
-                    vertex.add(v);
+            while ( line != null ) {
+                String[] splitLine = line.split(" ");
+                if ( splitLine[0].equalsIgnoreCase("v") ) {
+                    float x = Float.parseFloat(splitLine[1]);
+                    float y = Float.parseFloat(splitLine[2]);
+                    float z = Float.parseFloat(splitLine[3]);
+                    vertex.add(new Vec3d(x, y, z));
                 }
 
-                if ( line.charAt(0) == 'f' ) {
-                    int[] f = new int[3];
-                    String[] lineSplit = line.split(" ");
-                    f[0] = Integer.parseInt(lineSplit[1]);
-                    f[1] = Integer.parseInt(lineSplit[2]);
-                    f[2] = Integer.parseInt(lineSplit[3]);
-                    tris.add(new Triangle(new Vec3d[]{vertex.get(f[0] - 1), vertex.get(f[1] - 1), vertex.get(f[2] - 1)}));
+                if ( splitLine[0].equalsIgnoreCase("f") ) {
+                    int[] face = new int[3];
+                    for ( int i = 1; i < splitLine.length; i++ ) {
+                        String[] numVertex = splitLine[i].split("//");
+                        face[i - 1] = Integer.parseInt(numVertex[0]);
+                    }
+                    tris.add(
+                            new Triangle(
+                                    new Vec3d[] {
+                                            vertex.get(face[0] - 1),
+                                            vertex.get(face[1] - 1),
+                                            vertex.get(face[2] - 1)
+                                    })
+                    );
                 }
 
                 line = bf.readLine();
-
-            } while ( line != null );
-
-            return true;
-
-        } catch ( FileNotFoundException e ) {
-            System.out.println("Archivo no encontrado.");
-        } catch ( IOException e ) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private static File getFileFromResources(String fileName) {
-
-        ClassLoader classLoader = Mesh.class.getClassLoader();
-
-        URL resource = classLoader.getResource(fileName);
-
-        if (resource == null) {
-            throw new IllegalArgumentException("file is not found!");
-        } else {
-            return new File(resource.getFile());
-        }
-
-    }
-
-    private static void printFile(File file) throws IOException {
-
-        if (file == null) return;
-
-        try (FileReader reader = new FileReader(file);
-             BufferedReader br = new BufferedReader(reader)) {
-
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
             }
+            bf.close();
+            return true;
+        } catch ( FileNotFoundException e ) {
+            System.out.println("No se encuentra el fichero.");
+            return false;
+        } catch ( IOException e ) {
+            System.out.println("No se puede leer el fichero");
+            return false;
         }
     }
 
-    public static void main(String[] args) {
-        File file = getFileFromResources("/monkey.obj");
-        try {
-            printFile(file);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+    public void showInformation() {
+        for ( int i = 0; i < tris.size() - 2; i++ ) {
+            System.out.println(String.format("Triangulo %d", i));
+            for ( int j = 0; j < tris.get(i).getP().length; j++ ) {
+                System.out.println(
+                        String.format("X: %f Y: %f Z: %f",
+                                tris.get(i).getP()[j].getX(),
+                                tris.get(i).getP()[j].getY(),
+                                tris.get(i).getP()[j].getZ())
+                );
+            }
         }
     }
 

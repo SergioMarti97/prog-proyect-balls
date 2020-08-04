@@ -5,8 +5,10 @@ import engine.GameContainer;
 import engine.gfx.Renderer;
 import engine.gfx.engine3d.normal.*;
 import engine.gfx.images.Image;
-import engine.gfx.images.maths.Matrix3x3Float;
-import engine.gfx.images.maths.MatrixOperations;
+import engine.maths.Mat3x3;
+import engine.maths.MatrixOperations;
+import engine.maths.Mat4x4;
+import engine.maths.Vec3d;
 import programs.atoms.CarbonHybridization;
 
 import java.awt.event.KeyEvent;
@@ -198,11 +200,11 @@ public class TestAtom3D extends AbstractGame {
     }
 
     private void drawAtomSprite(Renderer r, Image image, Vec3d point) {
-        Matrix3x3Float scale = new Matrix3x3Float();
-        Matrix3x3Float offsetImage = new Matrix3x3Float();
-        Matrix3x3Float offsetScreen = new Matrix3x3Float();
-        Matrix3x3Float scaledOffsetImage;
-        Matrix3x3Float transform;
+        Mat3x3 scale = new Mat3x3();
+        Mat3x3 offsetImage = new Mat3x3();
+        Mat3x3 offsetScreen = new Mat3x3();
+        Mat3x3 scaledOffsetImage;
+        Mat3x3 transform;
 
         scale.setAsScale(1 / (point.getZ() / 3), 1 / (point.getZ() / 3));
         offsetImage.setAsTranslate(- image.getW() / 2.0f, - image.getH() / 2.0f);
@@ -223,13 +225,13 @@ public class TestAtom3D extends AbstractGame {
                 if ( pProjected.equals(center) ) {
                     drawAtomSprite(r, atom3D.getImage(), pProjected);
                 } else {
-                    Matrix3x3Float scaleImage = new Matrix3x3Float();
-                    Matrix3x3Float scaleDistance = new Matrix3x3Float();
-                    Matrix3x3Float scale;
-                    Matrix3x3Float offsetImage = new Matrix3x3Float();
-                    Matrix3x3Float offsetScreen = new Matrix3x3Float();
-                    Matrix3x3Float scaledOffsetImage;
-                    Matrix3x3Float transform;
+                    Mat3x3 scaleImage = new Mat3x3();
+                    Mat3x3 scaleDistance = new Mat3x3();
+                    Mat3x3 scale;
+                    Mat3x3 offsetImage = new Mat3x3();
+                    Mat3x3 offsetScreen = new Mat3x3();
+                    Mat3x3 scaledOffsetImage;
+                    Mat3x3 transform;
 
                     scaleDistance.setAsScale(1 / (pProjected.getZ() / 3), 1 / (pProjected.getZ() / 3));
                     scaleImage.setAsScale(0.9f, 0.9f);

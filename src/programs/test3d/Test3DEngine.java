@@ -4,6 +4,8 @@ import engine.AbstractGame;
 import engine.GameContainer;
 import engine.gfx.Renderer;
 import engine.gfx.engine3d.normal.*;
+import engine.maths.Mat4x4;
+import engine.maths.Vec3d;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class Test3DEngine extends AbstractGame {
 
     private Camera cameraObj;
 
-    private Mesh cube;
+    private Mesh cube = new Mesh();
 
     private Vec3d lightDirection;
 
@@ -103,40 +105,23 @@ public class Test3DEngine extends AbstractGame {
 
     @Override
     public void initialize(GameContainer gc) {
-        cube = initializationCube();
+        if ( !cube.loadFromObjectFile("resources/monkey.obj") ) {
+            cube = initializationCube();
+        }
         buildProjectionMatrix(gc);
         buildCameraMatrices();
 
-        cubeRotation.setX(0.01f);
-        cubeRotation.setY(0.01f);
-        cubeRotation.setZ(0.025f);
-
         lightDirection = new Vec3d(0.0f, 0.0f, -1.0f);
-        float l = (float) Math.sqrt(
-                lightDirection.getX() * lightDirection.getX() +
-                lightDirection.getY() * lightDirection.getY() +
-                lightDirection.getZ() * lightDirection.getZ()
-        );
-        lightDirection.setX(lightDirection.getX() / l);
-        lightDirection.setY(lightDirection.getY() / l);
-        lightDirection.setZ(lightDirection.getZ() / l);
+        lightDirection = MatrixMath.vectorNormalise(lightDirection);
     }
 
-    @Override
-    public void update(GameContainer gc, float dt) {
-        // Showing information
-        if ( gc.getInput().isKeyDown(KeyEvent.VK_SPACE) ) {
-            isShowingInformation = !isShowingInformation;
-        }
-
-        // Change the render flag.
-        if ( gc.getInput().isKeyDown(KeyEvent.VK_H) ) {
-            renderFlag = RenderFlags.RENDER_WIRE;
-        }
-        if ( gc.getInput().isKeyDown(KeyEvent.VK_J) ) {
-            renderFlag = RenderFlags.RENDER_FLAT;
-        }
-
+    /**
+     * En este método se gestiona las entradas de usuario para manejar la posición y
+     * rotación de la cámara.
+     * @param gc el objeto GameContainer para acceder al objeto Input.
+     * @param dt el tiempo transcurrido entre actualización y aztualización.
+     */
+    private void updateCamera(GameContainer gc, float dt) {
         // Camera panning
         if ( gc.getInput().isKeyDown(KeyEvent.VK_UP) ) {
             cameraObj.getOrigin().addToY(8.0f * dt);
@@ -149,6 +134,12 @@ public class Test3DEngine extends AbstractGame {
         }
         if ( gc.getInput().isKeyDown(KeyEvent.VK_LEFT) ) {
             cameraObj.getOrigin().addToX(-8.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_Z) ) {
+            cameraObj.getOrigin().addToZ(8.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_X) ) {
+            cameraObj.getOrigin().addToZ(-8.0f * dt);
         }
 
         // Camera Rotation
@@ -170,10 +161,62 @@ public class Test3DEngine extends AbstractGame {
         cameraObj.setOrigin(MatrixMath.vectorAdd(cameraObj.getOrigin(), forward));
 
         matView = cameraObj.getMatView();
+    }
 
-        // Cube transformations
+    /**
+     * En este método se gestiona las entradas de usuario para manejar la rotación
+     * del cubo.
+     * @param gc el objeto GameContainer para acceder al objeto Input.
+     * @param dt el tiempo transcurrido entre actualización y aztualización.
+     */
+    private void updateCube(GameContainer gc, float dt) {
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD4) ) {
+            cubeRotation.addToY(2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD6) ) {
+            cubeRotation.addToY(-2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD8) ) {
+            cubeRotation.addToX(2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD2) ) {
+            cubeRotation.addToX(-2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD7) ) {
+            cubeRotation.addToZ(2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_NUMPAD3) ) {
+            cubeRotation.addToZ(-2.0f * dt);
+        }
+    }
+
+    @Override
+    public void update(GameContainer gc, float dt) {
+        // Showing information
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_SPACE) ) {
+            isShowingInformation = !isShowingInformation;
+        }
+
+        // Change the render flag.
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_H) ) {
+            renderFlag = RenderFlags.RENDER_WIRE;
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_J) ) {
+            renderFlag = RenderFlags.RENDER_FLAT;
+        }
+
+        updateCamera(gc, dt);
+
+        updateCube(gc, dt);
+
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_1) ) {
+            cubeTranslation.addToZ(2.0f * dt);
+        }
+        if ( gc.getInput().isKeyDown(KeyEvent.VK_2) ) {
+            cubeTranslation.addToZ(-2.0f * dt);
+        }
+
         transformCube();
-
     }
 
     /**
@@ -222,12 +265,11 @@ public class Test3DEngine extends AbstractGame {
     }
 
     /**
-     * La normal de un plano es un vector que es perpendicular a las dos direcciones
-     * del plano. Es decir, hace 90 grados con las dos rectas (direcciones) que pertenecen
-     * al plano.
+     * El vector normal de un plano es un vector que es perpendicular a las dos direcciones
+     * que forman el plano. Es decir, hace 90 grados con dos rectas.
      * @param points son los puntos que pertenecen a un plano.
      *               En nuestro caso, el plano es el triangulo.
-     * @return devuleve la normal al plano de los formado por los puntos.
+     * @return devuleve la normal al plano formado por los puntos.
      */
     private Vec3d calculateNormalToPlane(Vec3d[] points) {
         Vec3d normal = new Vec3d();
@@ -328,22 +370,28 @@ public class Test3DEngine extends AbstractGame {
      * @param r el objeto render con todas las funciones de dibujado.
      * @param triangles los triangulos a dibujar. En este caso, lo triangulos proyectados.
      */
-    private void renderTriangle(Renderer r, ArrayList<Triangle> triangles) {
+    private void renderTriangle(GameContainer gc, Renderer r, ArrayList<Triangle> triangles) {
         for ( Triangle tri : triangles ) {
             switch ( renderFlag ) {
                 case RENDER_FLAT:
                     r.drawFillTriangle(
-                            (int)tri.getP()[0].getX(), (int)tri.getP()[0].getY(),
-                            (int)tri.getP()[1].getX(), (int)tri.getP()[1].getY(),
-                            (int)tri.getP()[2].getX(), (int)tri.getP()[2].getY(),
+                            (int)tri.getP()[0].getX(), gc.getHeight() - (int)tri.getP()[0].getY(),
+                            (int)tri.getP()[1].getX(), gc.getHeight() - (int)tri.getP()[1].getY(),
+                            (int)tri.getP()[2].getX(), gc.getHeight() - (int)tri.getP()[2].getY(),
                             tri.getColor()
+                    );
+                    r.drawTriangle(
+                            (int)tri.getP()[0].getX(), gc.getHeight() - (int)tri.getP()[0].getY(),
+                            (int)tri.getP()[1].getX(), gc.getHeight() - (int)tri.getP()[1].getY(),
+                            (int)tri.getP()[2].getX(), gc.getHeight() - (int)tri.getP()[2].getY(),
+                            0xff000000
                     );
                     break;
                 case RENDER_WIRE:
                     r.drawTriangle(
-                            (int)tri.getP()[0].getX(), (int)tri.getP()[0].getY(),
-                            (int)tri.getP()[1].getX(), (int)tri.getP()[1].getY(),
-                            (int)tri.getP()[2].getX(), (int)tri.getP()[2].getY(),
+                            (int)tri.getP()[0].getX(), gc.getHeight() - (int)tri.getP()[0].getY(),
+                            (int)tri.getP()[1].getX(), gc.getHeight() - (int)tri.getP()[1].getY(),
+                            (int)tri.getP()[2].getX(), gc.getHeight() - (int)tri.getP()[2].getY(),
                             tri.getColor()
                     );
                     break;
@@ -357,21 +405,13 @@ public class Test3DEngine extends AbstractGame {
 
         projectedTriangles.sort(
                 (o1, o2) -> {
-                    float medZ1 = 0;
-                    for ( Vec3d vec3d : o1.getP() ) {
-                        medZ1 += vec3d.getZ();
-                    }
-                    medZ1 /= o1.getP().length;
-                    float medZ2 = 0;
-                    for ( Vec3d vec3d : o2.getP() ) {
-                        medZ2 += vec3d.getZ();
-                    }
-                    medZ2 /= o2.getP().length;
-                    return Float.compare(medZ1, medZ2);
+                    float medZ1 = (o1.getP()[0].getZ() + o1.getP()[1].getZ() + o1.getP()[2].getZ()) / 3.0f;
+                    float medZ2 = (o2.getP()[0].getZ() + o2.getP()[1].getZ() + o2.getP()[2].getZ()) / 3.0f;
+                    return Float.compare(medZ2, medZ1);
                 }
         );
 
-        renderTriangle(r, projectedTriangles);
+        renderTriangle(gc, r, projectedTriangles);
 
         if ( isShowingInformation ) {
             showingInformation(gc, r);

@@ -1,4 +1,4 @@
-package engine.gfx.shapes2d;
+package engine.maths;
 
 /*
 * todo: revisar en Java que operaciones con números en coma flotante son más rapidas. Si float, si double o extended.

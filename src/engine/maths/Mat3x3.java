@@ -1,17 +1,17 @@
-package engine.gfx.images.maths;
+package engine.maths;
 
 /**
  * Una matriz de 3x3 de tipo float. Se utiliza principalmente para
  * hacer transformaciones a imagenes.
  *
- * @class: Matrix3x3Float.
+ * @class: Mat3x3.
  * @autor: Sergio Martí Torregrosa. sMartiTo
  * @version: 0.0.01 pre-alpha.
  * @date: 2020-07-06
  */
-public class Matrix3x3Float extends Matrix3x3<Float> {
+public class Mat3x3 extends Matrix3x3<Float> {
 
-    public Matrix3x3Float() {
+    public Mat3x3() {
         m = new Float[NUM_COLS][NUM_ROWS];
         for ( int c = 0; c < NUM_COLS; c++ ) {
             for ( int r = 0; r < NUM_ROWS; r++ ) {
@@ -20,7 +20,7 @@ public class Matrix3x3Float extends Matrix3x3<Float> {
         }
     }
 
-    public Matrix3x3Float(Float[][] m) {
+    public Mat3x3(Float[][] m) {
         super(m);
     }
 
@@ -79,7 +79,7 @@ public class Matrix3x3Float extends Matrix3x3<Float> {
         m = matOut;
     }
 
-    public void multiply(Matrix3x3Float matrix) {
+    public void multiply(Mat3x3 matrix) {
         Float[][] result = new Float[NUM_COLS][NUM_ROWS];
         for ( int c = 0; c < NUM_COLS; c++ ) {
             for ( int r = 0; r < NUM_ROWS; r++ ) {

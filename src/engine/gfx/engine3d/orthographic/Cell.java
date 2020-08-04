@@ -1,25 +1,25 @@
 package engine.gfx.engine3d.orthographic;
 
-import engine.gfx.shapes2d.points2d.Vec2DInteger;
+import engine.maths.points2d.Vec2DGeneralInteger;
 
 public class Cell {
 
-    private Vec2DInteger[] id;
+    private Vec2DGeneralInteger[] id;
 
     private boolean isWall = false;
 
     public Cell() {
-        id = new Vec2DInteger[6];
+        id = new Vec2DGeneralInteger[6];
         for ( int i = 0; i < id.length; i++ ) {
-            id[i] = new Vec2DInteger();
+            id[i] = new Vec2DGeneralInteger();
         }
     }
 
-    public Cell(Vec2DInteger[] id) {
+    public Cell(Vec2DGeneralInteger[] id) {
         this.id = id;
     }
 
-    public Vec2DInteger[] getId() {
+    public Vec2DGeneralInteger[] getId() {
         return id;
     }
 
@@ -27,7 +27,7 @@ public class Cell {
         return isWall;
     }
 
-    public void setId(Vec2DInteger[] id) {
+    public void setId(Vec2DGeneralInteger[] id) {
         this.id = id;
     }
 

@@ -1,7 +1,7 @@
 package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 
 public class Triangle2D extends Polygon2D {
 
@@ -13,15 +13,15 @@ public class Triangle2D extends Polygon2D {
 
     public Triangle2D(float posX, float posY, float x0, float y0, float x1, float y1, float x2, float y2, int color) {
         super(posX, posY, 0, 3, color);
-        pShape.get(0).set(new Vec2DFloat(x0, y0));
-        pShape.get(1).set(new Vec2DFloat(x1, y1));
-        pShape.get(2).set(new Vec2DFloat(x2, y2));
-        pFinal.get(0).set(new Vec2DFloat(x0, y0));
-        pFinal.get(1).set(new Vec2DFloat(x1, y1));
-        pFinal.get(2).set(new Vec2DFloat(x2, y2));
+        pShape.get(0).set(new Vec2DGeneralFloat(x0, y0));
+        pShape.get(1).set(new Vec2DGeneralFloat(x1, y1));
+        pShape.get(2).set(new Vec2DGeneralFloat(x2, y2));
+        pFinal.get(0).set(new Vec2DGeneralFloat(x0, y0));
+        pFinal.get(1).set(new Vec2DGeneralFloat(x1, y1));
+        pFinal.get(2).set(new Vec2DGeneralFloat(x2, y2));
         normalizePShape();
         calculateTheoreticalCenter();
-        Vec2DFloat max = new Vec2DFloat(pShape.get(0).getX(), pShape.get(0).getY());
+        Vec2DGeneralFloat max = new Vec2DGeneralFloat(pShape.get(0).getX(), pShape.get(0).getY());
         for ( int i = 1; i < pShape.size(); i++ ) {
             max.setX(Math.max(max.getX(), pShape.get(i).getX()));
             max.setY(Math.max(max.getY(), pShape.get(i).getY()));
@@ -34,12 +34,12 @@ public class Triangle2D extends Polygon2D {
 
     public Triangle2D(float posX, float posY, float size, float x0, float y0, float x1, float y1, float x2, float y2, int color) {
         super(posX, posY, 0, 3, color);
-        pShape.get(0).set(new Vec2DFloat(x0, y0));
-        pShape.get(1).set(new Vec2DFloat(x1, y1));
-        pShape.get(2).set(new Vec2DFloat(x2, y2));
-        pFinal.get(0).set(new Vec2DFloat(x0, y0));
-        pFinal.get(1).set(new Vec2DFloat(x1, y1));
-        pFinal.get(2).set(new Vec2DFloat(x2, y2));
+        pShape.get(0).set(new Vec2DGeneralFloat(x0, y0));
+        pShape.get(1).set(new Vec2DGeneralFloat(x1, y1));
+        pShape.get(2).set(new Vec2DGeneralFloat(x2, y2));
+        pFinal.get(0).set(new Vec2DGeneralFloat(x0, y0));
+        pFinal.get(1).set(new Vec2DGeneralFloat(x1, y1));
+        pFinal.get(2).set(new Vec2DGeneralFloat(x2, y2));
         this.size = size;
         normalizePShape();
         calculateTheoreticalCenter();
@@ -104,10 +104,10 @@ public class Triangle2D extends Polygon2D {
     @Override
     public boolean isPointInside(float x, float y) {
         //Sea d el segmento ab.
-        Vec2DFloat d = new Vec2DFloat(pFinal.get(1).getX() - pFinal.get(0).getX(), pFinal.get(1).getY() - pFinal.get(0).getY());
+        Vec2DGeneralFloat d = new Vec2DGeneralFloat(pFinal.get(1).getX() - pFinal.get(0).getX(), pFinal.get(1).getY() - pFinal.get(0).getY());
 
         //Sea e el segmento ac.
-        Vec2DFloat e = new Vec2DFloat(pFinal.get(2).getX() - pFinal.get(0).getX(), pFinal.get(2).getY() - pFinal.get(0).getY());
+        Vec2DGeneralFloat e = new Vec2DGeneralFloat(pFinal.get(2).getX() - pFinal.get(0).getX(), pFinal.get(2).getY() - pFinal.get(0).getY());
 
         //Variable de ponderación a~b
         float w1 = (e.getX() * (pFinal.get(0).getY() - y) + e.getY() * (x - pFinal.get(0).getX())) / (d.getX() * e.getY() - d.getY() * e.getX());

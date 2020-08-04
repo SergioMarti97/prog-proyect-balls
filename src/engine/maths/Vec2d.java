@@ -1,6 +1,9 @@
-package engine.gfx.engine3d.normal;
+package engine.maths;
 
-public class Vec2d {
+import engine.gfx.Drawable;
+import engine.gfx.Renderer;
+
+public class Vec2d implements Drawable {
 
     private float x;
 
@@ -12,6 +15,12 @@ public class Vec2d {
         x = 0.0f;
         y = 0.0f;
         z = 0.0f;
+    }
+
+    public Vec2d(float x, float y) {
+        this.x = x;
+        this.y = y;
+        z = 1.0f;
     }
 
     public Vec2d(float x, float y, float z) {
@@ -48,6 +57,13 @@ public class Vec2d {
 
     public void setZ(float z) {
         this.z = z;
+    }
+
+    @Override
+    public void drawYourSelf(Renderer r) {
+        int color = 0xffffffff;
+        int radius = 2;
+        r.drawCircle((int)x, (int)y, radius, color);
     }
 
 }

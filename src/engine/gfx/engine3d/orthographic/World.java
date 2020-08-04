@@ -1,19 +1,19 @@
 package engine.gfx.engine3d.orthographic;
 
-import engine.gfx.shapes2d.points2d.Vec2DInteger;
+import engine.maths.points2d.Vec2DGeneralInteger;
 
 import java.util.ArrayList;
 
 public class World {
 
-    private Vec2DInteger size;
+    private Vec2DGeneralInteger size;
 
     private ArrayList<Cell> cells;
 
     private Cell nullCell = null;
 
     public World() {
-        size = new Vec2DInteger();
+        size = new Vec2DGeneralInteger();
         cells = new ArrayList<>();
     }
 
@@ -25,7 +25,7 @@ public class World {
         }
     }
 
-    public Cell getCell(Vec2DInteger v) {
+    public Cell getCell(Vec2DGeneralInteger v) {
         if ( v.getX() >= 0 && v.getX() < size.getX() && v.getY() >= 0 && v.getY() < size.getY()) {
             return cells.get(v.getY() * size.getX() + v.getX());
         } else {
@@ -37,11 +37,11 @@ public class World {
         return cells;
     }
 
-    public Vec2DInteger getSize() {
+    public Vec2DGeneralInteger getSize() {
         return size;
     }
 
-    public boolean setCell(Vec2DInteger v, Cell cell) {
+    public boolean setCell(Vec2DGeneralInteger v, Cell cell) {
         if ( v.getX() >= 0 && v.getX() < size.getX() && v.getY() >= 0 && v.getY() < size.getY()) {
             cells.set(v.getY() * size.getX() + v.getX(), cell);
             return true;
@@ -54,7 +54,7 @@ public class World {
         this.cells = cells;
     }
 
-    public void setSize(Vec2DInteger size) {
+    public void setSize(Vec2DGeneralInteger size) {
         this.size = size;
         for ( int i = 0; i < size.getX() * size.getY(); i++ ) {
             cells.add(new Cell());

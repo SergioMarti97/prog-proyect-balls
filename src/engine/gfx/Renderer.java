@@ -5,9 +5,9 @@ import engine.gfx.font.Font;
 import engine.gfx.images.Image;
 import engine.gfx.images.ImageRequest;
 import engine.gfx.images.ImageTile;
-import engine.gfx.images.maths.Matrix3x3Float;
-import engine.gfx.images.maths.MatrixOperations;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.Mat3x3;
+import engine.maths.MatrixOperations;
+import engine.maths.points2d.Vec2DGeneralFloat;
 
 import java.awt.image.DataBufferInt;
 import java.util.ArrayList;
@@ -507,7 +507,7 @@ public class Renderer {
         }
     }
 
-    public void drawPolygon(ArrayList<Vec2DFloat> points, int color) {
+    public void drawPolygon(ArrayList<Vec2DGeneralFloat> points, int color) {
         for ( int i = 0; i < points.size() - 1; i++ ) {
             drawLine(
                     points.get(i).getX().intValue(), points.get(i).getY().intValue(),
@@ -567,13 +567,13 @@ public class Renderer {
         }
     }
 
-    public void drawImage(Image image, Matrix3x3Float transformation) {
-        Matrix3x3Float transformationInv;
+    public void drawImage(Image image, Mat3x3 transformation) {
+        Mat3x3 transformationInv;
         transformationInv = MatrixOperations.invert(transformation);
 
-        Vec2DFloat p = MatrixOperations.forward(transformation, 0.0f, 0.0f);
-        Vec2DFloat end = new Vec2DFloat();
-        Vec2DFloat start = new Vec2DFloat();
+        Vec2DGeneralFloat p = MatrixOperations.forward(transformation, 0.0f, 0.0f);
+        Vec2DGeneralFloat end = new Vec2DGeneralFloat();
+        Vec2DGeneralFloat start = new Vec2DGeneralFloat();
 
         start.set(p);
         end.set(p);
@@ -597,7 +597,7 @@ public class Renderer {
         end.setY(Math.max(end.getY(), p.getY()));
 
         int pixel;
-        Vec2DFloat newPos;
+        Vec2DGeneralFloat newPos;
         for ( int x = start.getX().intValue(); x < end.getX().intValue(); x++ ) {
             for ( int y = start.getY().intValue(); y < end.getY().intValue(); y++ ) {
                 newPos = MatrixOperations.forward(transformationInv, (float)(x), (float)(y));

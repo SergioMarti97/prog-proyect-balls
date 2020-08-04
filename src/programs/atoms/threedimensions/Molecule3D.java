@@ -1,8 +1,8 @@
 package programs.atoms.threedimensions;
 
-import engine.gfx.engine3d.normal.Mat4x4;
+import engine.maths.Mat4x4;
 import engine.gfx.engine3d.normal.MatrixMath;
-import engine.gfx.engine3d.normal.Vec3d;
+import engine.maths.Vec3d;
 import programs.atoms.CarbonHybridization;
 
 import java.util.ArrayList;

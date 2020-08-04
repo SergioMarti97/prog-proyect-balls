@@ -2,6 +2,8 @@ package engine.gfx.engine3d.normal;
 
 import engine.GameContainer;
 import engine.gfx.images.Image;
+import engine.maths.Mat4x4;
+import engine.maths.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package engine.physics;
 
 import engine.gfx.shapes2d.Shape2D;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 import engine.gfx.shapes2d.shapes.Circle2D;
 import engine.gfx.shapes2d.shapes.Polygon2D;
 
@@ -71,12 +71,12 @@ public class PhysicalObject2D {
 
             for (int a = 0; a < poly1.getP().size(); a++) {
                 int b = (a + 1) % poly1.getP().size();
-                Vec2DFloat axisProjection = new Vec2DFloat(
+                Vec2DGeneralFloat axisProjection = new Vec2DGeneralFloat(
                         -(poly1.getP().get(b).getY() - poly1.getP().get(a).getY()),
                         poly1.getP().get(b).getX() - poly1.getP().get(a).getX()
                 );
                 float d = (float) Math.sqrt(axisProjection.getX() * axisProjection.getX() + axisProjection.getY() * axisProjection.getY());
-                axisProjection = new Vec2DFloat(axisProjection.getX() / d, axisProjection.getY() / d);
+                axisProjection = new Vec2DGeneralFloat(axisProjection.getX() / d, axisProjection.getY() / d);
 
                 // Work out min and max 1D points for r1
                 float min_r1 = Integer.MAX_VALUE, max_r1 = -Integer.MAX_VALUE;
@@ -116,7 +116,7 @@ public class PhysicalObject2D {
 
             for (int a = 0; a < poly1.getP().size(); a++) {
                 int b = (a + 1) % poly1.getP().size();
-                Vec2DFloat axisProjection = new Vec2DFloat(
+                Vec2DGeneralFloat axisProjection = new Vec2DGeneralFloat(
                         -(poly1.getP().get(b).getY() - poly1.getP().get(a).getY()),
                         poly1.getP().get(b).getX() - poly1.getP().get(a).getX()
                 );
@@ -152,7 +152,7 @@ public class PhysicalObject2D {
 
         // If we got here, the objects have collided, we will displace r1
         // by overlap along the vector between the two object centers
-        Vec2DFloat d = new Vec2DFloat(r2.getPosX() - r1.getPosX(), r2.getPosY() - r1.getPosY() );
+        Vec2DGeneralFloat d = new Vec2DGeneralFloat(r2.getPosX() - r1.getPosX(), r2.getPosY() - r1.getPosY() );
         float s = (float)(Math.sqrt(d.getX()*d.getX() + d.getY()*d.getY()));
         float x = r1.getPosX();
         float y = r1.getPosY();

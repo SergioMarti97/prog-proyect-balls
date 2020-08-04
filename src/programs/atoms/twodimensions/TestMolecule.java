@@ -6,7 +6,7 @@ import engine.audio.SoundClip;
 import engine.gfx.Renderer;
 import engine.gfx.images.Image;
 import engine.gfx.images.ImageTile;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 import programs.atoms.IdAndPos;
 
 import java.awt.event.KeyEvent;
@@ -67,9 +67,9 @@ public class TestMolecule extends AbstractGame {
             molecule.setShowingLinks(!isShowingLinks);
         }
 
-        Vec2DFloat mousePosition;
+        Vec2DGeneralFloat mousePosition;
         if ( gc.getInput().isButtonDown(1) ) {
-            mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
+            mousePosition = new Vec2DGeneralFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
             IdAndPos idAndPos = molecule.isPointInsideALink(mousePosition.getX(), mousePosition.getY());
             if ( molecule.isPointInside(mousePosition) != null ) {
                 boolean moleculeIsSelected = molecule.isSelected();
@@ -96,7 +96,7 @@ public class TestMolecule extends AbstractGame {
             }
         }
         if ( gc.getInput().isButtonDown(3) ) {
-            mousePosition = new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
+            mousePosition = new Vec2DGeneralFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY()));
             Atom atomToDelete = molecule.isPointInside(mousePosition);
             if ( atomToDelete != null ) {
                 molecule.deleteAtom(atomToDelete.getPosition());
@@ -109,7 +109,7 @@ public class TestMolecule extends AbstractGame {
     public void render(GameContainer gc, Renderer r) {
 
         if ( molecule.isSelected() ) {
-            molecule.setPosition(new Vec2DFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY())));
+            molecule.setPosition(new Vec2DGeneralFloat((float)(gc.getInput().getMouseX()), (float)(gc.getInput().getMouseY())));
         }
 
         molecule.drawYourSelf(r);

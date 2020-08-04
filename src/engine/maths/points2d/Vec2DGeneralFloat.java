@@ -1,13 +1,13 @@
-package engine.gfx.shapes2d.points2d;
+package engine.maths.points2d;
 
-public class Vec2DFloat extends Vec2D<Float> {
+public class Vec2DGeneralFloat extends Vec2dGeneral<Float> {
 
-    public Vec2DFloat() {
+    public Vec2DGeneralFloat() {
         x = 0.0f;
         y = 0.0f;
     }
 
-    public Vec2DFloat(Float x, Float y) {
+    public Vec2DGeneralFloat(Float x, Float y) {
         super(x, y);
     }
 
@@ -28,12 +28,12 @@ public class Vec2DFloat extends Vec2D<Float> {
     }
 
     @Override
-    public void add(Vec2D<Float> point) {
+    public void add(Vec2dGeneral<Float> point) {
         x += point.getX();
         y += point.getY();
     }
 
-    public void sub(Vec2D<Float> point) {
+    public void sub(Vec2dGeneral<Float> point) {
         x -= point.getX();
         y -= point.getY();
     }
@@ -51,12 +51,12 @@ public class Vec2DFloat extends Vec2D<Float> {
         y *= amount;
     }
 
-    public void multiply(Vec2D<Float> point) {
+    public void multiply(Vec2dGeneral<Float> point) {
         x *= point.getX();
         y *= point.getY();
     }
 
-    public void division(Vec2D<Float> point) {
+    public void division(Vec2dGeneral<Float> point) {
         x /= point.getX();
         y /= point.getY();
     }
@@ -69,20 +69,20 @@ public class Vec2DFloat extends Vec2D<Float> {
         return x * x + y * y;
     }
 
-    public Vec2D<Float> normal() {
+    public Vec2dGeneral<Float> normal() {
         float r = 1 / mag();
-        return new Vec2DFloat( x * r, y * r);
+        return new Vec2DGeneralFloat( x * r, y * r);
     }
 
-    public Vec2D<Float> perpendicular() {
-        return new Vec2DFloat(-y, x);
+    public Vec2dGeneral<Float> perpendicular() {
+        return new Vec2DGeneralFloat(-y, x);
     }
 
-    public Float dotProduct(Vec2D<Float> point) {
+    public Float dotProduct(Vec2dGeneral<Float> point) {
         return x * point.getX() + y * point.getY();
     }
 
-    public Float crossProduct(Vec2D<Float> point) {
+    public Float crossProduct(Vec2dGeneral<Float> point) {
         return x * point.getY() - y * point.getX();
     }
 
@@ -96,8 +96,8 @@ public class Vec2DFloat extends Vec2D<Float> {
 
     @Override
     public boolean equals(Object obj) {
-        if ( obj instanceof Vec2DFloat ) {
-            Vec2DFloat vec2DFloat = (Vec2DFloat)(obj);
+        if ( obj instanceof Vec2DGeneralFloat) {
+            Vec2DGeneralFloat vec2DFloat = (Vec2DGeneralFloat)(obj);
             return this.x.equals(vec2DFloat.getX()) && this.y.equals(vec2DFloat.getY());
         } else {
             return false;

@@ -2,14 +2,14 @@ package programs.atoms.twodimensions;
 
 import engine.gfx.Renderer;
 import engine.gfx.Drawable;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 import programs.atoms.IdAndPos;
 
 import java.util.ArrayList;
 
 public class Molecule implements Drawable {
 
-    private Vec2DFloat position = new Vec2DFloat(0.0f, 0.0f);
+    private Vec2DGeneralFloat position = new Vec2DGeneralFloat(0.0f, 0.0f);
 
     private float rotation = 0.0f;
 
@@ -26,14 +26,14 @@ public class Molecule implements Drawable {
 
     public Molecule(float x, float y) {
         this();
-        position = new Vec2DFloat(x, y);
+        position = new Vec2DGeneralFloat(x, y);
     }
 
     public float getRotation() {
         return rotation;
     }
 
-    public Vec2DFloat getPosition() {
+    public Vec2DGeneralFloat getPosition() {
         return position;
     }
 
@@ -53,7 +53,7 @@ public class Molecule implements Drawable {
         return atoms.get(index);
     }
 
-    private void addAtom(Atom atom, Vec2DFloat position) {
+    private void addAtom(Atom atom, Vec2DGeneralFloat position) {
         atom.setPosition(position);
         atom.setRotation(rotation);
         atom.setId(atoms.size());
@@ -63,7 +63,7 @@ public class Molecule implements Drawable {
     public void addAtomTo(int idAtom, Atom newAtom, int position) {
         for ( Atom atom : atoms ) {
             if ( atom.getId() == idAtom ) {
-                Vec2DFloat linkPosition = atom.getLinkPosition(position);
+                Vec2DGeneralFloat linkPosition = atom.getLinkPosition(position);
                 newAtom.setPosition(linkPosition);
                 newAtom.setRotation((rotation + 60 + atom.getRotation()) % 360);
                 atom.getLinkedAtomsIndexes().add(new IdAndPos(newAtom.getId(), position));
@@ -74,7 +74,7 @@ public class Molecule implements Drawable {
         atoms.add(newAtom);
     }
 
-    public void deleteAtom(Vec2DFloat position) {
+    public void deleteAtom(Vec2DGeneralFloat position) {
         for ( int i = atoms.size() - 1; i >= 0; i-- ) {
             if ( atoms.get(i).getPosition().equals(position) ) {
                 atoms.remove(i);
@@ -94,20 +94,20 @@ public class Molecule implements Drawable {
         isSelected = selected;
     }
 
-    public void setPosition(Vec2DFloat position) {
+    public void setPosition(Vec2DGeneralFloat position) {
         float disX = position.getX() - this.position.getX();
         float disY = position.getY() - this.position.getY();
         for ( Atom atom : atoms ) {
             float atomPositionX = atom.getPosition().getX();
             float atomPositionY = atom.getPosition().getY();
-            atom.setPosition(new Vec2DFloat(atomPositionX + disX, atomPositionY + disY));
+            atom.setPosition(new Vec2DGeneralFloat(atomPositionX + disX, atomPositionY + disY));
         }
         this.position = position;
     }
 
     public void setRotation(float rotation) {
 
-        Vec2DFloat mediumPosition = new Vec2DFloat();
+        Vec2DGeneralFloat mediumPosition = new Vec2DGeneralFloat();
         for ( Atom atom : atoms ) {
             mediumPosition.addToX(atom.getPosition().getX());
             mediumPosition.addToY(atom.getPosition().getY());
@@ -120,7 +120,7 @@ public class Molecule implements Drawable {
         for ( Atom atom : atoms ) {
             float diffX = atom.getPosition().getX() - mediumPosition.getX();
             float diffY = atom.getPosition().getY() - mediumPosition.getY();
-            Vec2DFloat difference = new Vec2DFloat(diffX, diffY);
+            Vec2DGeneralFloat difference = new Vec2DGeneralFloat(diffX, diffY);
         }
 
         this.rotation = rotation;
@@ -143,7 +143,7 @@ public class Molecule implements Drawable {
         return null;
     }
 
-    public Atom isPointInside(Vec2DFloat position) {
+    public Atom isPointInside(Vec2DGeneralFloat position) {
         return isPointInside(position.getX(), position.getY());
     }
 
@@ -158,7 +158,7 @@ public class Molecule implements Drawable {
         return null;
     }
 
-    public IdAndPos isPointInsideALink(Vec2DFloat position) {
+    public IdAndPos isPointInsideALink(Vec2DGeneralFloat position) {
         return isPointInsideALink(position.getX(), position.getY());
     }
 

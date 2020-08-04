@@ -1,6 +1,8 @@
 package engine.gfx.engine3d.normal;
 
 import engine.gfx.Renderer;
+import engine.maths.Mat4x4;
+import engine.maths.Vec3d;
 
 /**
  * Esta clase representa la cámara para renderizar la escena de un mundo 3d.

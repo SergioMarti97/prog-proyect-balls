@@ -1,4 +1,4 @@
-package engine.gfx.engine3d.normal;
+package engine.maths;
 
 public class Vec3d {
 

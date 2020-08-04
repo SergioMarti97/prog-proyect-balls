@@ -2,7 +2,7 @@ package engine.gfx.shapes2d.shapes;
 
 import engine.gfx.Renderer;
 import engine.gfx.shapes2d.Shape2D;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 
 import java.util.ArrayList;
 
@@ -27,18 +27,18 @@ public class Polygon2D extends Shape2D {
      * Son los puntos de los vertices del polígono sin modificar,
      * es decir, los originales.
      */
-    protected ArrayList<Vec2DFloat> pShape;
+    protected ArrayList<Vec2DGeneralFloat> pShape;
 
     /**
      * Son los puntos de los vertices del polígono modificados,
      * es decir, después de haber sido escalados, rotados, escalados...
      */
-    protected ArrayList<Vec2DFloat> pFinal;
+    protected ArrayList<Vec2DGeneralFloat> pFinal;
 
     /**
      * El centro teórico de la figura.
      */
-    protected Vec2DFloat theoreticalCenter;
+    protected Vec2DGeneralFloat theoreticalCenter;
 
     /**
      * El ángulo de rotación de la figura.
@@ -60,7 +60,7 @@ public class Polygon2D extends Shape2D {
         this.size = size;
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
-        theoreticalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DGeneralFloat();
         numVertex = 0;
     }
 
@@ -75,17 +75,17 @@ public class Polygon2D extends Shape2D {
      * @param points Los puntos que conforman el poligono. Se utiliza un array
      *               de objetos <class>Vec2DFloat</class>.
      */
-    public Polygon2D(float posX, float posY, float size, int color, Vec2DFloat... points) {
+    public Polygon2D(float posX, float posY, float size, int color, Vec2DGeneralFloat... points) {
         super(posX, posY, color);
         this.size = size;
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
-        for ( Vec2DFloat point : points ) {
+        for ( Vec2DGeneralFloat point : points ) {
             pShape.add(point);
             pFinal.add(point);
         }
         numVertex = points.length;
-        theoreticalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DGeneralFloat();
         normalizePShape();
         calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
@@ -102,13 +102,13 @@ public class Polygon2D extends Shape2D {
      * @param size Tamaño del polígono.
      * @param color El color del polígno.
      */
-    public Polygon2D(float posX, float posY, ArrayList<Vec2DFloat> p, float size, int color) {
+    public Polygon2D(float posX, float posY, ArrayList<Vec2DGeneralFloat> p, float size, int color) {
         super(posX, posY, color);
         this.size = size;
         pShape = p;
         pFinal = p;
         numVertex = p.size();
-        theoreticalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DGeneralFloat();
         normalizePShape();
         calculateTheoreticalCenter();
         rotateScaleOffsetPoints();
@@ -131,11 +131,11 @@ public class Polygon2D extends Shape2D {
         pShape = new ArrayList<>();
         pFinal = new ArrayList<>();
         this.numVertex = numVertex;
-        theoreticalCenter = new Vec2DFloat();
+        theoreticalCenter = new Vec2DGeneralFloat();
         float theta = 3.14159f * 2.0f / this.numVertex;
         for (int i = 0; i < this.numVertex; i++) {
-            pShape.add(new Vec2DFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
-            pFinal.add(new Vec2DFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
+            pShape.add(new Vec2DGeneralFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
+            pFinal.add(new Vec2DGeneralFloat((float)(this.size * Math.cos(theta * i)), (float)(this.size * Math.sin(theta * i))));
         }
         normalizePShape();
         calculateTheoreticalCenter();
@@ -162,7 +162,7 @@ public class Polygon2D extends Shape2D {
         }
         sumX /= numVertex;
         sumY /= numVertex;
-        theoreticalCenter = new Vec2DFloat(sumX, sumY);
+        theoreticalCenter = new Vec2DGeneralFloat(sumX, sumY);
     }
 
     /**
@@ -171,7 +171,7 @@ public class Polygon2D extends Shape2D {
      */
     protected void rotateScaleOffsetPoints() {
         for (int i = 0; i < numVertex; i++ ) {
-            Vec2DFloat point = new Vec2DFloat(pShape.get(i).getX(), pShape.get(i).getY());
+            Vec2DGeneralFloat point = new Vec2DGeneralFloat(pShape.get(i).getX(), pShape.get(i).getY());
             point.sub(theoreticalCenter);
             point.translateThisAngle(angle);
             point.setX((point.getX() * size) + posX);
@@ -271,11 +271,11 @@ public class Polygon2D extends Shape2D {
         rotateScaleOffsetPoints();
     }
 
-    public ArrayList<Vec2DFloat> getP() {
+    public ArrayList<Vec2DGeneralFloat> getP() {
         return pFinal;
     }
 
-    public void addP(Vec2DFloat p) {
+    public void addP(Vec2DGeneralFloat p) {
         pShape.add(p);
         pFinal.add(p);
         normalizePShape();
@@ -290,7 +290,7 @@ public class Polygon2D extends Shape2D {
         return angle;
     }
 
-    public void setP(ArrayList<Vec2DFloat> p) {
+    public void setP(ArrayList<Vec2DGeneralFloat> p) {
         this.pShape = p;
         this.pFinal = p;
         normalizePShape();

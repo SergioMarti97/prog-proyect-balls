@@ -5,9 +5,9 @@ import engine.GameContainer;
 import engine.gfx.Renderer;
 import engine.gfx.images.Image;
 import engine.gfx.images.ImageTile;
-import engine.gfx.images.maths.Matrix3x3Float;
-import engine.gfx.images.maths.MatrixOperations;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.Mat3x3;
+import engine.maths.MatrixOperations;
+import engine.maths.points2d.Vec2DGeneralFloat;
 
 import java.awt.event.KeyEvent;
 
@@ -19,9 +19,9 @@ public class TestImageTransformations extends AbstractGame {
 
     private float rotation;
 
-    private Vec2DFloat position;
+    private Vec2DGeneralFloat position;
 
-    private Vec2DFloat velocity;
+    private Vec2DGeneralFloat velocity;
 
     private float getRandomFloatBetweenRange(int max, int min) {
         return (float) ((Math.random() * ((max - min) + 1)) + min);
@@ -42,8 +42,8 @@ public class TestImageTransformations extends AbstractGame {
             images[i] = imageTile.getTileImage(i, 0);
         }
         image = images[0];
-        position = new Vec2DFloat(gc.getWidth() / 2.0f, gc.getHeight() / 2.0f);
-        velocity = new Vec2DFloat(getRandomFloatBetweenRange(100, -100), getRandomFloatBetweenRange(100, -100));
+        position = new Vec2DGeneralFloat(gc.getWidth() / 2.0f, gc.getHeight() / 2.0f);
+        velocity = new Vec2DGeneralFloat(getRandomFloatBetweenRange(100, -100), getRandomFloatBetweenRange(100, -100));
     }
 
     @Override
@@ -102,10 +102,10 @@ public class TestImageTransformations extends AbstractGame {
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        Matrix3x3Float matrixA = new Matrix3x3Float();
-        Matrix3x3Float matrixB = new Matrix3x3Float();
-        Matrix3x3Float matrixC;
-        Matrix3x3Float matrixFinal;
+        Mat3x3 matrixA = new Mat3x3();
+        Mat3x3 matrixB = new Mat3x3();
+        Mat3x3 matrixC;
+        Mat3x3 matrixFinal;
 
         matrixA.setAsTranslate(-image.getW() / 2.0f, -image.getH() / 2.0f);
         matrixB.setAsRotate(rotation);

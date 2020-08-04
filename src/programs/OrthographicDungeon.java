@@ -2,12 +2,11 @@ package programs;
 
 import engine.AbstractGame;
 import engine.GameContainer;
-import engine.gfx.engine3d.normal.Vec3d;
+import engine.maths.Vec3d;
 import engine.gfx.engine3d.orthographic.*;
 import engine.gfx.Renderer;
-import engine.gfx.images.ImageTile;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
-import engine.gfx.shapes2d.points2d.Vec2DInteger;
+import engine.maths.points2d.Vec2DGeneralFloat;
+import engine.maths.points2d.Vec2DGeneralInteger;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ public class OrthographicDungeon extends AbstractGame {
 
     private Renderable rendAllWalls;
 
-    private Vec2DFloat cameraPos = new Vec2DFloat(0.0f, 0.0f);
+    private Vec2DGeneralFloat cameraPos = new Vec2DGeneralFloat(0.0f, 0.0f);
 
     private float cameraAngle = 0.0f;
 
@@ -32,17 +31,17 @@ public class OrthographicDungeon extends AbstractGame {
 
     private boolean[] visible = new boolean[6];
 
-    private Vec2DInteger cursor = new Vec2DInteger(0, 0);
+    private Vec2DGeneralInteger cursor = new Vec2DGeneralInteger(0, 0);
 
-    private Vec2DInteger tileCursor = new Vec2DInteger(0, 0);
+    private Vec2DGeneralInteger tileCursor = new Vec2DGeneralInteger(0, 0);
 
-    private Vec2DInteger tileSize = new Vec2DInteger(32, 32);
+    private Vec2DGeneralInteger tileSize = new Vec2DGeneralInteger(32, 32);
 
     private OrthographicDungeon(String title) {
         super(title);
     }
 
-    private ArrayList<Vec3d> createCube(Vec2DInteger cell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera) {
+    private ArrayList<Vec3d> createCube(Vec2DGeneralInteger cell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera) {
         int arraySize = 8;
         ArrayList<Vec3d> unitCube = new ArrayList<>();
         ArrayList<Vec3d> rotCube = new ArrayList<>();
@@ -103,9 +102,9 @@ public class OrthographicDungeon extends AbstractGame {
     }
 
     private boolean checkNormal(ArrayList<Vec3d> cube, int v1, int v2, int v3) {
-        Vec2DFloat a = new Vec2DFloat(cube.get(v1).getX(), cube.get(v1).getY());
-        Vec2DFloat b = new Vec2DFloat(cube.get(v2).getX(), cube.get(v2).getY());
-        Vec2DFloat c = new Vec2DFloat(cube.get(v3).getX(), cube.get(v3).getY());
+        Vec2DGeneralFloat a = new Vec2DGeneralFloat(cube.get(v1).getX(), cube.get(v1).getY());
+        Vec2DGeneralFloat b = new Vec2DGeneralFloat(cube.get(v2).getX(), cube.get(v2).getY());
+        Vec2DGeneralFloat c = new Vec2DGeneralFloat(cube.get(v3).getX(), cube.get(v3).getY());
         b.sub(a);
         c.sub(a);
         return b.crossProduct(c) > 0;
@@ -134,7 +133,7 @@ public class OrthographicDungeon extends AbstractGame {
         );
     }
 
-    private void getFaceQuads(Vec2DInteger vectorCell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera, ArrayList<Quad> renderer) {
+    private void getFaceQuads(Vec2DGeneralInteger vectorCell, float angle, float pitch, float scale, float screenWidth, float screenHeight, Vec3d camera, ArrayList<Quad> renderer) {
         ArrayList<Vec3d> projectionCube = createCube(vectorCell, angle, pitch, scale, screenWidth, screenHeight, camera);
         Cell cell = world.getCell(vectorCell);
         if ( !cell.isWall() ) {
@@ -166,25 +165,25 @@ public class OrthographicDungeon extends AbstractGame {
         world.create(64, 64);
         for ( int y = 0; y < world.getSize().getY(); y++ ) {
             for ( int x = 0; x < world.getSize().getX(); x++ ) {
-                world.getCell(new Vec2DInteger(x, y)).setWall(false);
-                Vec2DInteger floor = new Vec2DInteger(3, 0);
+                world.getCell(new Vec2DGeneralInteger(x, y)).setWall(false);
+                Vec2DGeneralInteger floor = new Vec2DGeneralInteger(3, 0);
                 floor.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.FLOOR))] = floor;
-                Vec2DInteger top = new Vec2DInteger(1, 0);
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.FLOOR))] = floor;
+                Vec2DGeneralInteger top = new Vec2DGeneralInteger(1, 0);
                 top.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.TOP))] = top;
-                Vec2DInteger north = new Vec2DInteger(0, 6);
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.TOP))] = top;
+                Vec2DGeneralInteger north = new Vec2DGeneralInteger(0, 6);
                 north.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.NORTH))] = north;
-                Vec2DInteger south = new Vec2DInteger(0, 6);
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.NORTH))] = north;
+                Vec2DGeneralInteger south = new Vec2DGeneralInteger(0, 6);
                 south.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.SOUTH))] = south;
-                Vec2DInteger west = new Vec2DInteger(0, 6);
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.SOUTH))] = south;
+                Vec2DGeneralInteger west = new Vec2DGeneralInteger(0, 6);
                 west.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.WEST))] = west;
-                Vec2DInteger east = new Vec2DInteger(0, 6);
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.WEST))] = west;
+                Vec2DGeneralInteger east = new Vec2DGeneralInteger(0, 6);
                 east.multiply(tileSize);
-                world.getCell(new Vec2DInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.EAST))] = east;
+                world.getCell(new Vec2DGeneralInteger(x, y)).getId()[Integer.parseInt(String.valueOf(Face.EAST))] = east;
             }
         }
     }
@@ -304,14 +303,14 @@ public class OrthographicDungeon extends AbstractGame {
         }
 
         // Position camera in world
-        cameraPos = new Vec2DFloat( cursor.getX() + 0.5f,  cursor.getY() + 0.5f );
+        cameraPos = new Vec2DGeneralFloat( cursor.getX() + 0.5f,  cursor.getY() + 0.5f );
         cameraPos.multiply(cameraZoom);
 
     }
 
     @Override
     public void render(GameContainer gc, Renderer r) {
-        Vec2DInteger mousePosition = new Vec2DInteger(gc.getInput().getMouseX(), gc.getInput().getMouseY());
+        Vec2DGeneralInteger mousePosition = new Vec2DGeneralInteger(gc.getInput().getMouseX(), gc.getInput().getMouseY());
 
         if ( gc.getInput().isKeyDown(KeyEvent.VK_TAB) ) {
             r.drawImage(rendAllWalls.getImage(), 0, 0);
@@ -324,7 +323,7 @@ public class OrthographicDungeon extends AbstractGame {
         }
 
         ArrayList<Vec3d> cullCube = createCube(
-                new Vec2DInteger(0, 0),
+                new Vec2DGeneralInteger(0, 0),
                 cameraAngle, cameraPitch, cameraZoom, gc.getWidth(), gc.getHeight(),
                 new Vec3d(
                         cameraPos.getX(),
@@ -336,7 +335,7 @@ public class OrthographicDungeon extends AbstractGame {
         for ( int y = 0; y < world.getSize().getY(); y++ ) {
             for ( int x = 0; x < world.getSize().getX(); x++ ) {
                 getFaceQuads(
-                        new Vec2DInteger(x, y),
+                        new Vec2DGeneralInteger(x, y),
                         cameraAngle, cameraPitch, cameraZoom, gc.getWidth(), gc.getHeight(),
                         new Vec3d(
                                 cameraPos.getX(),

@@ -3,7 +3,7 @@ package engine.gfx.shapes2d;
 import engine.gfx.Drawable;
 import engine.gfx.Renderer;
 import engine.gfx.SelectableByMouse;
-import engine.gfx.shapes2d.points2d.Vec2DFloat;
+import engine.maths.points2d.Vec2DGeneralFloat;
 
 /**
  * Esta clase pretende ser la clase generalizada de
@@ -128,7 +128,7 @@ public abstract class Shape2D implements Drawable, SelectableByMouse {
      * @return Devuelve verdadero o falso, en función de si se encuentra fuera o
      *         dentro del área el punto.
      */
-    public boolean isPointInside(Vec2DFloat point) {
+    public boolean isPointInside(Vec2DGeneralFloat point) {
         return isPointInside(point.getX(), point.getY());
     }
 

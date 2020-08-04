@@ -22,5 +22,6 @@ public enum WayToRender {
     WIRE,
     BLACKBOARD,
     BLUEPRINT,
+    TEXTURED
 
 }

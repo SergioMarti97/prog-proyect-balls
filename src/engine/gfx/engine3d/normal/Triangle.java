@@ -1,5 +1,8 @@
 package engine.gfx.engine3d.normal;
 
+import engine.maths.Vec2d;
+import engine.maths.Vec3d;
+
 public class Triangle {
 
     private Vec3d[] p = new Vec3d[3];

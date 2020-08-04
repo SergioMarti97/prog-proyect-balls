@@ -1,4 +1,4 @@
-package engine.gfx.images.maths;
+package engine.maths;
 
 /**
  * Una matriz de tres filas por tres columnas.

@@ -7,7 +7,7 @@ engine.gfx.font
 engine.gfx.images
 engine.gfx.images.maths
 engine.gfx.shapes2d
-engine.gfx.shapes2d.points2d
+engine.maths.points2d
 engine.gfx.shapes2d.shapes
 engine.gui
 engine.physics

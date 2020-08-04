@@ -5,12 +5,12 @@ import engine.GameContainer;
 import engine.gfx.HexColors;
 import engine.gfx.Renderer;
 import engine.gfx.engine3d.normal.Camera;
-import engine.gfx.engine3d.normal.Mat4x4;
+import engine.maths.Mat4x4;
 import engine.gfx.engine3d.normal.MatrixMath;
-import engine.gfx.engine3d.normal.Vec3d;
+import engine.maths.Vec3d;
 import engine.gfx.images.Image;
-import engine.gfx.images.maths.Matrix3x3Float;
-import engine.gfx.images.maths.MatrixOperations;
+import engine.maths.Mat3x3;
+import engine.maths.MatrixOperations;
 import programs.atoms.AtomKind;
 import programs.atoms.CarbonHybridization;
 
@@ -155,11 +155,11 @@ public class TestMolecule3D extends AbstractGame {
     }
 
     private void drawAtomSprite(Renderer r, Image image, Vec3d point) {
-        Matrix3x3Float scale = new Matrix3x3Float();
-        Matrix3x3Float offsetImage = new Matrix3x3Float();
-        Matrix3x3Float offsetScreen = new Matrix3x3Float();
-        Matrix3x3Float scaledOffsetImage;
-        Matrix3x3Float transform;
+        Mat3x3 scale = new Mat3x3();
+        Mat3x3 offsetImage = new Mat3x3();
+        Mat3x3 offsetScreen = new Mat3x3();
+        Mat3x3 scaledOffsetImage;
+        Mat3x3 transform;
 
         scale.setAsScale(1 / (point.getZ() / 3), 1 / (point.getZ() / 3));
         offsetImage.setAsTranslate(- image.getW() / 2.0f, - image.getH() / 2.0f);
